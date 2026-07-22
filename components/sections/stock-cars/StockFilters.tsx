@@ -103,7 +103,7 @@ export function StockFilters({
             <Small weight="medium" className="block mb-1">
               Year
             </Small>
-            <Flex gap="2">
+            <Flex gap="sm">
               <Select
                 options={[
                   { value: "", label: "Any" },

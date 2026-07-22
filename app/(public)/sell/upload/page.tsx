@@ -557,7 +557,7 @@ function SellCarContent() {
         );
       }
 
-      // 3. Upload images to Cloudinary
+      // 3. Upload images to Supabase Storage
       const uploadedUrls: string[] = [];
       for (const file of carData.images) {
         const formData = new FormData();

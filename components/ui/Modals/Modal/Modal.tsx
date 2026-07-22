@@ -41,16 +41,14 @@ export function Modal({
       onCancel={onClose}
     >
       <div className={twMerge(clsx("p-0", sizes[size]))}>
-        {(title || onClose) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-black/5">
-            {title && (
-              <h2 className="text-xl font-display text-gray-800">{title}</h2>
-            )}
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <MdClose size={20} />
-            </Button>
-          </div>
-        )}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-black/5">
+          {title && (
+            <h2 className="text-xl font-display text-gray-800">{title}</h2>
+          )}
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <MdClose size={20} />
+          </Button>
+        </div>
         <div className="px-6 py-4 max-h-[70vh] overflow-y-auto">{children}</div>
         {footer && (
           <div className="px-6 py-4 border-t border-black/5">{footer}</div>

@@ -19,6 +19,8 @@ import {
   MarketRankBadge,
 } from "@/components/ui";
 import { cars } from "@/lib/data/carData";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import {
   MdPlace,
   MdLocalGasStation,
@@ -409,7 +411,7 @@ function SpecItem({
 }) {
   return (
     <div className="flex flex-col items-center p-4 bg-cream/30 rounded-lg border border-black/5">
-      <div className="text[#CD2C58] mb-2" size={24}>
+      <div className="text[#CD2C58] mb-2 text-2xl">
         {icon}
       </div>
       <span className="text-[10px] font-black uppercase tracking-widest text-gray-800/40 mb-1">

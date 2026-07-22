@@ -17,7 +17,7 @@ export default function DealerDashboardPage() {
       </div>
 
       {/* KPIs Row */}
-      <Grid cols={1} md={2} lg={4} gap={6} className="mb-8">
+      <Grid cols={1} md={2} lg={4} gap="lg" className="mb-8">
         <StatsCard 
           title="Active Listings" 
           value="42" 

@@ -1,21 +1,37 @@
-import { NextResponse } from 'next/server'
-import { uploadImage } from '@/lib/cloudinary'
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
+import { uploadMedia } from "@/lib/supabase/media";
 
 export async function POST(req: Request) {
   try {
-    const formData = await req.formData()
-    const file = formData.get('file') as File
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    const formData = await req.formData();
+    const file = formData.get("file") as File;
 
-    const result = await uploadImage(buffer)
-    return NextResponse.json({ url: result.secure_url, publicId: result.public_id })
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const { url, path } = await uploadMedia(
+      buffer,
+      "listing-images",
+      user.id,
+      file.name,
+      file.type || "application/octet-stream",
+    );
+
+    return NextResponse.json({ url, path });
   } catch (error) {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+    console.error("upload route error:", error);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

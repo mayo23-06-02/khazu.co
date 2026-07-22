@@ -67,7 +67,9 @@ export default function AdminDashboardPage() {
       email: 'sipho@example.com',
       phone: '76000000',
       role: UserRole.PERSONAL,
-      isVerified: true
+      isVerified: true,
+      freeListingsRemaining: 1,
+      createdAt: new Date('2026-06-01')
     },
     {
       id: 'u2',
@@ -77,7 +79,9 @@ export default function AdminDashboardPage() {
       phone: '24040000',
       role: UserRole.DEALER,
       dealerName: 'Mbabane Motors',
-      isVerified: false
+      isVerified: false,
+      freeListingsRemaining: 0,
+      createdAt: new Date('2026-05-15')
     },
     {
       id: 'u3',
@@ -86,7 +90,9 @@ export default function AdminDashboardPage() {
       email: 'thabo.m@example.com',
       phone: '79000000',
       role: UserRole.PERSONAL,
-      isVerified: false
+      isVerified: false,
+      freeListingsRemaining: 1,
+      createdAt: new Date('2026-07-10')
     }
   ]
 
@@ -104,7 +110,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* KPIs Row */}
-      <Grid cols={1} md={2} lg={4} gap={6} className="mb-8">
+      <Grid cols={1} md={2} lg={4} gap="lg" className="mb-8">
         <StatsCard 
           title="Platform Listings" 
           value="1,248" 
@@ -145,7 +151,7 @@ export default function AdminDashboardPage() {
       </Grid>
 
       {/* Quick Actions Row */}
-      <Grid cols={1} md={3} gap={6} className="mb-8">
+      <Grid cols={1} md={3} gap="lg" className="mb-8">
         <Button variant="outline" className="h-20 flex flex-col items-center justify-center border-gray-200 hover:border-primary hover:text-primary transition-all bg-white shadow-sm">
           <FaCheckDouble size={20} className="mb-2" />
           <span className="font-bold">Review Queue (15)</span>

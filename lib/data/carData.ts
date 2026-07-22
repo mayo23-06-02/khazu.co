@@ -3438,6 +3438,13 @@ export const cars: ApifyListing[] = [
         ]
       },
       "description": "2025 Mahindra Pik Up 2.2 mHAWK S6 Refresh single cab in white, ideal for work or fleet use. Powered by a 2.2l turbo diesel i4 producing 103 kW and 320 Nm, it delivers strong low down torque and an average of 7.7 l/100 km from an 80 litre tank, giving an estimated range of around 1 039 km. Robust construction, rear wheel drive dynamics and a full franchise service history make it a dependable choice for daily hauling and long distance use.\nInside, the S6 spec focuses on comfort and practicality with supportive seating, air conditioning, power steering, electric windows and a modern infotainment unit with Bluetooth connectivity. Safety and convenience features typically include ABS, airbags and central locking for everyday peace of mind. Balance your running costs and capability with remaining factory warranty coverage up to 150 000 km for added ownership security.",
+      "listingDealer": {
+        "name": "Khazu Partner",
+        "rating": {
+          "score": 4.0,
+          "ratingCount": 0
+        }
+      },
       "listingSellerInformation": {
         "sellerSuburbName": "Walmer Heights"
       },

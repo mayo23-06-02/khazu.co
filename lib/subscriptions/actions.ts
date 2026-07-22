@@ -238,7 +238,7 @@ export async function checkoutSubscription(input: {
         label: addon.name,
         price_szl: addon.priceSzl,
         duration_days: addon.durationDays,
-        status: paymentStatus === "failed" ? "failed" : "active",
+        status: "active",
         starts_at: now.toISOString(),
         ends_at: sEnd.toISOString(),
         momo_msisdn: msisdn || null,

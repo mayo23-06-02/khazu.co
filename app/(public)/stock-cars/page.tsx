@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Container,
@@ -16,6 +16,8 @@ import {
   Badge,
 } from "@/components/ui";
 import { cars } from "@/lib/data/carData";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import {
   MdFilterList,
   MdSearch,
@@ -25,7 +27,70 @@ import {
   MdRefresh,
 } from "react-icons/md";
 
+function toCarCardData(raw: (typeof cars)[number]) {
+  const header = raw.vehicle_data.header;
+  const parts = header.registrationYearMakeModel.split(" ");
+  const year = parseInt(parts[0], 10) || new Date().getFullYear();
+  const make = parts[1] || "Unknown";
+  const model = header.variant || "Unknown";
+  const price = parseInt(header.listingPrice.replace(/\D/g, ""), 10) || 0;
+  const mileage = parseInt(
+    raw.vehicle_data.summaryIcons
+      .find((i) => i.text.toLowerCase().includes("km"))
+      ?.text.replace(/\D/g, "") || "0",
+    10,
+  );
+  const fuel =
+    raw.vehicle_data.summaryIcons.find((i) =>
+      ["Diesel", "Petrol", "Electric", "Hybrid"].includes(i.text),
+    )?.text || "Unknown";
+  const transmission =
+    raw.vehicle_data.summaryIcons.find((i) =>
+      ["Manual", "Automatic"].includes(i.text),
+    )?.text || "Unknown";
+  const bodyType =
+    raw.vehicle_data.additionalInformation.find(
+      (i) =>
+        i &&
+        ["Single cab", "Double cab", "SUV", "Hatchback", "Sedan", "Panel van"].includes(
+          i.text,
+        ),
+    )?.text || "Unknown";
+  const images =
+    raw.vehicle_data.gallery.galleryImages?.map((g) => g.imageUrl).filter(Boolean) ??
+    [];
+
+  return {
+    id: header.listingId.toString(),
+    make,
+    model,
+    year,
+    price,
+    mileage,
+    fuel,
+    transmission,
+    bodyType,
+    location:
+      raw.vehicle_data.listingSellerInformation?.sellerSuburbName || "Eswatini",
+    images,
+    image: images[0] || "",
+    sellerType: "dealer" as const,
+    valueScore: 85,
+    conditionScore: 90,
+    dealRating: "Good" as const,
+    marketRank: 1,
+  };
+}
+
 export default function ListingPage() {
+  return (
+    <Suspense fallback={null}>
+      <ListingPageContent />
+    </Suspense>
+  );
+}
+
+function ListingPageContent() {
   const searchParams = useSearchParams();
   const initialMake = searchParams.get("make") || "All";
 
@@ -41,17 +106,19 @@ export default function ListingPage() {
     }
   }, [searchParams]);
 
-  const makes = ["All", ...Array.from(new Set(cars.map((c) => c.make)))];
+  const carCards = useMemo(() => cars.map(toCarCardData), []);
+
+  const makes = ["All", ...Array.from(new Set(carCards.map((c) => c.make)))];
 
   const filteredCars = useMemo(() => {
-    return cars.filter((car) => {
+    return carCards.filter((car) => {
       const matchesSearch =
         car.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
         car.model.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesMake = selectedMake === "All" || car.make === selectedMake;
       return matchesSearch && matchesMake;
     });
-  }, [searchQuery, selectedMake]);
+  }, [carCards, searchQuery, selectedMake]);
 
   return (
     <div className="min-h-screen bg-cream/20">
@@ -232,7 +299,7 @@ export default function ListingPage() {
                   <span>Price: Low to High</span>
                 </div>
                 <Button
-                  variant="dark"
+                  variant="primary"
                   size="sm"
                   className="hidden sm:flex items-center gap-2"
                 >

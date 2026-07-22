@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getDashboardPath, toDbRole } from "@/lib/auth/roles";
 import type { DbRole } from "@/lib/auth/roles";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadMedia } from "@/lib/supabase/media";
 
 export type ActionResult = {
   success: boolean;
@@ -58,13 +58,22 @@ async function uploadBusinessDocuments(
   return urls;
 }
 
-async function uploadAvatar(formData: FormData): Promise<string | null> {
+async function uploadAvatar(
+  userId: string,
+  formData: FormData,
+): Promise<string | null> {
   const file = formData.get("avatar");
   if (!(file instanceof File) || file.size === 0) return null;
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const result = await uploadImage(buffer, "khazu/avatars");
-  return result.secure_url as string;
+  const { url } = await uploadMedia(
+    buffer,
+    "avatars",
+    userId,
+    file.name,
+    file.type || "application/octet-stream",
+  );
+  return url;
 }
 
 export type ContactAvailability = {
@@ -196,7 +205,7 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
 
     let avatarUrl: string | null = null;
     try {
-      avatarUrl = await uploadAvatar(formData);
+      avatarUrl = await uploadAvatar(userId, formData);
     } catch (avatarErr) {
       console.warn("Avatar/logo upload skipped:", avatarErr);
     }

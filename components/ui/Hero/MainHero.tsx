@@ -344,7 +344,7 @@ export function MainHero({ className = "" }: MainHeroProps) {
                     priority
                   />
                   <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 bg-white/95 backdrop-blur rounded-lg px-2 py-1 sm:px-4 sm:py-2 shadow-lg">
-                    <Flex gap="1" items="center">
+                    <Flex gap="sm" items="center">
                       <FaCar className="text-[#ff4c29] text-xs sm:text-sm" />
                       <span className="text-xs sm:text-sm font-medium text-gray-800">
                         Over 275k cars

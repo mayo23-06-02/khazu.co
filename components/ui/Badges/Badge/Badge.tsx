@@ -5,13 +5,15 @@ import { twMerge } from "tailwind-merge";
 
 interface BadgeProps {
   children: ReactNode;
-  variant?: "primary" | "secondary" | "success" | "danger" | "warning";
+  variant?: "primary" | "secondary" | "success" | "danger" | "warning" | "info";
+  size?: "xs" | "sm";
   className?: string;
 }
 
 export function Badge({
   children,
   variant = "primary",
+  size = "sm",
   className = "",
 }: BadgeProps) {
   const variants = {
@@ -20,13 +22,19 @@ export function Badge({
     success: "bg-green-100 text-green-800",
     danger: "bg-danger/10 text-danger",
     warning: "bg-orange-100 text-orange-800",
+    info: "bg-blue-100 text-blue-800",
+  };
+  const sizes = {
+    xs: "px-2 py-0.5 text-[10px]",
+    sm: "px-2.5 py-0.5 text-xs",
   };
   return (
     <span
       className={twMerge(
         clsx(
-          "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+          "inline-flex items-center rounded-full font-medium",
           variants[variant],
+          sizes[size],
           className,
         ),
       )}

@@ -7,6 +7,7 @@
 3. Run [`personal_dashboard.sql`](./personal_dashboard.sql) — `listings`, events, daily stats, boosts
 4. Confirm **Table Editor**: `profiles`, `listings`, `listing_events`, `listing_daily_stats`, `listing_boosts`
 5. Confirm bucket: **Storage** → `business-documents`
+6. Run [`media_storage.sql`](./media_storage.sql) and confirm buckets **Storage** → `avatars`, `listing-images`
 
 ### Already applied old schema? Fix profiles RLS recursion
 
@@ -29,6 +30,10 @@ Run [`listing_price_edit.sql`](./listing_price_edit.sql) for `previous_price` on
 ### Trial + reminders
 
 Run [`trial_and_reminders.sql`](./trial_and_reminders.sql) for `trial_ends_at`, `scheduled_plan_id`, `scheduled_charge_at` on profiles.
+
+### Media storage (avatars + listing images)
+
+Run [`media_storage.sql`](./media_storage.sql) — creates public `avatars` and `listing-images` buckets with owner-scoped write policies (`{user_id}/...`), replacing Cloudinary. Uploads go through `lib/supabase/media.ts` (used by `app/api/upload/route.ts` for listing photos and `lib/auth/actions.ts` for avatars during registration).
 
 ### Subscriptions & MoMo (billing)
 

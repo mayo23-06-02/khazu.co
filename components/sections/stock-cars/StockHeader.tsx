@@ -39,7 +39,7 @@ export function StockHeader({
               </Body>
             </Flex>
           </div>
-          <Flex gap="2" items="center" className="mt-2 sm:mt-0">
+          <Flex gap="sm" items="center" className="mt-2 sm:mt-0">
             <Button
               variant="outline"
               size="sm"
