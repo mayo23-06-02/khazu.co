@@ -101,7 +101,7 @@ export function DocSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-[calc(100vh-80px)] sticky top-20 overflow-y-auto pr-6 pb-10">
+    <aside className="w-64 h-[calc(100dvh-80px)] sticky top-20 overflow-y-auto pr-6 pb-10">
       <nav className="space-y-8">
         {categories.map((cat) => (
           <div key={cat.name}>

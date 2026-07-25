@@ -110,7 +110,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream/10 pb-20">
+    <div className="min-h-dvh bg-cream/10 pb-20">
       <Navbar
         logo={
           <h1 className="text-2xl font-display font-bold text-gray-800">

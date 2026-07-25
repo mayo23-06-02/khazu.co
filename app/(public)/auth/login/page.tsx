@@ -47,7 +47,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen w-full flex relative overflow-hidden">
+    <div className="min-h-dvh w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="/toyota-hilux-legend.png"
@@ -56,7 +56,7 @@ function LoginForm() {
           className="object-cover object-center"
           priority
         />
-        <div className="absolute w-screen h-screen inset-0 bg-gradient-to-br from-black/65 via-black/25 to-[#a72346]/45" />
+        <div className="absolute w-screen h-dvh inset-0 bg-gradient-to-br from-black/65 via-black/25 to-[#a72346]/45" />
       </div>
 
       {/* Left: full-bleed Toyota Hilux Legend ad */}
@@ -213,7 +213,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="min-h-dvh flex items-center justify-center bg-gray-50">
           <Body className="animate-pulse text-gray-400 font-bold">
             Loading…
           </Body>

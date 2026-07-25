@@ -119,7 +119,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         "fixed inset-y-0 left-0 w-[min(18rem,85vw)] h-[100dvh] transform transition-transform duration-300 ease-out",
         mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full",
         // Desktop: static column
-        "lg:static lg:translate-x-0 lg:w-64 lg:h-screen lg:sticky lg:top-0 lg:shadow-none lg:shrink-0",
+        "lg:static lg:translate-x-0 lg:w-64 lg:h-dvh lg:sticky lg:top-0 lg:shadow-none lg:shrink-0",
       )}
     >
       <div className="p-4 sm:p-6 flex items-start justify-between gap-2">

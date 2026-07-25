@@ -15,7 +15,7 @@ export default function ComponentDocPage() {
 
   if (!doc) {
     return (
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-dvh bg-cream">
         <Navbar sticky logo={<Logo />} links={[{ label: 'Documentation', href: '/docs' }]} />
         <Container className="py-20 text-center">
           <Heading1>Component Not Found</Heading1>
@@ -27,7 +27,7 @@ export default function ComponentDocPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-dvh bg-cream">
       <Navbar 
         sticky
         logo={<Logo />}

@@ -21,7 +21,7 @@ import { MdFlashOn, MdLayers, MdCheckBoxOutlineBlank } from "react-icons/md";
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-dvh bg-cream">
       <Navbar
         sticky
         logo={<Logo />}

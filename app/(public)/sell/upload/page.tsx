@@ -646,10 +646,10 @@ function SellCarContent() {
   ];
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#e6e6e6]">
+    <div className="min-h-dvh w-full overflow-x-hidden bg-[#e6e6e6]">
       {/* Header */}
 
-      <div className="py-4 sm:py-8 min-h-screen sm:h-screen flex justify-between flex-col items-center bg-white w-full max-w-6xl mx-auto px-0 sm:px-2">
+      <div className="py-4 sm:py-8 min-h-dvh sm:h-dvh flex justify-between flex-col items-center bg-white w-full max-w-6xl mx-auto px-0 sm:px-2">
         {/* Toast notifications */}
         <div className="fixed top-4 right-4 z-50 space-y-2">
           {toast && (

@@ -27,7 +27,7 @@ export default async function DealersPage() {
   return (
     <>
       <PublicHeader />
-      <main className="bg-cream/30 min-h-screen py-8">
+      <main className="bg-cream/30 min-h-dvh py-8">
         <Container>
           <div className="mb-8">
             <Heading1 className="text-dark">Dealerships</Heading1>

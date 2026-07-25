@@ -25,7 +25,7 @@ export default async function KhazuDealsPage() {
   return (
     <>
       <PublicHeader />
-      <main className="bg-cream/30 min-h-screen py-8">
+      <main className="bg-cream/30 min-h-dvh py-8">
         <Container>
           <div className="flex items-center gap-4 mb-8">
             <Heading1 className="text-dark">Best Deals on Khazu</Heading1>

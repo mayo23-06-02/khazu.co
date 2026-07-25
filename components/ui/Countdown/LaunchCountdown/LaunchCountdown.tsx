@@ -95,7 +95,7 @@ export function LaunchCountdown({ className = "" }: LaunchCountdownProps) {
       id="launch-countdown"
       className={twMerge(
         clsx(
-          "relative isolate flex min-h-screen w-full flex-col justify-center overflow-hidden bg-[#a72346] py-20 md:py-16",
+          "relative isolate flex min-h-dvh w-full flex-col justify-center overflow-hidden bg-[#a72346] py-20 md:py-16",
           className,
         ),
       )}

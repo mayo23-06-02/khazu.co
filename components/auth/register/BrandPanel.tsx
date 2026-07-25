@@ -4,7 +4,7 @@ import { Logo } from "@/components/ui";
 
 export function BrandPanel() {
   return (
-    <div className="hidden lg:flex lg:h-screen flex-col w-full justify-center    relative z-10 p-12">
+    <div className="hidden lg:flex lg:h-dvh flex-col w-full justify-center    relative z-10 p-12">
       <div>
         <h2 className="text-4xl font-black text-white leading-tight mb-4">
           Sell Smarter.

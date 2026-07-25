@@ -129,7 +129,7 @@ export function CheckoutDrawer({
       position="right"
       className="w-full max-w-md"
     >
-      <div className="flex flex-col h-[calc(100vh-4rem)] -mt-2">
+      <div className="flex flex-col h-[calc(100dvh-4rem)] -mt-2">
         <div className="px-1 pb-4 border-b border-gray-100">
           <div className="flex items-center gap-2 text-[#CD2C58] text-xs font-bold uppercase tracking-wider mb-2">
             <FaShieldAlt size={12} />{" "}

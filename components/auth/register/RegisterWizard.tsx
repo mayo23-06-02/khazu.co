@@ -115,7 +115,7 @@ export function RegisterWizard() {
   };
 
   return (
-    <div className="min-h-screen w-full flex relative overflow-hidden">
+    <div className="min-h-dvh w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
        
         <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-[#a72346]/10" />
@@ -124,7 +124,7 @@ export function RegisterWizard() {
       {/* Form panel */}
       <div className="relative z-10 w-full flex items-center justify-start  lg:p-0">
         <div className="w-full lg:max-w-4xl ">
-          <div className="bg-white lg:px-16 backdrop-blur-xl w-full h-screen overflow-hidden flex flex-col">
+          <div className="bg-white lg:px-16 backdrop-blur-xl w-full h-dvh overflow-hidden flex flex-col">
             <div className="px-6 pt-6 lg:px-8 lg:pt-8">
               <Logo />
             </div>

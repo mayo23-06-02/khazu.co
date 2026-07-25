@@ -14,7 +14,7 @@ export function VehicleMobileBar({
   onEnquireClick: () => void;
 }) {
   return (
-    <div className="fixed bottom-0 inset-x-0 lg:hidden bg-white border-t border-gray-200 p-3 z-50 flex gap-2 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+    <div className="fixed bottom-0 inset-x-0 lg:hidden bg-white border-t border-gray-200 px-3 pt-3 safe-area-pb z-50 flex gap-2 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
       <div className="flex-1">
         <p className="text-[10px] text-gray-400 font-bold uppercase">Price</p>
         <p className="font-black text-gray-900">{formatSzl(price)}</p>

@@ -26,7 +26,7 @@ export function OffCanvas({ isOpen, onClose, children, className = '', position 
           className,
         )}
       >
-        <div className="flex justify-end p-4 sticky top-0 bg-white z-10">
+        <div className="flex justify-end px-4 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] sticky top-0 bg-white z-10">
           <button
             type="button"
             onClick={onClose}
@@ -36,7 +36,7 @@ export function OffCanvas({ isOpen, onClose, children, className = '', position 
             <MdClose size={20} />
           </button>
         </div>
-        <div className="px-4 pb-6">{children}</div>
+        <div className="px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">{children}</div>
       </div>
     </>
   )

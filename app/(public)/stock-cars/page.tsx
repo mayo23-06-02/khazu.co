@@ -121,7 +121,7 @@ function ListingPageContent() {
   }, [carCards, searchQuery, selectedMake]);
 
   return (
-    <div className="min-h-screen bg-cream/20">
+    <div className="min-h-dvh bg-cream/20">
       <Navbar
         logo={
           <h1 className="text-2xl font-display font-bold text-gray-800">

@@ -75,7 +75,7 @@ export function VehicleDetailClient({
   });
 
   return (
-    <div className="bg-[#f7f6f4] min-h-screen pb-24">
+    <div className="bg-[#f7f6f4] min-h-dvh pb-24">
       <VehicleHeader
         listing={listing}
         title={title}
