@@ -129,8 +129,8 @@ export function RegisterWizard() {
 
       {/* Form panel */}
       <div className="relative z-10 w-full flex items-center justify-start  lg:p-0">
-        <div className="w-full lg:max-w-lg">
-          <div className="bg-white backdrop-blur-xl w-full h-screen overflow-hidden flex flex-col">
+        <div className="w-full lg:max-w-2xl ">
+          <div className="bg-white lg:pl-16 backdrop-blur-xl w-full h-screen overflow-hidden flex flex-col">
             {!submitResult && (
               <div className="px-6 lg:px-8 pt-8 flex-shrink-0">
                 <StepProgress

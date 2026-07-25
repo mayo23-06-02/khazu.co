@@ -59,37 +59,61 @@ function LoginForm() {
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/65 to-[#a72346]/35" />
       </div>
 
-      <div className="hidden lg:flex flex-col justify-between w-1/2 relative z-10 p-12">
-        <Logo variant="light" />
-        <div>
-          <h2 className="text-4xl font-black text-white leading-tight mb-4">
-            Welcome Back.
-            <br />
-            <span className="text-[#f87171]">Drive More Sales.</span>
-          </h2>
-          <p className="text-white/70 text-base max-w-xs">
-            Sign in to manage your listings, view analytics, and connect with
-            buyers across Eswatini.
+      {/* Left: full-bleed Toyota Hilux Legend ad */}
+      <div className="hidden lg:block w-1/2 relative z-10 overflow-hidden">
+        <Image
+          src="/toyota-hilux-legend.png"
+          alt="Toyota Hilux Legend"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Legibility gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/45" />
+
+        {/* Top brand row */}
+        <div className="absolute top-0 inset-x-0 p-10 flex items-center justify-between">
+          <Logo variant="light" />
+          <span className="text-white/70 text-[10px] font-bold uppercase tracking-[0.3em]">
+            Sponsored
+          </span>
+        </div>
+
+        {/* Bottom ad content */}
+        <div className="absolute bottom-0 inset-x-0 p-10">
+          <p className="text-[#f87171] text-xs font-bold uppercase tracking-[0.3em] mb-3">
+            New-Generation Hilux
           </p>
-          <div className="mt-8 space-y-3">
-            {[
-              "Manage all your listings in one place",
-              "Track views, likes & buyer inquiries",
-              "Boost listings to reach more buyers",
-            ].map((t) => (
-              <div
-                key={t}
-                className="flex items-center gap-3 text-white/80 text-sm font-medium"
-              >
-                <FaCheckCircle className="text-[#f87171] shrink-0" size={15} />
-                {t}
-              </div>
-            ))}
+          <h2 className="text-5xl font-black text-white leading-none mb-4">
+            HILUX <span className="text-white/85">LEGEND</span>
+          </h2>
+          <p className="text-white/70 text-sm leading-relaxed max-w-md mb-6">
+            Available exclusively with the 2.8-litre GD-6 engine and the option
+            of a mild hybrid that adds a stop-start function. An array of safety
+            and comfort features, and modern technology combine to make this
+            New-Generation Hilux perfect for any worksite, farm, home, and
+            anything in-between.
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 max-w-md">
+            <div className="rounded-lg bg-white px-4 py-3 border-b-2 border-[#a72346] shadow-xl">
+              <p className="text-[13px] font-black text-gray-900 leading-tight">
+                2.8 GD-6 4X4 LEGEND MHEV 6AT
+              </p>
+              <p className="text-gray-500 text-xs font-semibold mt-1">
+                From: R 999 900
+              </p>
+            </div>
+            <div className="rounded-lg bg-white/10 backdrop-blur px-4 py-3 border border-white/15">
+              <p className="text-[13px] font-black text-white leading-tight">
+                2.8 GD-6 RB LEGEND MHEV 6AT
+              </p>
+              <p className="text-white/60 text-xs font-semibold mt-1">
+                From: R 945 500
+              </p>
+            </div>
           </div>
         </div>
-        <p className="text-white/30 text-xs">
-          © {new Date().getFullYear()} Khazu. All rights reserved.
-        </p>
       </div>
 
       <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center p-6 py-10">

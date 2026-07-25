@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1933.68 345.56">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-1" x="0" y="0" width="1933.68" height="345.56" transform="translate(1933.68 345.56) rotate(-180)"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="1290.02" y1="317.81" x2="1290.02" y2="-456.03" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b52854"/>
+      <stop offset="1" stop-color="#cd2c58"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-3">
+      <path class="cls-2" d="M2452.97-456.03s-1495.75,1737.43-2325.9,5.57l2325.9-5.57Z"/>
+    </g>
+  </g>
+</svg>

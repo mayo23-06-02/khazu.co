@@ -190,7 +190,7 @@ export default function PricingPage() {
 
   return (
     <>
-      <PublicHeader />
+      
 
       {/* ─── Hero Section ─── */}
       <section className="bg-cream relative h-[600px] overflow-hidden flex items-center">

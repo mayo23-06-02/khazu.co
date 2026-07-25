@@ -37,7 +37,7 @@ export function Modal({
     <dialog
       ref={dialogRef}
       className="fixed inset-0 z-50 m-auto bg-white rounded-lg shadow-2xl backdrop:bg-dark/60 backdrop:backdrop-blur-sm animate-in fade-in zoom-in duration-200"
-      style={{ width: "25%", maxHeight: "95vh" }}
+      
       onCancel={onClose}
     >
       <div className={twMerge(clsx("p-0", sizes[size]))}>
