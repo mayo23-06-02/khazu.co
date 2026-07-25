@@ -34,6 +34,10 @@
   html {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
+    /* Match body so the notch / status-bar area blends seamlessly when the
+       page renders edge-to-edge (viewport-fit=cover). */
+    background-color: rgb(248, 247, 247);
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -43,6 +47,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Fill the visible viewport on mobile; dvh tracks the collapsing URL bar
+       so there is never a gap or extra scroll like static 100vh causes. */
     min-height: 100dvh;
   }
   
@@ -58,9 +64,27 @@
   }
 }
 
-/* Safe areas (notched phones) */
+/* Safe areas (notched phones) — used with viewport-fit=cover so edge-to-edge
+   content is never hidden under the status bar, home indicator, or rounded
+   corners. Apply to fixed/sticky bars and full-bleed page wrappers. */
 .safe-area-pb {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-pt {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.safe-area-inset {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.safe-area-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 @layer utilities {
