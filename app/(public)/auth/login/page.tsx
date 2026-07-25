@@ -50,44 +50,36 @@ function LoginForm() {
     <div className="min-h-screen w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/sell-bg.jpg"
+          src="/toyota-hilux-legend.png"
           alt="Khazu background"
           fill
           className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/65 to-[#a72346]/35" />
+        <div className="absolute w-screen h-screen inset-0 bg-gradient-to-br from-black/65 via-black/25 to-[#a72346]/45" />
       </div>
 
       {/* Left: full-bleed Toyota Hilux Legend ad */}
-      <div className="hidden lg:block w-1/2 relative z-10 overflow-hidden">
-        <Image
-          src="/toyota-hilux-legend.png"
-          alt="Toyota Hilux Legend"
-          fill
-          className="object-cover object-center"
-          priority
-        />
-        {/* Legibility gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/45" />
-
+      <div className="hidden lg:block w-full relative z-10 overflow-hidden lg:ml-14">
+      
+        
         {/* Top brand row */}
         <div className="absolute top-0 inset-x-0 p-10 flex items-center justify-between">
-          <Logo variant="light" />
+         
           <span className="text-white/70 text-[10px] font-bold uppercase tracking-[0.3em]">
             Sponsored
           </span>
         </div>
 
         {/* Bottom ad content */}
-        <div className="absolute bottom-0 inset-x-0 p-10">
+        <div className="absolute bottom-0 lg:mb-12 inset-x-0 p-10">
           <p className="text-[#f87171] text-xs font-bold uppercase tracking-[0.3em] mb-3">
             New-Generation Hilux
           </p>
           <h2 className="text-5xl font-black text-white leading-none mb-4">
             HILUX <span className="text-white/85">LEGEND</span>
           </h2>
-          <p className="text-white/70 text-sm leading-relaxed max-w-md mb-6">
+          <p className="text-white/70 text- leading-6 max-w-md mb-6">
             Available exclusively with the 2.8-litre GD-6 engine and the option
             of a mild hybrid that adds a stop-start function. An array of safety
             and comfort features, and modern technology combine to make this
@@ -96,7 +88,7 @@ function LoginForm() {
           </p>
 
           <div className="grid grid-cols-2 gap-3 max-w-md">
-            <div className="rounded-lg bg-white px-4 py-3 border-b-2 border-[#a72346] shadow-xl">
+            <div className="rounded-md bg-white px-4 py-3 border-b-2 border-[#a72346] shadow-xl">
               <p className="text-[13px] font-black text-gray-900 leading-tight">
                 2.8 GD-6 4X4 LEGEND MHEV 6AT
               </p>
@@ -104,7 +96,7 @@ function LoginForm() {
                 From: R 999 900
               </p>
             </div>
-            <div className="rounded-lg bg-white/10 backdrop-blur px-4 py-3 border border-white/15">
+            <div className="rounded-md bg-black  px-4 py-3 border border-white/15">
               <p className="text-[13px] font-black text-white leading-tight">
                 2.8 GD-6 RB LEGEND MHEV 6AT
               </p>
@@ -124,7 +116,9 @@ function LoginForm() {
 
           <div className="bg-white/95 backdrop-blur-xl rounded-lg shadow-2xl overflow-hidden">
             <div className="h-1.5 bg-gradient-to-r from-[#a72346] to-[#e05573]" />
-
+            <div className="flex justify-center items-center pt-12">
+              <Logo />
+              </div>
             <div className="p-8">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-black text-gray-900">
@@ -184,7 +178,7 @@ function LoginForm() {
 
                 <Button
                   variant="primary"
-                  size="lg"
+                  size="md"
                   fullWidth
                   type="submit"
                   loading={isPending}
@@ -194,24 +188,7 @@ function LoginForm() {
                 </Button>
               </form>
 
-              {/* OAuth placeholder */}
-              <div className="mt-6">
-                <div className="relative flex items-center justify-center my-4">
-                  <div className="absolute inset-x-0 h-px bg-gray-100" />
-                  <span className="relative bg-white px-3 text-[10px] font-bold uppercase tracking-wider text-gray-300">
-                    Or continue with
-                  </span>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  fullWidth
-                  disabled
-                  className="opacity-60 cursor-not-allowed"
-                >
-                  Google (coming soon)
-                </Button>
-              </div>
+            
             </div>
 
             <div className="bg-gray-50 border-t border-gray-100 px-8 py-4 text-center">

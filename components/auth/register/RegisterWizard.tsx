@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
-import { Body, StepProgress } from "@/components/ui";
+import { Body, Logo, StepProgress } from "@/components/ui";
 import { checkContactAvailability, registerUser } from "@/lib/auth/actions";
 import { BrandPanel } from "./BrandPanel";
 import { buildRegisterFormData } from "./buildFormData";
@@ -117,20 +117,17 @@ export function RegisterWizard() {
   return (
     <div className="min-h-screen w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/sell-bg.jpg"
-          alt=""
-          fill
-          className="object-cover object-center"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/60 to-[#a72346]/40" />
+       
+        <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-[#a72346]/10" />
       </div>
 
       {/* Form panel */}
       <div className="relative z-10 w-full flex items-center justify-start  lg:p-0">
-        <div className="w-full lg:max-w-2xl ">
-          <div className="bg-white lg:pl-16 backdrop-blur-xl w-full h-screen overflow-hidden flex flex-col">
+        <div className="w-full lg:max-w-4xl ">
+          <div className="bg-white lg:px-16 backdrop-blur-xl w-full h-screen overflow-hidden flex flex-col">
+            <div className="px-6 pt-6 lg:px-8 lg:pt-8">
+              <Logo />
+            </div>
             {!submitResult && (
               <div className="px-6 lg:px-8 pt-8 flex-shrink-0">
                 <StepProgress
@@ -211,7 +208,7 @@ export function RegisterWizard() {
         </div>
       </div>
 
-      <BrandPanel />
+      
     </div>
   );
 }
