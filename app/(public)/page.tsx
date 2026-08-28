@@ -1,11 +1,5 @@
 // app/page.tsx
-import {
-  PublicHeader,
-  PublicFooter,
-  SellYourCarAd,
-  LaunchCountdown,
-  LaunchAdBanners,
-} from "@/components/ui";
+import { PublicHeader, PublicFooter, SellYourCarAd } from "@/components/ui";
 import { MainHero } from "@/components/ui/Hero/MainHero";
 import { BrowseByManufacturer } from "@/components/sections/BrowseByManufacturer";
 import { BrowseByBodyType } from "@/components/sections/BrowseByBodyType";
@@ -21,29 +15,28 @@ export default async function LandingPage() {
 
   return (
     <>
-      {/* <PublicHeader /> */}
+      <PublicHeader />
 
-      {/* <MainHero /> */}
+      <MainHero />
 
-      {/* ─── Launch Countdown + Ads ─── */}
-      <LaunchCountdown />
+      <SellYourCarAd />
 
-  {/* <SellYourCarAd /> */}
-  {/* ─── Browse by Body Type ─── */}
-  {/* <BrowseByBodyType /> */}
-  {/* ─── Recent Listings ─── */}
-  {/* <RecentListings sponsoredListings={sponsoredListings} /> */}
+      {/* ─── Browse by Body Type ─── */}
+      <BrowseByBodyType />
 
-  {/* ─── Browse by Car Manufacturer ─── */}
-  {/* <BrowseByManufacturer /> */}
+      {/* ─── Recent Listings ─── */}
+      <RecentListings sponsoredListings={sponsoredListings} />
 
-  {/* ─── Popular Used Car Models ─── */}
-  {/* <PopularModels /> */}
+      {/* ─── Browse by Car Manufacturer ─── */}
+      <BrowseByManufacturer />
 
-  {/* ─── FAQ Section ─── */}
-  {/* <FaqSection /> */}
+      {/* ─── Popular Used Car Models ─── */}
+      <PopularModels />
 
-  {/* <PublicFooter /> */}
+      {/* ─── FAQ Section ─── */}
+      <FaqSection />
+
+      <PublicFooter />
     </>
   );
 }
