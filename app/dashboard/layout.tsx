@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeRole } from "@/lib/auth/roles";
 import { DashboardShell } from "@/components/khazu/DashboardShell";
+
+// Every dashboard route is auth-gated private data — keep it out of search
+// results even if a URL leaks into a crawler's queue.
+export const metadata: Metadata = {
+  title: "Dashboard",
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardLayout({
   children,

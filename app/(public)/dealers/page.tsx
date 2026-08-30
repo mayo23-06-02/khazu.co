@@ -13,6 +13,21 @@ import {
   PublicFooter,
 } from "@/components/ui";
 import { getDealerDirectory } from "@/lib/marketplace/dealers";
+import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo/site";
+
+export const metadata: Metadata = {
+  title: "Car Dealers in Eswatini",
+  description:
+    "Find registered car dealerships across Eswatini on Khazu. Browse dealer profiles, current stock and contact details.",
+  alternates: { canonical: absoluteUrl("/dealers") },
+  openGraph: {
+    title: "Car Dealers in Eswatini | Khazu",
+    description:
+      "Find registered car dealerships across Eswatini. Browse dealer profiles, current stock and contact details.",
+    url: absoluteUrl("/dealers"),
+  },
+};
 
 export const dynamic = "force-dynamic";
 

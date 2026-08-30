@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Outfit } from "next/font/google";
 import "./globals.css";
+import { siteDescription, siteName, siteUrl } from "@/lib/seo/site";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -15,8 +16,59 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Khazu Design System",
-  description: "A premium UI component library for car marketplaces.",
+  // Resolves every relative canonical/OG URL below against the real domain.
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${siteName} — Buy and Sell Cars in Eswatini`,
+    // Pages set a bare title; the suffix is appended here so it stays consistent.
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  applicationName: siteName,
+  keywords: [
+    "cars for sale Eswatini",
+    "used cars Eswatini",
+    "buy car Eswatini",
+    "sell my car Eswatini",
+    "car dealers Eswatini",
+    "Mbabane cars",
+    "Manzini cars",
+    "Khazu",
+  ],
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_SZ",
+    url: siteUrl,
+    siteName,
+    title: `${siteName} — Buy and Sell Cars in Eswatini`,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteName} — Buy and Sell Cars in Eswatini`,
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  formatDetection: {
+    // Stops iOS Safari from restyling prices and reg numbers as phone links.
+    telephone: false,
+  },
 };
 
 // Render edge-to-edge on notched phones (iOS Safari, Android Chrome):

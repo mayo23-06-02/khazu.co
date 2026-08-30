@@ -7,6 +7,7 @@ import { RecentListings } from "@/components/sections/RecentListings";
 import { PopularModels } from "@/components/sections/PopularModels";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { getSponsoredDealerListings } from "@/lib/marketplace/listings";
+import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonLd";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,8 @@ export default async function LandingPage() {
 
   return (
     <>
+      <JsonLd data={organizationJsonLd()} />
+
       <PublicHeader />
 
       <MainHero />

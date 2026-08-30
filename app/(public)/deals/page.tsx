@@ -12,6 +12,21 @@ import {
 import { KhazuListingCard } from "@/components/khazu/KhazuListingCard";
 import { getActiveListings } from "@/lib/marketplace/listings";
 import { toApifyCardListing } from "@/lib/marketplace/toApifyCard";
+import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo/site";
+
+export const metadata: Metadata = {
+  title: "Car Deals in Eswatini",
+  description:
+    "The latest car deals on Khazu — featured and recently listed vehicles from verified dealers and private sellers across Eswatini.",
+  alternates: { canonical: absoluteUrl("/deals") },
+  openGraph: {
+    title: "Car Deals in Eswatini | Khazu",
+    description:
+      "Featured and recently listed vehicles from verified dealers and private sellers across Eswatini.",
+    url: absoluteUrl("/deals"),
+  },
+};
 
 export const dynamic = "force-dynamic";
 
