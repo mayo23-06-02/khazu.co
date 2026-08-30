@@ -5,7 +5,7 @@
  */
 
 export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://khazu.co"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://khazu.co.sz"
 ).replace(/\/$/, "");
 
 export const siteName = "Khazu";
