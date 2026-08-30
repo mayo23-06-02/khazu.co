@@ -3,16 +3,25 @@ import { PublicHeader, PublicFooter, SellYourCarAd } from "@/components/ui";
 import { MainHero } from "@/components/ui/Hero/MainHero";
 import { BrowseByManufacturer } from "@/components/sections/BrowseByManufacturer";
 import { BrowseByBodyType } from "@/components/sections/BrowseByBodyType";
-import { RecentListings } from "@/components/sections/RecentListings";
+import { VehicleShowcase } from "@/components/sections/VehicleShowcase";
 import { PopularModels } from "@/components/sections/PopularModels";
 import { FaqSection } from "@/components/sections/FaqSection";
-import { getSponsoredDealerListings } from "@/lib/marketplace/listings";
+import {
+  getRecentListings,
+  getTopRatedListings,
+  getTrendingListings,
+} from "@/lib/marketplace/listings";
 import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonLd";
 
 export const dynamic = "force-dynamic";
 
 export default async function LandingPage() {
-  const sponsoredListings = await getSponsoredDealerListings();
+  const [recentListings, topRatedListings, trendingListings] =
+    await Promise.all([
+      getRecentListings(),
+      getTopRatedListings(),
+      getTrendingListings(),
+    ]);
 
   return (
     <>
@@ -27,8 +36,12 @@ export default async function LandingPage() {
       {/* ─── Browse by Body Type ─── */}
       <BrowseByBodyType />
 
-      {/* ─── Recent Listings ─── */}
-      <RecentListings sponsoredListings={sponsoredListings} />
+      {/* ─── Recently Added / Top Rated / Trending ─── */}
+      <VehicleShowcase
+        recent={recentListings}
+        topRated={topRatedListings}
+        trending={trendingListings}
+      />
 
       {/* ─── Browse by Car Manufacturer ─── */}
       <BrowseByManufacturer />

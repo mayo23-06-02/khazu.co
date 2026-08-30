@@ -85,6 +85,99 @@ export async function getSponsoredDealerListings(
   }
 }
 
+export async function getRecentListings(
+  limit = 12,
+): Promise<MarketplaceListing[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("listings")
+      .select(LISTING_SELECT)
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("getRecentListings:", error.message);
+      return [];
+    }
+
+    return (data ?? []).map((row) =>
+      normalizeRow(row as unknown as Record<string, unknown>),
+    );
+  } catch (e) {
+    console.error("getRecentListings failed:", e);
+    return [];
+  }
+}
+
+/**
+ * "Top rated" — there's no star-rating field on a listing, so this proxies
+ * with the most-liked active listings as the closest signal we track.
+ */
+export async function getTopRatedListings(
+  limit = 12,
+): Promise<MarketplaceListing[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("listings")
+      .select(LISTING_SELECT)
+      .eq("status", "active")
+      .order("likes_count", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("getTopRatedListings:", error.message);
+      return [];
+    }
+
+    return (data ?? []).map((row) =>
+      normalizeRow(row as unknown as Record<string, unknown>),
+    );
+  } catch (e) {
+    console.error("getTopRatedListings failed:", e);
+    return [];
+  }
+}
+
+/**
+ * "Trending" — most-viewed among listings posted in the last 30 days, so a
+ * popular but stale listing from months ago doesn't crowd out what's hot now.
+ */
+export async function getTrendingListings(
+  limit = 12,
+): Promise<MarketplaceListing[]> {
+  try {
+    const supabase = await createClient();
+    const since = new Date(
+      Date.now() - 30 * 24 * 60 * 60 * 1000,
+    ).toISOString();
+
+    const { data, error } = await supabase
+      .from("listings")
+      .select(LISTING_SELECT)
+      .eq("status", "active")
+      .gte("created_at", since)
+      .order("views_count", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("getTrendingListings:", error.message);
+      return [];
+    }
+
+    return (data ?? []).map((row) =>
+      normalizeRow(row as unknown as Record<string, unknown>),
+    );
+  } catch (e) {
+    console.error("getTrendingListings failed:", e);
+    return [];
+  }
+}
+
 export async function getListingById(
   id: string,
 ): Promise<MarketplaceListing | null> {

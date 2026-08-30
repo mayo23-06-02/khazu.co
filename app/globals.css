@@ -113,3 +113,14 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgb(59, 57, 57);
 }
+
+/* Referenced by ImageGallery/VehicleGallery/carousels but never defined —
+   scrollbars were rendering on every horizontal-scroll strip. */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
