@@ -12,18 +12,25 @@ import {
   getTopRatedListings,
   getTrendingListings,
 } from "@/lib/marketplace/listings";
+import { getDealerCount } from "@/lib/marketplace/dealers";
 import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonLd";
 
 export const dynamic = "force-dynamic";
 
 export default async function LandingPage() {
-  const [listingCount, recentListings, topRatedListings, trendingListings] =
-    await Promise.all([
-      getActiveListingsCount(),
-      getRecentListings(),
-      getTopRatedListings(),
-      getTrendingListings(),
-    ]);
+  const [
+    listingCount,
+    dealerCount,
+    recentListings,
+    topRatedListings,
+    trendingListings,
+  ] = await Promise.all([
+    getActiveListingsCount(),
+    getDealerCount(),
+    getRecentListings(),
+    getTopRatedListings(),
+    getTrendingListings(),
+  ]);
 
   return (
     <>
@@ -31,7 +38,7 @@ export default async function LandingPage() {
 
       <PublicHeader />
 
-      <MainHero listingCount={listingCount} />
+      <MainHero listingCount={listingCount} dealerCount={dealerCount} />
 
       <SellYourCarAd />
 

@@ -107,7 +107,6 @@ import {
   FaChevronRight,
   FaChevronDown,
   FaClock,
-  FaStar,
   FaShieldAlt,
   FaArrowRight,
   FaPhone,
@@ -124,13 +123,19 @@ import { useRouter } from "next/navigation";
 
 interface MainHeroProps {
   className?: string;
-  /** Real count of active listings — shown instead of a made-up figure. */
+  /** Real counts from the database — shown instead of made-up figures. */
   listingCount?: number;
+  dealerCount?: number;
 }
 
-export function MainHero({ className = "", listingCount = 0 }: MainHeroProps) {
+export function MainHero({
+  className = "",
+  listingCount = 0,
+  dealerCount = 0,
+}: MainHeroProps) {
   const formattedCount = new Intl.NumberFormat("en-SZ").format(listingCount);
   const carWord = listingCount === 1 ? "car" : "cars";
+  const dealerWord = dealerCount === 1 ? "dealer" : "dealers";
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [searchData, setSearchData] = useState({
@@ -228,7 +233,9 @@ export function MainHero({ className = "", listingCount = 0 }: MainHeroProps) {
                     Find used cars for sale
                   </h2>
                   <p className="text-gray-800/60 font-medium text-sm mt-0.5">
-                    From 500+ dealers nationwide
+                    {dealerCount > 0
+                      ? `From ${dealerCount} ${dealerWord} nationwide`
+                      : "From dealers and private sellers nationwide"}
                   </p>
                 </div>
 
@@ -312,26 +319,16 @@ export function MainHero({ className = "", listingCount = 0 }: MainHeroProps) {
                     Browse cars for sale
                   </Button>
                   <div className="mt-4 md:mt-6 border-t border-gray-50/20 pt-4 md:pt-5 flex flex-wrap items-center gap-3 md:gap-4">
-                    <div className="flex text-white gap-1">
-                      {[...Array(4)].map((_, i) => (
-                        <FaStar
-                          key={i}
-                          size={16}
-                          className="text-yellow-500 fill-current"
-                        />
-                      ))}
-                      <FaStar size={16} className="text-gray-200" />
-                    </div>
-                    <span className="text-gray-100 text-xs md:text-sm flex items-center gap-1">
-                      <FaStar
-                        className="text-green-600 fill-current"
-                        size={14}
-                      />
-                      1,914 reviews on{" "}
-                      <span className="text-green-500 font-bold">
-                        Trustpilot
-                      </span>
+                    <span className="text-gray-100 text-xs md:text-sm flex items-center gap-1.5">
+                      <FaCar className="text-primary" size={14} />
+                      {formattedCount} {carWord} listed
                     </span>
+                    {dealerCount > 0 && (
+                      <span className="text-gray-100 text-xs md:text-sm flex items-center gap-1.5">
+                        <FaShieldAlt className="text-primary" size={14} />
+                        {dealerCount} registered {dealerWord}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

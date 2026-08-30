@@ -60,3 +60,24 @@ export async function getDealerDirectory(): Promise<DealerDirectoryEntry[]> {
     return [];
   }
 }
+
+/** Count only — used for marketing copy ("From N dealers") instead of a made-up number. */
+export async function getDealerCount(): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count, error } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("is_dealer", true);
+
+    if (error) {
+      console.error("getDealerCount:", error.message);
+      return 0;
+    }
+
+    return count ?? 0;
+  } catch (e) {
+    console.error("getDealerCount failed:", e);
+    return 0;
+  }
+}
