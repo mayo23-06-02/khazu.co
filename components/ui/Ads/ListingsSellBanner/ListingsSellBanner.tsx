@@ -106,7 +106,7 @@ export function ListingsSellBanner({ className = "" }: { className?: string }) {
 
           <div className="flex-1 relative min-h-[140px] md:min-h-0 hidden sm:block">
             <Image
-              src="/sell.jfif"
+              src="/sell.jpg"
               alt="Sell your car at Khazu"
               fill
               className="object-cover"

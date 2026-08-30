@@ -124,9 +124,13 @@ import { useRouter } from "next/navigation";
 
 interface MainHeroProps {
   className?: string;
+  /** Real count of active listings — shown instead of a made-up figure. */
+  listingCount?: number;
 }
 
-export function MainHero({ className = "" }: MainHeroProps) {
+export function MainHero({ className = "", listingCount = 0 }: MainHeroProps) {
+  const formattedCount = new Intl.NumberFormat("en-SZ").format(listingCount);
+  const carWord = listingCount === 1 ? "car" : "cars";
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
   const [searchData, setSearchData] = useState({
@@ -271,7 +275,7 @@ export function MainHero({ className = "" }: MainHeroProps) {
                   className="text-white h-12 md:h-14 text-sm md:text-base"
                   onClick={handleSearch}
                 >
-                  Search 75,747 cars
+                  Search {formattedCount} {carWord}
                   <div className="w-8 h-8 md:w-10 md:h-10 ml-2 md:ml-4 rounded-full flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
                     <FaSearch size={14} />
                   </div>
@@ -347,7 +351,7 @@ export function MainHero({ className = "" }: MainHeroProps) {
                     <Flex gap="sm" items="center">
                       <FaCar className="text-[#ff4c29] text-xs sm:text-sm" />
                       <span className="text-xs sm:text-sm font-medium text-gray-800">
-                        Over 275k cars
+                        {formattedCount} {carWord} listed
                       </span>
                     </Flex>
                   </div>

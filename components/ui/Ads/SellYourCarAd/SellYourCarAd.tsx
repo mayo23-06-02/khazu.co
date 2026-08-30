@@ -89,7 +89,7 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
           {/* Right Image */}
           <div className="flex-1 relative min-h-[300px] md:min-h-0">
             <Image
-              src="/sell.jfif"
+              src="/sell.jpg"
               alt="Sell your car at Khazu"
               fill
               className="object-cover"

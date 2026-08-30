@@ -85,6 +85,27 @@ export async function getSponsoredDealerListings(
   }
 }
 
+/** Count only — used for marketing copy ("Search N cars") instead of a made-up number. */
+export async function getActiveListingsCount(): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count, error } = await supabase
+      .from("listings")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "active");
+
+    if (error) {
+      console.error("getActiveListingsCount:", error.message);
+      return 0;
+    }
+
+    return count ?? 0;
+  } catch (e) {
+    console.error("getActiveListingsCount failed:", e);
+    return 0;
+  }
+}
+
 export async function getRecentListings(
   limit = 12,
 ): Promise<MarketplaceListing[]> {

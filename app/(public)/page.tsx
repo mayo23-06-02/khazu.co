@@ -7,6 +7,7 @@ import { VehicleShowcase } from "@/components/sections/VehicleShowcase";
 import { PopularModels } from "@/components/sections/PopularModels";
 import { FaqSection } from "@/components/sections/FaqSection";
 import {
+  getActiveListingsCount,
   getRecentListings,
   getTopRatedListings,
   getTrendingListings,
@@ -16,8 +17,9 @@ import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonLd";
 export const dynamic = "force-dynamic";
 
 export default async function LandingPage() {
-  const [recentListings, topRatedListings, trendingListings] =
+  const [listingCount, recentListings, topRatedListings, trendingListings] =
     await Promise.all([
+      getActiveListingsCount(),
       getRecentListings(),
       getTopRatedListings(),
       getTrendingListings(),
@@ -29,7 +31,7 @@ export default async function LandingPage() {
 
       <PublicHeader />
 
-      <MainHero />
+      <MainHero listingCount={listingCount} />
 
       <SellYourCarAd />
 
