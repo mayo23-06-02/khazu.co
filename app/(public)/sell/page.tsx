@@ -245,7 +245,7 @@ export default function SellMyCarPage() {
             >
               <CardHeader>
                 <Heading3 className="text-dark">
-                  Claim your free 7 days
+                  Claim your free 45 days
                 </Heading3>
                 <p>No hidden fees. No obligation.</p>
               </CardHeader>

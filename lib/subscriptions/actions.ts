@@ -267,7 +267,7 @@ export async function checkoutSubscription(input: {
       subscriptionId: sub.id,
       paymentReference: paymentReference ?? undefined,
       message: isFree
-        ? "Free trial activated. You can list 1 car for 7 days."
+        ? "Free trial activated. You can list 1 car for 45 days."
         : `Payment successful. ${plan.name} is active until ${ends.toLocaleDateString()}. Check your phone for the MoMo confirmation.`,
     };
   } catch (err) {

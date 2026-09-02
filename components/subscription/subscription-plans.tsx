@@ -157,7 +157,7 @@ export function SubscriptionPlans({
             <p className="text-sm text-emerald-800/80">
               {trialActive
                 ? "Select any paid plan now — first MoMo charge happens after the trial ends. 1 listing included during trial."
-                : "7 days · 1 listing · no card required. Upgrade when you’re ready."}
+                : "45 days · 1 listing · no card required. Upgrade when you’re ready."}
             </p>
             {scheduledPlanId && scheduledChargeAt && (
               <p className="text-sm font-semibold text-emerald-900 mt-1">

@@ -250,7 +250,7 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
       };
     }
 
-    // Automatic 7-day free trial for every new account
+    // Automatic 45-day free trial for every new account
     try {
       const { ensureUserTrial } = await import("@/lib/subscriptions/trial");
       await ensureUserTrial(admin, userId, role === "dealer" ? "dealer" : "individual");

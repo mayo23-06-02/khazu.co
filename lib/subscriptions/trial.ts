@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { PlanRole } from "@/components/subscription/plans-data";
 
-export const TRIAL_DAYS = 7;
+export const TRIAL_DAYS = 45;
 export const TRIAL_LISTING_LIMIT = 1;
 
 export function computeTrialWindow(from = new Date()) {

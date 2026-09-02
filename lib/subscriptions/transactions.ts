@@ -16,6 +16,7 @@ import {
   momoValidatePayment,
   normalizeMomoMsisdn,
 } from "./momo";
+import { TRIAL_DAYS } from "./trial";
 
 export type TransactionResult = {
   success: boolean;
@@ -434,7 +435,7 @@ export async function validateTransaction(input: {
       finalStatus = "pending";
       const chargeDate = chargeAfter
         ? new Date(chargeAfter)
-        : new Date(Date.now() + 7 * 86400000);
+        : new Date(Date.now() + TRIAL_DAYS * 86400000);
       const paidEnds = new Date(chargeDate);
       paidEnds.setDate(paidEnds.getDate() + (sub.billing_period_days || 30));
 

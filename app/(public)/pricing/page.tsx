@@ -274,7 +274,7 @@ export default function PricingPage() {
                 muted
                 className="mt-4 text-gray-500 max-w-lg mx-auto font-medium"
               >
-                List your car for free for the first 7 days. After that,
+                List your car for free for the first 45 days. After that,
                 subscribe and boost to stay visible and sell faster.
               </Body>
             </div>
@@ -336,7 +336,7 @@ export default function PricingPage() {
                           size={14}
                         />
                         <span className="text-gray-600 font-medium">
-                          Free 7 days for new users
+                          Free 45 days for new users
                         </span>
                       </li>
                     </ul>
@@ -356,7 +356,7 @@ export default function PricingPage() {
             </div>
             <div className="mt-6 text-center text-xs text-gray-400">
               <p>
-                ✨ New users get 7 days of free boost on their first listing.
+                ✨ New users get 45 days of free boost on their first listing.
               </p>
             </div>
           </Container>
@@ -678,7 +678,7 @@ export default function PricingPage() {
                 id: "3",
                 title: "Is there a free trial for dealerships?",
                 content:
-                  "Yes, new dealerships can register for a 14-day free trial on the Basic plan to explore our lead management features and list up to 10 cars.",
+                  "Yes, new dealerships can register for a 45-day free trial on the Basic plan to explore our lead management features and list up to 10 cars.",
               },
               {
                 id: "4",
