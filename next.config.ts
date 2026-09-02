@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cfmkbytybjpwypsmldkw.supabase.co",
       },
+      {
+        // Legacy listing images predating the Cloudinary → Supabase Storage
+        // migration (see supabase/README.md) still reference this host.
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
   async redirects() {
