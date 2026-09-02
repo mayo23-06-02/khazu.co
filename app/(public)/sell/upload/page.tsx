@@ -37,8 +37,6 @@ import {
   FaCar,
   FaCogs,
 } from "react-icons/fa";
-import { ListingPaymentGate } from "@/components/sell/ListingPaymentGate";
-import type { ListingEntitlement } from "@/lib/subscriptions/entitlement";
 import {
   ToyotaIcon,
   VolkswagenIcon,
@@ -372,31 +370,13 @@ function SellCarContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<"personal" | "dealer">("personal");
   const [userName, setUserName] = useState("");
-  const [entitlement, setEntitlement] = useState<ListingEntitlement | null>(
-    null,
-  );
   const [toast, setToast] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
 
-  const refreshEntitlement = async () => {
-    try {
-      const { getListingEntitlement } = await import(
-        "@/lib/subscriptions/entitlement"
-      );
-      const ent = await getListingEntitlement();
-      setEntitlement(ent);
-      if (ent) {
-        setUserRole(ent.role === "dealer" ? "dealer" : "personal");
-      }
-    } catch {
-      setEntitlement(null);
-    }
-  };
-
   useEffect(() => {
-    // Check Supabase session + listing billing entitlement
+    // Check Supabase session
     (async () => {
       try {
         const { createClient } = await import("@/lib/supabase/client");
@@ -417,14 +397,11 @@ function SellCarContent() {
           setUserName(
             profile?.full_name || user.email?.split("@")[0] || "Khazu user",
           );
-          await refreshEntitlement();
         } else {
           setIsLoggedIn(false);
-          setEntitlement(null);
         }
       } catch {
         setIsLoggedIn(false);
-        setEntitlement(null);
       }
     })();
   }, []);
@@ -543,21 +520,7 @@ function SellCarContent() {
         );
       }
 
-      // 2. Refresh entitlement — payment required after free trial listing
-      await refreshEntitlement();
-      const { getListingEntitlement } = await import(
-        "@/lib/subscriptions/entitlement"
-      );
-      const ent = await getListingEntitlement();
-      setEntitlement(ent);
-      if (!ent?.canPost) {
-        throw new Error(
-          ent?.reason ||
-            "Payment required before posting. Complete a plan checkout first.",
-        );
-      }
-
-      // 3. Upload images to Supabase Storage
+      // 2. Upload images to Supabase Storage
       const uploadedUrls: string[] = [];
       for (const file of carData.images) {
         const formData = new FormData();
@@ -576,7 +539,7 @@ function SellCarContent() {
         }
       }
 
-      // 4. Create listing (server also re-checks entitlement)
+      // 3. Create listing
       const { createListing } = await import("@/lib/listings/actions");
       const result = await createListing({
         reg_number: carData.regNumber,
@@ -615,9 +578,6 @@ function SellCarContent() {
       });
 
       if (!result.success) {
-        if (result.code === "PAYMENT_REQUIRED") {
-          await refreshEntitlement();
-        }
         throw new Error(result.error || "Failed to post listing");
       }
 
@@ -1513,26 +1473,20 @@ function SellCarContent() {
                     <Heading3>Account & payment</Heading3>
                     <Body muted>
                       {isLoggedIn
-                        ? "Confirm your account. New users get 1 free trial listing; next vehicles require payment."
+                        ? "Confirm your account to publish this listing."
                         : "Create your account to publish this listing."}
                     </Body>
                   </div>
 
                   {isLoggedIn ? (
-                    <>
-                      <div className="bg-primary/5 border border-primary/20 p-6 rounded-lg">
-                        <Body className="font-bold">
-                          Logged in as: {userName || "Khazu user"}
-                        </Body>
-                        <Body size="sm" muted>
-                          Your listing will be posted under this account.
-                        </Body>
-                      </div>
-                      <ListingPaymentGate
-                        entitlement={entitlement}
-                        onEntitlementRefresh={refreshEntitlement}
-                      />
-                    </>
+                    <div className="bg-primary/5 border border-primary/20 p-6 rounded-lg">
+                      <Body className="font-bold">
+                        Logged in as: {userName || "Khazu user"}
+                      </Body>
+                      <Body size="sm" muted>
+                        Your listing will be posted under this account.
+                      </Body>
+                    </div>
                   ) : (
                     <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm space-y-6">
                       <div className="flex flex-col space-y-4">
@@ -1691,21 +1645,13 @@ function SellCarContent() {
                       size="md"
                       onClick={handleSubmit}
                       className="flex-1 sm:flex-none"
-                      disabled={
-                        !authData.termsAccepted ||
-                        isSubmitting ||
-                        (isLoggedIn && entitlement?.requiresPayment === true)
-                      }
+                      disabled={!authData.termsAccepted || isSubmitting}
                       loading={isSubmitting}
                     >
                       {isSubmitting ? (
                         <FaSpinner className="animate-spin mr-2" />
                       ) : null}
-                      {isSubmitting
-                        ? "Posting..."
-                        : isLoggedIn && entitlement?.requiresPayment
-                          ? "Pay to post"
-                          : "Post Listing"}
+                      {isSubmitting ? "Posting..." : "Post Listing"}
                     </Button>
                   ) : (
                     <Button

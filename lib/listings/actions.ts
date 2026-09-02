@@ -52,19 +52,6 @@ export async function createListing(
       return { success: false, error: "You must be signed in to list a car." };
     }
 
-    // Payment / trial gate — free trial = 1 listing once; next needs paid plan
-    const { assertCanCreateListing } = await import(
-      "@/lib/subscriptions/entitlement"
-    );
-    const gate = await assertCanCreateListing();
-    if (!gate.ok) {
-      return {
-        success: false,
-        error: gate.error || "Payment required before posting a vehicle.",
-        code: "PAYMENT_REQUIRED",
-      };
-    }
-
     if (!input.make?.trim() || !input.model?.trim()) {
       return { success: false, error: "Make and model are required." };
     }
