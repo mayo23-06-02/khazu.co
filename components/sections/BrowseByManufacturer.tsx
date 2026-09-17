@@ -70,20 +70,20 @@ const manufacturers = [
 
 export function BrowseByManufacturer() {
   return (
-    <section className="py-10 md:py-14 bg-white">
+    <section className="py-8 md:py-12 bg-white">
       <Container>
-        <Heading1 className="mb-8">Browse by Car Manufacturer</Heading1>
-        <Grid cols={1} sm={2} md={2} lg={4} gap="sm">
+        <Heading1 className="mb-6 text-xl md:text-2xl">Browse by Car Manufacturer</Heading1>
+        <Grid cols={2} gap="sm">
           {manufacturers.map((brand, i) => (
             <Link
               key={i}
               href={`/listings?make=${brand.name}`}
-              className="group flex items-center justify-start px-4 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
+              className="group flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
             >
-              <div className="ml-3 w-24 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
-                <brand.icon className="text-6xl" />
+              <div className="w-8 h-8 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                <brand.icon className="text-2xl" />
               </div>
-              <span className="font-bold text-gray-800 uppercase tracking-wider group-hover:text-[#cd2c58] transition-colors text-center">
+              <span className="font-bold text-gray-800 text-xs sm:text-sm uppercase tracking-wider group-hover:text-[#cd2c58] transition-colors truncate">
                 {brand.name}
               </span>
             </Link>
