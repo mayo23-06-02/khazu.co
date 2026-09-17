@@ -605,46 +605,66 @@ function SellCarContent() {
     "Account",
   ];
 
-  return (
-    <div className="min-h-dvh w-full overflow-x-hidden bg-[#e6e6e6]">
-      {/* Header */}
+  const percentComplete = Math.round((currentStep / stepLabels.length) * 100);
 
-      <div className="py-4 sm:py-8 min-h-dvh sm:h-dvh flex justify-between flex-col items-center bg-white w-full max-w-6xl mx-auto px-0 sm:px-2">
-        {/* Toast notifications */}
-        <div className="fixed top-4 right-4 z-50 space-y-2">
-          {toast && (
-            <Toast
-              type={toast.type}
-              message={toast.message}
-              onClose={() => setToast(null)}
-            />
-          )}
-        </div>
-        <div className="flex max-w-4xl items-center px-4 w-full mx-auto justify-between  mb-6">
+  return (
+    // No overflow-x-hidden here: it forces an implicit overflow-y: auto
+    // (per spec, when one axis is non-visible the other computes to auto),
+    // which turns this div into an intermediate scroll container and
+    // breaks position:sticky for the header below - it would stick to
+    // this div's own (never-scrolling) box instead of the real page
+    // scroll. The global <html> rule already prevents horizontal scroll.
+    <div className="min-h-dvh w-full bg-surface-alt">
+      {/* Toast notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {toast && (
+          <Toast
+            type={toast.type}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </div>
+
+      {/* Sticky header + progress - stays visible while scrolling instead of
+          disappearing above the fold like the old inline header did. */}
+      <div className="sticky top-0 z-40 w-full bg-white border-b border-line safe-area-pt">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-2.5 sm:py-3">
           <Logo />
-          <Button
-            size="sm"
-            color="primary"
-            variant="outline"
-            onClick={() => router.push("/login")}
-          >
+          <Button size="sm" variant="outline" onClick={() => router.push("/login")}>
             Login
           </Button>
         </div>
-        <div className="max-w-4xl mx-auto h-full flex flex-col  justify-between w-full">
-          <div className="my-6 px-4">
-            <div className="mb-6">
-              <p className=" font-extrabold text-4xl text-black">
-                Follow these steps to get your car in front of thousands of
-                buyers.
-              </p>
-            </div>
+        <div className="mx-auto max-w-4xl px-4 pb-3">
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <span className="truncate text-xs font-semibold text-ink">
+              {stepLabels[currentStep - 1]}
+            </span>
+            <span className="shrink-0 text-xs font-semibold text-primary">
+              Step {currentStep} of {stepLabels.length} &middot; {percentComplete}%
+            </span>
           </div>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-sunken">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+              style={{ width: `${percentComplete}%` }}
+            />
+          </div>
+        </div>
+      </div>
 
-          {/* Main Card */}
-          <div className="border-none w-full h-full mb-24 py4 overflow-auto custom-scrollbar  flex flex-col justify-between ">
-            <div className="pb-6 lg:pb-12 px-4">
-              {/* Step 1: Vehicle Details */}
+      <div className="mx-auto w-full max-w-4xl bg-white">
+        <div className="px-4 pt-5 sm:pt-6">
+          <p className="font-display text-lg sm:text-2xl md:text-4xl font-extrabold text-black">
+            Follow these steps to get your car in front of thousands of
+            buyers.
+          </p>
+        </div>
+
+        {/* Main Card */}
+        <div className="w-full">
+          <div className="px-4 pb-6 pt-5 sm:pt-6 lg:pb-12">
+            {/* Step 1: Vehicle Details */}
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <div className="px-4">
@@ -1640,7 +1660,7 @@ function SellCarContent() {
               )}
             </div>
 
-            <div className="px-3 sm:px-4 pb-4 sm:pb-0">
+            <div className="px-3 sm:px-4 pb-4 sm:pb-6">
               <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
                 <Button
                   variant="outline"
@@ -1651,40 +1671,34 @@ function SellCarContent() {
                 >
                   <FaArrowLeft className="mr-2" /> Back
                 </Button>
-                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                  <Small muted className="text-gray-400 shrink-0">
-                    Step {currentStep} of 5
-                  </Small>
-                  {currentStep === 5 ? (
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={handleSubmit}
-                      className="flex-1 sm:flex-none"
-                      disabled={!authData.termsAccepted || isSubmitting}
-                      loading={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <FaSpinner className="animate-spin mr-2" />
-                      ) : null}
-                      {isSubmitting ? "Posting..." : "Post Listing"}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={handleNext}
-                      className="flex-1 sm:flex-none"
-                    >
-                      Next <FaArrowRight className="ml-2" />
-                    </Button>
-                  )}
-                </div>
+                {currentStep === stepLabels.length ? (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleSubmit}
+                    className="w-full sm:w-auto"
+                    disabled={!authData.termsAccepted || isSubmitting}
+                    loading={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <FaSpinner className="animate-spin mr-2" />
+                    ) : null}
+                    {isSubmitting ? "Posting..." : "Post Listing"}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleNext}
+                    className="w-full sm:w-auto"
+                  >
+                    Next <FaArrowRight className="ml-2" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
