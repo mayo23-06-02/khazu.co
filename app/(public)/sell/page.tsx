@@ -267,7 +267,7 @@ export default function SellMyCarPage() {
                     <Link
                       href={`/sell/upload?reg=${encodeURIComponent(formData.reg)}`}
                     >
-                      <Button className=" w-full text-white hover:bg-[#a72346] rounded-md px-10 py-4 text-lg font-bold transition-all transform active:scale-95">
+                      <Button className="w-full h-auto text-white hover:bg-[#a72346] rounded-md px-10 py-2.5 text-lg font-bold transition-all transform active:scale-95">
                         Sell My Car
                       </Button>
                     </Link>

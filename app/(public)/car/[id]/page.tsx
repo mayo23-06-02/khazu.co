@@ -550,7 +550,7 @@ export default function DealPage({ params }: DealPageProps) {
                     variant="primary"
                     size="lg"
                     fullWidth
-                    className="bg-[#ff4c29] hover:bg-[#e54424] text-white font-black py-6 rounded-lg shadow-xl transform active:scale-95 transition-all text-lg"
+                    className="bg-[#ff4c29] hover:bg-[#e54424] text-white font-black h-auto py-2.5 rounded-lg shadow-xl transform active:scale-95 transition-all text-lg"
                   >
                     Get this deal
                   </Button>

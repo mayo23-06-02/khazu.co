@@ -353,14 +353,14 @@ export default function ProductPage() {
                 <Button
                   variant="primary"
                   size="lg"
-                  className="w-full font-black uppercase tracking-widest text-sm py-4"
+                  className="w-full font-black uppercase tracking-widest text-sm py-2.5"
                 >
                   <MdPhone className="mr-2" size={18} /> Reveal Phone
                 </Button>
                 <Button
                   variant="secondary"
                   size="lg"
-                  className="w-full font-black uppercase tracking-widest text-sm py-4 bg-gray-900 hover:bg-[#1a1a1a] text-white"
+                  className="w-full font-black uppercase tracking-widest text-sm py-2.5 bg-gray-900 hover:bg-[#1a1a1a] text-white"
                 >
                   <MdEmail className="mr-2" size={18} /> Message Seller
                 </Button>

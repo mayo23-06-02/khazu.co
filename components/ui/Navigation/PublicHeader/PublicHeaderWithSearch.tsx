@@ -196,7 +196,7 @@ export function PublicHeaderWithSearch({
                 <Button
                   variant="primary"
                   size="sm"
-                  className="absolute right-1 top-1 px-3 py-1.5"
+                  className="absolute right-1 top-1 h-auto px-3 py-2.5"
                   onClick={() => setIsSearching(true)}
                 >
                   {isSearching ? (

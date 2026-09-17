@@ -718,7 +718,7 @@ export default function PricingPage() {
             <Link href="/signup" className="w-full sm:w-auto">
               <Button
                 variant="primary"
-                className="w-full bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold uppercase tracking-wider text-xs py-4 px-8 rounded-lg shadow-lg shadow-[#a72346]/20 transition-all duration-300"
+                className="w-full bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold uppercase tracking-wider text-xs py-2.5 px-8 rounded-lg shadow-lg shadow-[#a72346]/20 transition-all duration-300"
               >
                 Sign Up Free <FaArrowRight className="ml-2" />
               </Button>
