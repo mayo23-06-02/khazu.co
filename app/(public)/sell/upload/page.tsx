@@ -688,7 +688,7 @@ function SellCarContent() {
                             className="object-cover"
                           />
                           <input
-                            className="font-mono max-h-[430px] bg-transparent w-full h-full px-3 sm:px-5 md:px-8 text-center font-black text-2xl sm:text-3xl md:text-5xl lg:text-6xl focus:outline-none transition-all uppercase placeholder:text-black/5 text-black drop-shadow-sm"
+                            className="font-mono max-h-[430px] bg-transparent w-full h-full px-3 sm:px-5 md:px-8 text-center font-black text-[37px] sm:text-[56px] focus:outline-none transition-all uppercase placeholder:text-black/20 text-black drop-shadow-sm"
                             type="text"
                             placeholder="ABC 123 CM"
                             value={carData.regNumber}
