@@ -38,12 +38,12 @@ export function FlaggedItem({
       )}
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-medium text-gray-800">${title}</h3>
+        <h3 className="font-medium text-gray-800">{title}</h3>
         <Badge variant="secondary" className={riskColor}>
-          Risk ${riskScore}%
+          Risk {riskScore}%
         </Badge>
       </div>
-      <p className="mt-1 text-sm text-gray-800/60">Reason: ${flagReason}</p>
+      <p className="mt-1 text-sm text-gray-800/60">Reason: {flagReason}</p>
       <div className="mt-3 flex gap-2">
         <Button variant="primary" size="sm" onClick={onApprove}>
           Approve

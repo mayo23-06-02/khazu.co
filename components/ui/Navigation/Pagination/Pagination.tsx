@@ -2,7 +2,6 @@
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Button } from "@/components/ui/Buttons/Button/Button";
 
 interface PaginationProps {
   currentPage: number;
@@ -12,6 +11,19 @@ interface PaginationProps {
   showNumbers?: boolean;
 }
 
+/** Windowed page list: 1 … 4 5 [6] 7 8 … 20 */
+function pageWindow(current: number, total: number): (number | "gap")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "gap")[] = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) pages.push("gap");
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < total - 1) pages.push("gap");
+  pages.push(total);
+  return pages;
+}
+
 export function Pagination({
   currentPage,
   totalPages,
@@ -19,59 +31,58 @@ export function Pagination({
   className = "",
   showNumbers = true,
 }: PaginationProps) {
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisible = 5;
-    let start = Math.max(1, currentPage - 2);
-    let end = Math.min(totalPages, currentPage + 2);
-    if (end - start < maxVisible - 1) {
-      if (start === 1) end = Math.min(totalPages, start + maxVisible - 1);
-      else if (end === totalPages) start = Math.max(1, end - maxVisible + 1);
-    }
-    for (let i = start; i <= end; i++) pages.push(i);
-    return pages;
-  };
   if (totalPages <= 1) return null;
+  const btn =
+    "inline-flex h-8 min-w-8 items-center justify-center rounded-xl px-2 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-40 disabled:pointer-events-none";
+
   return (
-    <div
-      className={twMerge(
-        clsx("flex items-center gap-1 sm:gap-2 flex-wrap", className),
-      )}
+    <nav
+      aria-label="Pagination"
+      className={twMerge(clsx("flex flex-wrap items-center justify-center gap-1", className))}
     >
       <button
+        type="button"
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="inline-flex items-center justify-center rounded-lg font-medium transition-colors border border-black/20 px-3 py-1.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-dark/5"
+        disabled={currentPage <= 1}
+        aria-label="Previous page"
+        className={clsx(btn, "border border-line-strong text-ink hover:bg-surface-sunken")}
       >
-        <MdChevronLeft size={14} />
-        <span className="sr-only sm:not-sr-only sm:ml-1">Previous</span>
+        <MdChevronLeft className="size-4" />
       </button>
+
       {showNumbers &&
-        getPageNumbers().map((page) => (
-          <button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={twMerge(
-              clsx(
-                "inline-flex items-center justify-center rounded-lg font-medium transition-colors px-3 py-1.5 text-sm",
-                page === currentPage
-                  ? "bg[#CD2C58] text-gray-800"
-                  : "border border-black/20 hover:bg-dark/5",
-              ),
-            )}
-            aria-current={page === currentPage ? "page" : undefined}
-          >
-            {page}
-          </button>
-        ))}
+        pageWindow(currentPage, totalPages).map((p, i) =>
+          p === "gap" ? (
+            <span key={`gap-${i}`} className="px-1 text-xs text-muted">
+              &hellip;
+            </span>
+          ) : (
+            <button
+              key={p}
+              type="button"
+              onClick={() => onPageChange(p)}
+              aria-current={p === currentPage ? "page" : undefined}
+              className={clsx(
+                btn,
+                p === currentPage
+                  ? "bg-primary text-white"
+                  : "border border-line-strong text-ink hover:bg-surface-sunken",
+              )}
+            >
+              {p}
+            </button>
+          ),
+        )}
+
       <button
+        type="button"
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="inline-flex items-center justify-center rounded-lg font-medium transition-colors border border-black/20 px-3 py-1.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-dark/5"
+        disabled={currentPage >= totalPages}
+        aria-label="Next page"
+        className={clsx(btn, "border border-line-strong text-ink hover:bg-surface-sunken")}
       >
-        <span className="sr-only sm:not-sr-only sm:mr-1">Next</span>
-        <MdChevronRight size={14} />
+        <MdChevronRight className="size-4" />
       </button>
-    </div>
+    </nav>
   );
 }

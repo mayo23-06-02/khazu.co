@@ -48,7 +48,7 @@ export function AlertModal({
       footer={footer}
       size="sm"
     >
-      <p className="text-gray-800/70">${message}</p>
+      <p className="text-gray-800/70">{message}</p>
     </Modal>
   );
 }

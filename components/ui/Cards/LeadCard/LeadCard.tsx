@@ -41,14 +41,14 @@ export function LeadCard({
     >
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-medium text-gray-800">${name}</h3>
-          <p className="text-sm text-gray-800/60">${car}</p>
+          <h3 className="font-medium text-gray-800">{name}</h3>
+          <p className="text-sm text-gray-800/60">{car}</p>
         </div>
         <Badge variant="secondary" className={statusColors[status]}>
-          ${status}
+          {status}
         </Badge>
       </div>
-      <p className="mt-2 text-sm text-gray-800/70">${message}</p>
+      <p className="mt-2 text-sm text-gray-800/70">{message}</p>
       <div className="mt-3 flex gap-2">
         {phone && (
           <Button

@@ -1,53 +1,57 @@
 "use client";
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, ReactNode } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  fieldWrap, labelClass, hintClass, errorClass,
+  controlBase, controlSizes, tone, type ControlSize,
+} from "../inputStyles";
 
-export interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputTextProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
   error?: string;
-  icon?: React.ReactNode;
+  hint?: string;
+  icon?: ReactNode;
+  size?: ControlSize;
   fullWidth?: boolean;
 }
 
 export const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  (
-    { label, error, icon, fullWidth = false, className = "", ...props },
-    ref,
-  ) => (
-    <div
-      className={twMerge(clsx("flex flex-col gap-1", fullWidth && "w-full"))}
-    >
-      {label && (
-        <label className="text-sm font-medium text-gray-800">{label}</label>
-      )}
-      <div className="relative">
-        {icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-800/40">
-            {icon}
-          </div>
+  ({ label, error, hint, icon, size = "md", fullWidth = true, className = "", id, ...props }, ref) => {
+    const fieldId = id ?? props.name;
+    return (
+      <div className={twMerge(clsx(fieldWrap, fullWidth && "w-full"))}>
+        {label && (
+          <label htmlFor={fieldId} className={labelClass}>
+            {label}
+          </label>
         )}
-        <input
-          ref={ref}
-          className={twMerge(
-            clsx(
-              "w-full  border-b bg-white px-4 py-2.5 text-gray-800 placeholder:text-gray-800/40 transition-colors focus:outline-none focus:ring-2",
-              icon ? "pl-10" : "pl-4",
-              error
-                ? "border-gray-300  focus:ring-danger/30"
-                : "border-gray-300 focus:border[#CD2C58] focus:ring[#CD2C58]/30",
-              className,
-            ),
+        <div className="relative">
+          {icon && (
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+              {icon}
+            </span>
           )}
-          {...props}
-        />
+          <input
+            ref={ref}
+            id={fieldId}
+            type="text"
+            aria-invalid={!!error || undefined}
+            aria-describedby={error && fieldId ? `${fieldId}-error` : undefined}
+            className={twMerge(
+              clsx(controlBase, controlSizes[size], tone(error), icon && "pl-9", className),
+            )}
+            {...props}
+          />
+        </div>
+        {hint && !error && <p className={hintClass}>{hint}</p>}
+        {error && (
+          <p id={fieldId ? `${fieldId}-error` : undefined} className={errorClass} role="alert">
+            {error}
+          </p>
+        )}
       </div>
-      {error && (
-        <p className="text-sm text-danger" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
-  ),
+    );
+  },
 );
 InputText.displayName = "InputText";

@@ -1,91 +1,87 @@
 "use client";
-import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
-import { MdSearch } from "react-icons/md";
-import { InputText } from "../InputText/InputText";
+import { forwardRef, useEffect, useState, InputHTMLAttributes } from "react";
+import { MdSearch, MdClose } from "react-icons/md";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { controlBase, controlSizes, type ControlSize } from "../inputStyles";
 
-interface SearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SearchBarProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   onSearch?: (value: string) => void;
   debounce?: number;
-  label?: string;
-  error?: string;
+  size?: ControlSize;
+  fullWidth?: boolean;
+  onClear?: () => void;
 }
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
   (
-    { onSearch, debounce = 300, label, error, className = "", ...props },
+    {
+      onSearch,
+      debounce = 300,
+      size = "md",
+      fullWidth = true,
+      className = "",
+      placeholder = "Search\u2026",
+      value,
+      onChange,
+      onClear,
+      ...props
+    },
     ref,
   ) => {
-    const [value, setValue] = useState("");
-    const [placeholder, setPlaceholder] = useState("");
-
-    const phrases = [
-      "Search Make or Model...",
-      "Toyota Hilux ",
-      "VW Polo",
-      "BMW X5",
-      "Ford Ranger",
-      "Audi A4",
-      "Mercedes-Benz C-Class",
-      "Honda CR-V",
-      "Nissan X-Trail",
-      "Hyundai i30",
-      "Kia Picanto",
-    ];
+    const [internal, setInternal] = useState(String(value ?? ""));
+    const isControlled = value !== undefined;
+    const current = isControlled ? String(value) : internal;
 
     useEffect(() => {
-      let phraseIndex = 0;
-      let charIndex = 0;
-      let isDeleting = false;
-      let timeoutId: NodeJS.Timeout;
-
-      const type = () => {
-        const currentPhrase = phrases[phraseIndex];
-
-        if (isDeleting) {
-          setPlaceholder(currentPhrase.substring(0, charIndex - 1));
-          charIndex--;
-        } else {
-          setPlaceholder(currentPhrase.substring(0, charIndex + 1));
-          charIndex++;
-        }
-
-        let typingSpeed = isDeleting ? 50 : 100;
-
-        if (!isDeleting && charIndex === currentPhrase.length) {
-          isDeleting = true;
-          typingSpeed = 2000;
-        } else if (isDeleting && charIndex === 0) {
-          isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          typingSpeed = 500;
-        }
-
-        timeoutId = setTimeout(type, typingSpeed);
-      };
-
-      type();
-      return () => clearTimeout(timeoutId);
-    }, []);
-
-    // Auto-search via debounce removed; search is only triggered on Enter key.
+      if (!onSearch) return;
+      const t = setTimeout(() => onSearch(current), debounce);
+      return () => clearTimeout(t);
+    }, [current, debounce, onSearch]);
 
     return (
-      <InputText
-        ref={ref}
-        placeholder={placeholder}
-        label={label}
-        error={error}
-        icon={<MdSearch size={16} />}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            onSearch?.(value);
-          }
-        }}
-        className={className}
-        {...props}
-      />
+      <div className={twMerge(clsx("relative", fullWidth && "w-full"))}>
+        <MdSearch
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted"
+        />
+        <input
+          ref={ref}
+          type="search"
+          role="searchbox"
+          placeholder={placeholder}
+          value={current}
+          onChange={(e) => {
+            if (!isControlled) setInternal(e.target.value);
+            onChange?.(e);
+          }}
+          className={twMerge(
+            clsx(
+              controlBase,
+              controlSizes[size],
+              "border-line-strong focus:border-primary focus:ring-primary/20",
+              "pl-9 pr-9 [&::-webkit-search-cancel-button]:appearance-none",
+              className,
+            ),
+          )}
+          {...props}
+        />
+        {current && (
+          <button
+            type="button"
+            aria-label="Clear search"
+            onClick={() => {
+              if (!isControlled) setInternal("");
+              onClear?.();
+              onSearch?.("");
+            }}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink"
+          >
+            <MdClose className="size-4" />
+          </button>
+        )}
+      </div>
     );
   },
 );

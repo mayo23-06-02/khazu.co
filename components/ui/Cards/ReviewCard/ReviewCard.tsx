@@ -33,8 +33,8 @@ export function ReviewCard({
       <div className="flex items-center gap-3 mb-2">
         <Avatar src={avatar} initials={author.charAt(0)} />
         <div>
-          <div className="font-medium text-gray-800">${author}</div>
-          <div className="text-xs text-gray-800/50">${date}</div>
+          <div className="font-medium text-gray-800">{author}</div>
+          <div className="text-xs text-gray-800/50">{date}</div>
         </div>
         <div className="ml-auto flex items-center gap-0.5 text-yellow-400">
           {Array.from({ length: rating }).map((_, i) => (
@@ -42,7 +42,7 @@ export function ReviewCard({
           ))}
         </div>
       </div>
-      <p className="text-sm text-gray-800/70">${comment}</p>
+      <p className="text-sm text-gray-800/70">{comment}</p>
     </div>
   );
 }

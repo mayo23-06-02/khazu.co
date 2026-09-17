@@ -19,30 +19,26 @@ interface BreadcrumbProps {
 export function Breadcrumb({
   items,
   className = "",
-  separator = <MdChevronRight className="text-gray-800/20 text-xs" />,
+  separator = <MdChevronRight aria-hidden="true" className="size-3.5 shrink-0 text-muted" />,
 }: BreadcrumbProps) {
   return (
-    <nav
-      aria-label="Breadcrumb"
-      className={twMerge(clsx("flex items-center gap-1 text-sm", className))}
-    >
-      <ol className="flex items-center flex-wrap gap-1">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
+    <nav aria-label="Breadcrumb" className={twMerge(clsx("min-w-0", className))}>
+      <ol className="flex flex-wrap items-center gap-1 text-xs">
+        {items.map((item, i) => {
+          const isLast = i === items.length - 1;
           return (
-            <li key={index} className="flex items-center gap-1">
+            <li key={i} className="flex items-center gap-1">
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="text-gray-800/50 hover:text-gray-800 transition-colors"
+                  className="text-muted transition-colors hover:text-primary"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
-                  className={
-                    isLast ? "text-gray-800 font-medium" : "text-gray-800/50"
-                  }
+                  aria-current={isLast ? "page" : undefined}
+                  className={isLast ? "font-semibold text-ink" : "text-muted"}
                 >
                   {item.label}
                 </span>

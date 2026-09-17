@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { labelClass } from "../inputStyles";
 
 interface SliderProps {
   min?: number;
@@ -11,6 +12,8 @@ interface SliderProps {
   defaultValue?: number;
   onChange?: (value: number) => void;
   label?: string;
+  /** Render the current value next to the label. */
+  formatValue?: (value: number) => string;
   className?: string;
 }
 
@@ -22,44 +25,44 @@ export function Slider({
   defaultValue = 0,
   onChange,
   label,
+  formatValue,
   className = "",
 }: SliderProps) {
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const value = controlledValue ?? internalValue;
-  const percentage = ((value - min) / (max - min)) * 100;
+  const [internal, setInternal] = useState(defaultValue);
+  const isControlled = controlledValue !== undefined;
+  const current = isControlled ? controlledValue : internal;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = parseFloat(e.target.value);
-    setInternalValue(v);
-    onChange?.(v);
+    const next = Number(e.target.value);
+    if (!isControlled) setInternal(next);
+    onChange?.(next);
   };
+
+  const pct = max === min ? 0 : ((current - min) / (max - min)) * 100;
+
   return (
-    <div className={twMerge(clsx("flex flex-col gap-1", className))}>
-      {label && (
-        <div className="flex justify-between">
-          <span className="text-sm font-medium text-gray-800">{label}</span>
-          <span className="text-sm text-gray-800/60">{value}</span>
+    <div className={twMerge(clsx("flex w-full flex-col gap-1.5", className))}>
+      {(label || formatValue) && (
+        <div className="flex items-center justify-between">
+          {label && <span className={labelClass}>{label}</span>}
+          {formatValue && (
+            <span className="text-xs font-semibold text-primary">{formatValue(current)}</span>
+          )}
         </div>
       )}
-      <div className="relative h-6 flex items-center">
-        <div className="absolute h-1.5 w-full bg-dark/10 rounded-full" />
-        <div
-          className="absolute h-1.5 bg[#CD2C58] rounded-full transition-all"
-          style={{ width: `${percentage}%` }}
-        />
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={handleChange}
-          className="absolute w-full h-6 opacity-0 cursor-pointer"
-        />
-        <div
-          className="absolute h-4 w-4 bg-white border-2 border[#CD2C58] rounded-full shadow-sm pointer-events-none"
-          style={{ left: `${percentage}%`, transform: "translateX(-50%)" }}
-        />
-      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={current}
+        onChange={handleChange}
+        aria-label={label}
+        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-surface-sunken accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        style={{
+          background: `linear-gradient(to right, var(--color-primary) ${pct}%, var(--color-surface-sunken) ${pct}%)`,
+        }}
+      />
     </div>
   );
 }

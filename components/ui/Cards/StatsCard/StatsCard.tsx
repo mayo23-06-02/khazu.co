@@ -28,14 +28,14 @@ export function StatsCard({
       )}
     >
       <div className="flex items-center gap-3">
-        <div className="text[#CD2C58]">{icon}</div>
+        <div className="text-[#CD2C58]">{icon}</div>
         <div>
           <div className="text-2xl font-display font-bold text-gray-800">
-            ${value}
+            {value}
           </div>
-          <div className="text-sm text-gray-800/60">${label}</div>
+          <div className="text-sm text-gray-800/60">{label}</div>
           {trend && (
-            <div className="text-xs text-gray-800/40 mt-0.5">${trend}</div>
+            <div className="text-xs text-gray-800/40 mt-0.5">{trend}</div>
           )}
         </div>
       </div>

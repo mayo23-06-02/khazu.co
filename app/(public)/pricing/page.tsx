@@ -725,8 +725,9 @@ export default function PricingPage() {
             </Link>
             <Link href="/docs" className="w-full sm:w-auto">
               <Button
-                variant="outline"
-                className="w-full border-white/20 hover:bg-white/5 text-white font-bold uppercase tracking-wider text-xs py-4 px-8 rounded-lg transition-all duration-300"
+                variant="inverse"
+                size="lg"
+                className="w-full font-bold uppercase tracking-wider"
               >
                 Contact Sales
               </Button>

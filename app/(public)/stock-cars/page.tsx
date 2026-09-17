@@ -183,7 +183,7 @@ function ListingPageContent() {
                     <input
                       type="text"
                       placeholder="Search make or model..."
-                      className="w-full bg-cream/50 border border-black/5 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring[#CD2C58]/20"
+                      className="w-full bg-cream/50 border border-black/5 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#CD2C58]/20"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -230,7 +230,7 @@ function ListingPageContent() {
                       >
                         <input
                           type="checkbox"
-                          className="w-4 h-4 rounded border-black/10 text[#CD2C58] focus:ring[#CD2C58]"
+                          className="w-4 h-4 rounded border-black/10 text-[#CD2C58] focus:ring-[#CD2C58]"
                         />
                         <span className="text-sm text-gray-800/70 group-hover:text-gray-800 transition-colors">
                           {rating} Deals
@@ -242,8 +242,8 @@ function ListingPageContent() {
 
                 <Divider />
 
-                <div className="p-4 bg[#CD2C58]/10 rounded-lg">
-                  <p className="text-[10px] font-black text[#CD2C58] uppercase tracking-widest mb-1">
+                <div className="p-4 bg-[#CD2C58]/10 rounded-lg">
+                  <p className="text-[10px] font-black text-[#CD2C58] uppercase tracking-widest mb-1">
                     Pro Tip
                   </p>
                   <p className="text-xs text-gray-800/70 leading-relaxed">
@@ -270,7 +270,7 @@ function ListingPageContent() {
                       clsx(
                         "p-2 rounded-md transition-all",
                         viewMode === "grid"
-                          ? "bg-white shadow-sm text[#CD2C58]"
+                          ? "bg-white shadow-sm text-[#CD2C58]"
                           : "text-gray-800/40 hover:text-gray-800",
                       ),
                     )}
@@ -283,7 +283,7 @@ function ListingPageContent() {
                       clsx(
                         "p-2 rounded-md transition-all",
                         viewMode === "list"
-                          ? "bg-white shadow-sm text[#CD2C58]"
+                          ? "bg-white shadow-sm text-[#CD2C58]"
                           : "text-gray-800/40 hover:text-gray-800",
                       ),
                     )}

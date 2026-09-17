@@ -111,7 +111,7 @@ export function PublicHeaderWithSearch({
             {/* Logo */}
             <div className="shrink-0">
               <Logo className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                <span className="text[#CD2C58]">Khazu</span>
+                <span className="text-[#CD2C58]">Khazu</span>
                 <span className="text-gray-800 font-normal text-sm hidden sm:inline">
                   • cars
                 </span>

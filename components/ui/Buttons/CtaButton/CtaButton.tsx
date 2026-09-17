@@ -3,30 +3,30 @@ import { ReactNode } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Button } from "../Button/Button";
+import type { ButtonVariant } from "../buttonStyles";
 
 interface CtaButtonProps {
   children: ReactNode;
+  variant?: ButtonVariant;
+  fullWidth?: boolean;
   className?: string;
   onClick?: () => void;
 }
 
 export function CtaButton({
   children,
+  variant = "primary",
+  fullWidth = true,
   className = "",
   onClick,
 }: CtaButtonProps) {
   return (
     <Button
-      variant="primary"
+      variant={variant}
       size="lg"
-      fullWidth
+      fullWidth={fullWidth}
       onClick={onClick}
-      className={twMerge(
-        clsx(
-          "shadow-md hover:shadow-lg bg-[#1a1a1a] transform active:scale-95 transition-all",
-          className,
-        ),
-      )}
+      className={twMerge(clsx("shadow-brand active:scale-[0.98]", className))}
     >
       {children}
     </Button>

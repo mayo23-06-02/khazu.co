@@ -38,12 +38,12 @@ export function PriceSlider({
   return (
     <div className={twMerge(clsx("px-2", className))}>
       <div className="flex justify-between text-sm text-gray-800/60 mb-2">
-        <span>SZL ${minVal.toLocaleString()}</span>
-        <span>SZL ${maxVal.toLocaleString()}</span>
+        <span>SZL {minVal.toLocaleString()}</span>
+        <span>SZL {maxVal.toLocaleString()}</span>
       </div>
       <div className="relative h-1 bg-dark/10 rounded-full">
         <div
-          className="absolute h-1 bg[#CD2C58] rounded-full"
+          className="absolute h-1 bg-[#CD2C58] rounded-full"
           style={{ left: `${minPercent}%`, right: `${100 - maxPercent}%` }}
         />
         <input
@@ -65,11 +65,11 @@ export function PriceSlider({
           className="absolute w-full h-1 opacity-0 cursor-pointer"
         />
         <div
-          className="absolute w-3 h-3 bg-white border-2 border[#CD2C58] rounded-full -top-1 pointer-events-none"
+          className="absolute w-3 h-3 bg-white border-2 border-[#CD2C58] rounded-full -top-1 pointer-events-none"
           style={{ left: `${minPercent}%`, transform: "translateX(-50%)" }}
         />
         <div
-          className="absolute w-3 h-3 bg-white border-2 border[#CD2C58] rounded-full -top-1 pointer-events-none"
+          className="absolute w-3 h-3 bg-white border-2 border-[#CD2C58] rounded-full -top-1 pointer-events-none"
           style={{ left: `${maxPercent}%`, transform: "translateX(-50%)" }}
         />
       </div>

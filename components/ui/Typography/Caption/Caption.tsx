@@ -1,30 +1,33 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, ElementType } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface CaptionProps {
   children: ReactNode;
   className?: string;
+  as?: ElementType;
   muted?: boolean;
 }
 
+/** Small uppercase label used above a value or section title. */
 export function Caption({
   children,
   className = "",
-  muted = false,
+  as: Tag = "span",
+  muted = true,
 }: CaptionProps) {
   return (
-    <figcaption
+    <Tag
       className={twMerge(
         clsx(
-          "text-[10px] sm:text-xs font-sans uppercase tracking-wider",
-          muted ? "text-gray-800/40" : "text-gray-800/60",
+          "text-2xs font-semibold uppercase tracking-wider",
+          muted ? "text-muted" : "text-ink",
           className,
         ),
       )}
     >
       {children}
-    </figcaption>
+    </Tag>
   );
 }

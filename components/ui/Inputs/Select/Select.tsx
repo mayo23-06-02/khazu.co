@@ -3,55 +3,65 @@ import { forwardRef, SelectHTMLAttributes } from "react";
 import { MdExpandMore } from "react-icons/md";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  fieldWrap, labelClass, hintClass, errorClass,
+  controlBase, controlSizes, tone, type ControlSize,
+} from "../inputStyles";
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   label?: string;
   error?: string;
-  options: Array<{ value: string; label: string }>;
+  hint?: string;
+  placeholder?: string;
+  options: Array<{ value: string; label: string; disabled?: boolean }>;
+  size?: ControlSize;
   fullWidth?: boolean;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  (
-    { label, error, options, fullWidth = false, className = "", ...props },
-    ref,
-  ) => (
-    <div
-      className={twMerge(clsx("flex flex-col gap-1", fullWidth && "w-full"))}
-    >
-      {label && (
-        <label className="text-sm font-medium text-gray-800">{label}</label>
-      )}
-      <div className="relative">
-        <select
-          ref={ref}
-          className={twMerge(
-            clsx(
-              "w-full appearance-none rounded-md border border-gray-800/20 bg-white px-4 py-2.5 pr-10 text-gray-800 transition-colors focus:outline-none focus:ring-2",
-              error
-                ? "border-gray-300 focus:ring-gray-400"
-                : "border-gray-300 focus:border[#CD2C58] focus:ring[#CD2C58]/30",
-              className,
-            ),
-          )}
-          {...props}
-        >
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-800/40 pointer-events-none">
-          <MdExpandMore size={14} />
+  ({ label, error, hint, placeholder, options, size = "md", fullWidth = true, className = "", id, ...props }, ref) => {
+    const fieldId = id ?? props.name;
+    return (
+      <div className={twMerge(clsx(fieldWrap, fullWidth && "w-full"))}>
+        {label && (
+          <label htmlFor={fieldId} className={labelClass}>
+            {label}
+          </label>
+        )}
+        <div className="relative">
+          <select
+            ref={ref}
+            id={fieldId}
+            aria-invalid={!!error || undefined}
+            className={twMerge(
+              clsx(controlBase, controlSizes[size], tone(error), "appearance-none pr-9 cursor-pointer", className),
+            )}
+            {...props}
+          >
+            {placeholder && (
+              <option value="" disabled>
+                {placeholder}
+              </option>
+            )}
+            {options.map((opt) => (
+              <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <MdExpandMore
+            aria-hidden="true"
+            className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted"
+          />
         </div>
+        {hint && !error && <p className={hintClass}>{hint}</p>}
+        {error && (
+          <p className={errorClass} role="alert">
+            {error}
+          </p>
+        )}
       </div>
-      {error && (
-        <p className="text-sm text-danger" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
-  ),
+    );
+  },
 );
 Select.displayName = "Select";

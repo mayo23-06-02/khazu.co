@@ -1,19 +1,21 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, ElementType } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface BodyProps {
   children: ReactNode;
   className?: string;
+  as?: ElementType;
   size?: "xs" | "sm" | "base" | "lg";
-  weight?: "normal" | "medium" | "semibold";
+  weight?: "normal" | "medium" | "semibold" | "bold";
   muted?: boolean;
 }
 
 export function Body({
   children,
   className = "",
+  as: Tag = "p",
   size = "base",
   weight = "normal",
   muted = false,
@@ -23,20 +25,21 @@ export function Body({
     normal: "font-normal",
     medium: "font-medium",
     semibold: "font-semibold",
+    bold: "font-bold",
   };
   return (
-    <p
+    <Tag
       className={twMerge(
         clsx(
-          " leading-relaxed",
+          "leading-relaxed",
           sizes[size],
           weights[weight],
-          muted ? "text-gray-800/60" : "text-gray-00",
+          muted ? "text-muted" : "text-ink",
           className,
         ),
       )}
     >
       {children}
-    </p>
+    </Tag>
   );
 }

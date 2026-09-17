@@ -52,9 +52,9 @@ export function Stepper({
               className={twMerge(
                 clsx(
                   "flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors",
-                  status === "completed" && "bg[#CD2C58] text-gray-800",
+                  status === "completed" && "bg-[#CD2C58] text-gray-800",
                   status === "active" &&
-                    "bg[#CD2C58]/20 text[#CD2C58] border-2 border[#CD2C58]",
+                    "bg-[#CD2C58]/20 text-[#CD2C58] border-2 border-[#CD2C58]",
                   status === "error" && "bg-danger text-white",
                   status === "pending" && "bg-dark/10 text-gray-800/40",
                 ),
@@ -81,7 +81,7 @@ export function Stepper({
                     "h-px w-8",
                     status === "completed" ||
                       getStatus(steps[index + 1]) === "completed"
-                      ? "bg[#CD2C58]"
+                      ? "bg-[#CD2C58]"
                       : "bg-dark/10",
                   ),
                 )}

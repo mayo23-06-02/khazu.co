@@ -3,7 +3,7 @@ import { forwardRef, InputHTMLAttributes } from 'react'
 import { MdCalendarToday } from 'react-icons/md'
 import { InputText } from '../InputText/InputText'
 
-interface DatePickerProps extends InputHTMLAttributes<HTMLInputElement> {
+interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string
   error?: string
 }

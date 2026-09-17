@@ -73,17 +73,17 @@ export function BrowseByManufacturer() {
     <section className="py-8 md:py-12 bg-white">
       <Container>
         <Heading1 className="mb-6 text-xl md:text-2xl">Browse by Car Manufacturer</Heading1>
-        <Grid cols={2} gap="sm">
+        <Grid cols={2} md={3} lg={4} gap="sm">
           {manufacturers.map((brand, i) => (
             <Link
               key={i}
               href={`/listings?make=${brand.name}`}
-              className="group flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
+              className="group flex flex-col items-center justify-center gap-3 px-3 py-5 border border-gray-100 hover:border-gray-200 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
             >
-              <div className="w-8 h-8 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
-                <brand.icon className="text-2xl" />
+              <div className="w-12 h-12 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                <brand.icon className="text-5xl" />
               </div>
-              <span className="font-bold text-gray-800 text-xs sm:text-sm uppercase tracking-wider group-hover:text-[#cd2c58] transition-colors truncate">
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide text-center leading-snug group-hover:text-[#cd2c58] transition-colors">
                 {brand.name}
               </span>
             </Link>

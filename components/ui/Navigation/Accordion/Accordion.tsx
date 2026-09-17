@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, useState } from "react";
-import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -8,7 +8,6 @@ interface AccordionItem {
   id: string;
   title: ReactNode;
   content: ReactNode;
-  disabled?: boolean;
 }
 
 interface AccordionProps {
@@ -25,36 +24,38 @@ export function Accordion({
   className = "",
 }: AccordionProps) {
   const [openItems, setOpenItems] = useState<string[]>(defaultOpen);
+
   const toggle = (id: string) => {
-    if (multiple)
-      setOpenItems((prev) =>
-        prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
-      );
-    else setOpenItems((prev) => (prev.includes(id) ? [] : [id]));
+    setOpenItems((prev) => {
+      const isOpen = prev.includes(id);
+      if (multiple) return isOpen ? prev.filter((i) => i !== id) : [...prev, id];
+      return isOpen ? [] : [id];
+    });
   };
+
   return (
-    <div className={twMerge(clsx("divide-y divide-gray-300", className))}>
+    <div className={twMerge(clsx("divide-y divide-line rounded-xl border border-line bg-white", className))}>
       {items.map((item) => {
         const isOpen = openItems.includes(item.id);
         return (
-          <div key={item.id} className="py-2">
+          <div key={item.id}>
             <button
-              onClick={() => !item.disabled && toggle(item.id)}
-              disabled={item.disabled}
-              className={twMerge(
-                clsx(
-                  "w-full flex items-center justify-between p-3 text-left transition-colors",
-                  item.disabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-gray-300/5",
-                ),
-              )}
+              type="button"
+              onClick={() => toggle(item.id)}
+              aria-expanded={isOpen}
+              className="flex w-full items-center justify-between gap-3 px-3.5 py-3 text-left text-sm font-semibold text-ink transition-colors hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary"
             >
-              <span className="font-medium text-lg">{item.title}</span>
-              {isOpen ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+              <span className="min-w-0">{item.title}</span>
+              <MdExpandMore
+                aria-hidden="true"
+                className={clsx(
+                  "size-4 shrink-0 text-muted transition-transform duration-200",
+                  isOpen && "rotate-180",
+                )}
+              />
             </button>
             {isOpen && (
-              <div className="p-3 pt-1 text-gray-600">{item.content}</div>
+              <div className="px-3.5 pb-3 text-xs leading-relaxed text-muted">{item.content}</div>
             )}
           </div>
         );

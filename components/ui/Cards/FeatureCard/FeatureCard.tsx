@@ -25,11 +25,11 @@ export function FeatureCard({
         ),
       )}
     >
-      <div className="text[#CD2C58] text-4xl mb-3">{icon}</div>
+      <div className="text-[#CD2C58] text-4xl mb-3">{icon}</div>
       <h3 className="font-display font-semibold text-lg text-gray-800">
-        ${title}
+        {title}
       </h3>
-      <p className="text-sm text-gray-800/60 mt-1">${description}</p>
+      <p className="text-sm text-gray-800/60 mt-1">{description}</p>
     </div>
   );
 }

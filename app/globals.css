@@ -1,33 +1,123 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Khazu Design System — token source of truth
+   --------------------------------------------------------------------------
+   Tailwind v4 does NOT read tailwind.config.ts. Every design token must be
+   declared in this @theme block or the corresponding utility is never
+   generated (the class silently renders nothing).
+   Reference: design.md
+   ========================================================================== */
+
+/* `static` forces every variable below to be emitted. Without it Tailwind only
+   emits the ones a generated utility happens to reference, which silently
+   breaks tokens consumed from inline styles or hand-written CSS. */
+@theme static {
+  /* ---- Brand (crimson) — the primary accent -------------------------- */
+  --color-brand-50: #fdf2f5;
+  --color-brand-100: #fbe4ea;
+  --color-brand-200: #f6c2d0;
+  --color-brand-300: #ee93ad;
+  --color-brand-400: #e25c83;
+  --color-brand-500: #cd2c58;
+  --color-brand-600: #a72346;
+  --color-brand-700: #8e1c3a;
+  --color-brand-800: #6e1530;
+  --color-brand-900: #4a0e20;
+
+  --color-primary: #cd2c58;
+  --color-primary-hover: #a72346;
+  --color-primary-active: #8e1c3a;
+  --color-primary-light: #f6c2d0;
+  --color-primary-subtle: #fdf2f5;
+
+  /* ---- Ink / neutral surfaces ---------------------------------------- */
+  --color-dark: #1a1a1a;
+  --color-dark-light: #4a4a4a;
+  --color-dark-subtle: #7a7a7a;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b7280;
+
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8f7f7;
+  --color-surface-sunken: #f3f4f6;
+  --color-line: rgba(26, 26, 26, 0.08);
+  --color-line-strong: rgba(26, 26, 26, 0.16);
+
+  /* ---- Status -------------------------------------------------------- */
+  --color-danger: #dc2626;
+  --color-danger-light: #fee2e2;
+  --color-success: #059669;
+  --color-success-light: #d1fae5;
+  --color-warning: #d97706;
+  --color-warning-light: #fef3c7;
+  --color-info: #2563eb;
+  --color-info-light: #dbeafe;
+
+  /* ---- Accent -------------------------------------------------------- */
+  --color-cream: #ffedda;
+  --color-cream-dark: #f0d8be;
+
+  /* ---- Typography ---------------------------------------------------- */
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  /* Compact type scale — the previous scale rendered visibly oversized. */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.0625rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.375rem;
+  --text-lg: 1rem;
+  --text-lg--line-height: 1.5rem;
+  --text-xl: 1.125rem;
+  --text-xl--line-height: 1.625rem;
+  --text-2xl: 1.375rem;
+  --text-2xl--line-height: 1.8125rem;
+  --text-3xl: 1.625rem;
+  --text-3xl--line-height: 2rem;
+  --text-4xl: 2rem;
+  --text-4xl--line-height: 2.375rem;
+  --text-5xl: 2.5rem;
+  --text-5xl--line-height: 2.875rem;
+  --text-6xl: 3rem;
+  --text-6xl--line-height: 3.25rem;
+
+  /* ---- Radius — buttons and controls standardise on xl (12px) -------- */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+
+  /* ---- Elevation — tinted with brand ink, never pure black ----------- */
+  --shadow-xs: 0 1px 2px 0 rgba(26, 26, 26, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(26, 26, 26, 0.07), 0 1px 2px -1px rgba(26, 26, 26, 0.05);
+  --shadow-md: 0 3px 6px -2px rgba(26, 26, 26, 0.09), 0 2px 4px -2px rgba(26, 26, 26, 0.06);
+  --shadow-lg: 0 8px 16px -4px rgba(26, 26, 26, 0.11), 0 4px 6px -4px rgba(26, 26, 26, 0.07);
+  --shadow-xl: 0 16px 28px -6px rgba(26, 26, 26, 0.14), 0 6px 10px -6px rgba(26, 26, 26, 0.08);
+  --shadow-2xl: 0 24px 44px -12px rgba(26, 26, 26, 0.2);
+  --shadow-brand: 0 6px 16px -4px rgba(205, 44, 88, 0.32);
+
+  /* ---- Containers ---------------------------------------------------- */
+  --container-8xl: 88rem;
+  --container-9xl: 96rem;
+
+  /* ---- Motion -------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Control sizing tokens — consumed by components, not by Tailwind codegen. */
 :root {
-  --primary: #000000;
-  --dark: #06110d;
-  --danger: #CD2C58;
-  --cream: #ffedda;
-  --white: #ffffff;
-  --dark-light: #4a6a5e;
-  --dark-subtle: #7a948a;
-  --primary-light: #a3faba;
-  --danger-light: #ff8a7a;
-  --cream-dark: #f0d8be;
-  
-  /* Semantic names */
-  --color-primary: var(--primary);
-  --color-dark: var(--dark);
-  --color-danger: var(--danger);
-  --color-cream: var(--cream);
-  --color-surface: var(--cream);
-  --color-surface-alt: var(--cream-dark);
-  --color-border: rgba(17, 56, 43, 0.1);
-  --color-primary-dark: #2bc968;
-  --color-primary-muted: rgba(81, 245, 141, 0.1);
-  
-  /* Token variables */
-  --radius-xl: 16px;
-  --radius-lg: 12px;
-  --font-bricolage: var(--font-bricolage);
-  --font-outfit: var(--font-outfit);
+  --control-h-sm: 2rem;
+  --control-h-md: 2.25rem;
+  --control-h-lg: 2.5rem;
 }
 
 @layer base {
@@ -36,14 +126,17 @@
     -webkit-text-size-adjust: 100%;
     /* Match body so the notch / status-bar area blends seamlessly when the
        page renders edge-to-edge (viewport-fit=cover). */
-    background-color: rgb(248, 247, 247);
+    background-color: var(--color-surface-alt);
     -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
   }
 
   body {
-    background-color: rgb(248, 247, 247);
-    color: var(--dark);
-    font-family: var(--font-outfit), sans-serif;
+    background-color: var(--color-surface-alt);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -51,16 +144,40 @@
        so there is never a gap or extra scroll like static 100vh causes. */
     min-height: 100dvh;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-bricolage), sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.021em;
+    color: var(--color-ink);
   }
 
   img, video {
     max-width: 100%;
     height: auto;
+  }
+
+  /* One consistent focus ring for every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -89,7 +206,20 @@
 
 @layer utilities {
   .transition-base {
-    @apply transition-all duration-200 ease-out;
+    transition: all 200ms var(--ease-out-soft);
+  }
+
+  /* Shared focus treatment for custom controls. */
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  .focus-ring:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
@@ -100,18 +230,18 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: var(--color-surface-sunken);
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgb(99, 91, 91);
+  background: var(--color-dark-subtle);
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgb(59, 57, 57);
+  background: var(--color-dark-light);
 }
 
 /* Referenced by ImageGallery/VehicleGallery/carousels but never defined —

@@ -1,6 +1,6 @@
 "use client";
 import { Modal } from "../Modal/Modal";
-import { Button } from "@/components/ui";
+import { Button } from "../../Buttons/Button/Button";
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   confirmLabel?: string;
   cancelLabel?: string;
+  loading?: boolean;
   variant?: "danger" | "primary";
 }
 
@@ -21,34 +22,27 @@ export function ConfirmDialog({
   onConfirm,
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
+  loading = false,
   variant = "primary",
 }: ConfirmDialogProps) {
-  const footer = (
-    <div className="flex gap-2 justify-end">
-      <Button variant="ghost" size="sm" onClick={onClose}>
-        {cancelLabel}
-      </Button>
-      <Button
-        variant={variant === "danger" ? "danger" : "primary"}
-        size="sm"
-        onClick={() => {
-          onConfirm();
-          onClose();
-        }}
-      >
-        {confirmLabel}
-      </Button>
-    </div>
-  );
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={title}
-      footer={footer}
       size="sm"
+      footer={
+        <>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            {cancelLabel}
+          </Button>
+          <Button variant={variant} size="sm" loading={loading} onClick={onConfirm}>
+            {confirmLabel}
+          </Button>
+        </>
+      }
     >
-      <p className="text-gray-800/70">${message}</p>
+      <p className="text-sm leading-relaxed text-muted">{message}</p>
     </Modal>
   );
 }

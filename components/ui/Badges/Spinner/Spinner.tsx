@@ -3,21 +3,25 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface SpinnerProps {
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   className?: string;
+  label?: string;
 }
 
-export function Spinner({ size = "md", className = "" }: SpinnerProps) {
+export function Spinner({ size = "md", className = "", label = "Loading" }: SpinnerProps) {
   const sizes = {
-    sm: "w-4 h-4 border-2",
-    md: "w-6 h-6 border-3",
-    lg: "w-8 h-8 border-4",
+    xs: "size-3 border-[1.5px]",
+    sm: "size-4 border-2",
+    md: "size-5 border-2",
+    lg: "size-7 border-[3px]",
   };
   return (
-    <div
+    <span
+      role="status"
+      aria-label={label}
       className={twMerge(
         clsx(
-          "border[#CD2C58] border-t-transparent rounded-full animate-spin",
+          "inline-block animate-spin rounded-full border-current border-t-transparent text-primary",
           sizes[size],
           className,
         ),

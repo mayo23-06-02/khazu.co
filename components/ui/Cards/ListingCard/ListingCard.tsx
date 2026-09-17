@@ -39,13 +39,13 @@ export function ListingCard({
     >
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-display font-medium text-gray-800">${title}</h3>
+          <h3 className="font-display font-medium text-gray-800">{title}</h3>
           <p className="text-sm text-gray-800/60">
-            ${seller} • SZL ${price.toLocaleString()}
+            {seller} • SZL {price.toLocaleString()}
           </p>
         </div>
         <Badge variant="secondary" className={statusColors[status]}>
-          ${status}
+          {status}
         </Badge>
       </div>
       {status === "pending" && (
