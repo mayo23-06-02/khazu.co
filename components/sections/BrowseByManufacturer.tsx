@@ -78,12 +78,12 @@ export function BrowseByManufacturer() {
             <Link
               key={i}
               href={`/listings?make=${brand.name}`}
-              className="group flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
+              className="group flex items-center gap-3 px-2.5 py-2.5 hover:bg-gray-50/50 rounded-lg transition-all duration-300"
             >
-              <div className="w-8 h-8 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
-                <brand.icon className="text-2xl" />
+              <div className="w-10 h-10 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                <brand.icon className="text-3xl" />
               </div>
-              <span className="font-bold text-gray-800 text-xs sm:text-sm uppercase tracking-wider group-hover:text-[#cd2c58] transition-colors truncate">
+              <span className="font-bold text-gray-800 text-sm sm:text-base uppercase tracking-wide group-hover:text-[#cd2c58] transition-colors truncate">
                 {brand.name}
               </span>
             </Link>
