@@ -14,6 +14,7 @@ import {
   Body,
   Small,
   Button,
+  CtaButton,
   IconButton,
   Badge,
   Avatar,
@@ -546,22 +547,18 @@ export default function DealPage({ params }: DealPageProps) {
 
                 {/* Main Actions */}
                 <div className="space-y-3">
-                  <Button
+                  <CtaButton
                     variant="primary"
-                    size="lg"
-                    fullWidth
-                    className="bg-[#ff4c29] hover:bg-[#e54424] text-white font-black h-auto py-2.5 rounded-lg shadow-xl transform active:scale-95 transition-all text-lg"
+                    className="bg-[#ff4c29] hover:bg-[#e54424] text-white font-black rounded-lg shadow-xl transform active:scale-95 transition-all"
                   >
                     Get this deal
-                  </Button>
-                  <Button
+                  </CtaButton>
+                  <CtaButton
                     variant="outline"
-                    size="lg"
-                    fullWidth
                     className="rounded-lg border-2 font-bold hover:bg-gray-50 flex items-center justify-center gap-2"
                   >
                     <FaPhone size={16} /> Call dealer
-                  </Button>
+                  </CtaButton>
                 </div>
 
                 {/* Trust Signals */}

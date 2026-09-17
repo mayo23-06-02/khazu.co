@@ -5,7 +5,7 @@ import Image from "next/image";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Container } from "../../Layout/Container/Container";
-import { Button } from "../../Buttons/Button/Button";
+import { CtaButton } from "../../Buttons/CtaButton/CtaButton";
 import { Heading1 } from "../../Typography/Heading1/Heading1";
 
 import {
@@ -75,9 +75,9 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
                 className="w-full md:flex-1 min-w-0 h-14 md:h-15 rounded-md placeholder:gray-300 bg-white text-black uppercase font-black font-mono text-2xl sm:text-3xl md:text-4xl text-center"
               />
               <Link href={`/sell/upload?reg=${encodeURIComponent(plate)}`} className="w-full md:flex-1">
-                <Button className="bg-white w-full h-auto text-black hover:bg-gray-100 rounded-md px-10 py-2.5 text-lg font-bold transition-all transform active:scale-95">
+                <CtaButton className="bg-white text-black hover:bg-gray-100">
                   Sell My Car
-                </Button>
+                </CtaButton>
               </Link>
             </div>
 

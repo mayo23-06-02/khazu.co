@@ -654,13 +654,13 @@ function SellCarContent() {
                     </Body>
                   </div>
 
-                  <div className="bg-white p-4 lg:p-8 ">
+                  <div className="bg-white p-4 sm:p-6 lg:p-8">
                     <div className="flex flex-col lg:items-center mb-8">
                       <label className="text-md font-semibold  text-gray-600 mb-4 block">
                         Enter Registration
                       </label>
                       <div className="relative group w-full max-w-[500px]">
-                        <div className="w-full relative h-[130px]  flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
+                        <div className="w-full relative h-[80px] sm:h-[100px] md:h-[130px] flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[4px] sm:border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
                           <Image
                             src="/plate-bg.svg"
                             alt="Plate Background"
@@ -668,7 +668,7 @@ function SellCarContent() {
                             className="object-cover"
                           />
                           <input
-                            className="font-mono max-h-[430px] bg-transparent w-full h-full text-center font-black text-6xl md:text-7xl focus:outline-none transition-all uppercase placeholder:text-black/5 text-black drop-shadow-sm"
+                            className="font-mono max-h-[430px] bg-transparent w-full h-full px-3 sm:px-5 md:px-8 text-center font-black text-2xl sm:text-3xl md:text-5xl lg:text-6xl focus:outline-none transition-all uppercase placeholder:text-black/5 text-black drop-shadow-sm"
                             type="text"
                             placeholder="ABC 123 CM"
                             value={carData.regNumber}
@@ -692,6 +692,7 @@ function SellCarContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-50">
                       <div className="space-y-2">
                         <Autocomplete
+                          size="lg"
                           label="Make / Brand"
                           placeholder="Select make (e.g. Toyota)"
                           options={CAR_MAKES}
@@ -705,6 +706,7 @@ function SellCarContent() {
                       </div>
                       <div className="space-y-2">
                         <Autocomplete
+                          size="lg"
                           label="Model"
                           placeholder="Select model (e.g. Hilux)"
                           options={(
@@ -1008,6 +1010,7 @@ function SellCarContent() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <InputText
+                        size="lg"
                         label="Year"
                         placeholder="2024"
                         value={carData.year}
@@ -1017,6 +1020,7 @@ function SellCarContent() {
                         fullWidth
                       />
                       <InputText
+                        size="lg"
                         label="Mileage (km)"
                         placeholder="45000"
                         value={carData.mileage}
@@ -1027,7 +1031,7 @@ function SellCarContent() {
                       />
                     </div>
                   </div>
-                  <div className="bg-[#1a1a1a] p-6  rounded-lg ">
+                  <div className="bg-[#1a1a1a] p-4 sm:p-6 rounded-lg">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                       <div className="space-y-2">
                         <p className="text-white uppercase tracking-wider px-1 flex gap-2">
@@ -1035,6 +1039,7 @@ function SellCarContent() {
                           Engine
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="2.0L"
                           value={carData.engineSize}
                           onChange={(e) =>
@@ -1049,6 +1054,7 @@ function SellCarContent() {
                           <MdSpeed className="text-2xl text-white" /> Power
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="120 hp"
                           value={carData.power}
                           onChange={(e) => updateCar({ power: e.target.value })}
@@ -1062,6 +1068,7 @@ function SellCarContent() {
                           <GiCarDoor className="text-2xl text-white" /> Doors
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="4"
                           value={carData.doors}
                           onChange={(e) => updateCar({ doors: e.target.value })}
@@ -1075,6 +1082,7 @@ function SellCarContent() {
                           <GiCarSeat className="text-2xl text-white" /> Seats
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="5"
                           value={carData.seats}
                           onChange={(e) => updateCar({ seats: e.target.value })}
@@ -1124,6 +1132,7 @@ function SellCarContent() {
                     </div>
                   </FormGroup>
                   <Textarea
+                    size="lg"
                     label="Description (optional)"
                     placeholder="Describe your car's condition, service history, extras..."
                     value={carData.description}
@@ -1140,7 +1149,7 @@ function SellCarContent() {
                   <Heading3>Pricing & Photos</Heading3>
                   <Body muted>Set your asking price and add clear photos.</Body>
 
-                  <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm space-y-8">
+                  <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg border border-gray-100 shadow-sm space-y-6 sm:space-y-8">
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
@@ -1488,7 +1497,7 @@ function SellCarContent() {
                       </Body>
                     </div>
                   ) : (
-                    <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm space-y-6">
+                    <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg border border-gray-100 shadow-sm space-y-6">
                       <div className="flex flex-col space-y-4">
                         <label className="text-sm font-bold text-gray-800 uppercase tracking-wider block px-1">
                           Signup as
@@ -1523,6 +1532,7 @@ function SellCarContent() {
 
                       {authData.role === "dealer" && (
                         <InputText
+                          size="lg"
                           label="Dealer / Business Name"
                           placeholder="e.g. Mbabane Motors"
                           value={authData.dealerName}
@@ -1536,6 +1546,7 @@ function SellCarContent() {
 
                       <FormGroup direction="horizontal" spacing="md">
                         <InputText
+                          size="lg"
                           label="First name"
                           placeholder="e.g. Sipho"
                           value={authData.firstName}
@@ -1546,6 +1557,7 @@ function SellCarContent() {
                           fullWidth
                         />
                         <InputText
+                          size="lg"
                           label="Last name"
                           placeholder="e.g. Dlamini"
                           value={authData.lastName}
@@ -1558,6 +1570,7 @@ function SellCarContent() {
                       </FormGroup>
 
                       <InputText
+                        size="lg"
                         label="Email address"
                         type="email"
                         placeholder="e.g. sipho@email.com"
@@ -1568,6 +1581,7 @@ function SellCarContent() {
                       />
 
                       <InputText
+                        size="lg"
                         label="Phone number"
                         placeholder="+268 7654 3210"
                         value={authData.phone}
@@ -1578,6 +1592,7 @@ function SellCarContent() {
 
                       <FormGroup direction="horizontal" spacing="md">
                         <InputPassword
+                          size="lg"
                           label="Password"
                           value={authData.password}
                           onChange={(e) =>
@@ -1587,6 +1602,7 @@ function SellCarContent() {
                           fullWidth
                         />
                         <InputPassword
+                          size="lg"
                           label="Confirm password"
                           value={authData.confirmPassword}
                           onChange={(e) =>

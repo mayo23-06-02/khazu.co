@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "../../Buttons/Button/Button";
+import { CtaButton } from "../../Buttons/CtaButton/CtaButton";
 import { Container } from "../../Layout/Container/Container";
 import {
   FaStar,
@@ -93,9 +93,9 @@ export function ListingsSellBanner({ className = "" }: { className?: string }) {
                 href={`/sell/upload?reg=${encodeURIComponent(plate)}`}
                 className="w-full"
               >
-                <Button className="bg-white w-full h-14 text-black hover:bg-gray-100 rounded-md px-6 text-base md:text-lg font-bold transition-all active:scale-95">
+                <CtaButton className="bg-white text-black hover:bg-gray-100">
                   Sell My Car
-                </Button>
+                </CtaButton>
               </Link>
             </div>
 
