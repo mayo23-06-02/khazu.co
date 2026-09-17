@@ -139,17 +139,26 @@
     line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    /* No overflow-x here (html already clips horizontal overflow). Setting
+       it on body too computes an implicit overflow-y: auto (per spec, a
+       non-visible x-axis forces the y-axis off "visible"), which makes body
+       its own scroll container. Since body itself never actually needs to
+       scroll, every position:sticky descendant anywhere in the app then
+       binds to body's static, non-scrolling box instead of the real page
+       scroll and never re-sticks - this silently broke every sticky header
+       and sidebar in the app (PublicHeader included). */
     /* Fill the visible viewport on mobile; dvh tracks the collapsing URL bar
        so there is never a gap or extra scroll like static 100vh causes. */
     min-height: 100dvh;
   }
 
+  /* No forced color here: a raw <h1>-<h6> must keep inheriting from its
+     parent (e.g. text-white on a dark hero section) rather than always
+     rendering ink-black regardless of context. */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.021em;
-    color: var(--color-ink);
   }
 
   img, video {

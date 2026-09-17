@@ -22,7 +22,7 @@ import {
   Body,
   Small,
   Caption,
-  Button,
+  CtaButton,
   IconButton,
   Badge,
   Divider,
@@ -342,14 +342,9 @@ export default function PricingPage() {
                     </ul>
                   </CardBody>
                   <CardFooter className="pt-6 pb-2">
-                    <Button
-                      variant="primary"
-                      size="md"
-                      fullWidth
-                      onClick={() => handleBoost(opt.days)}
-                    >
+                    <CtaButton onClick={() => handleBoost(opt.days)}>
                       Subscribe
-                    </Button>
+                    </CtaButton>
                   </CardFooter>
                 </Card>
               ))}
@@ -441,22 +436,19 @@ export default function PricingPage() {
                     </CardBody>
                   </div>
                   <CardFooter className="pt-2 pb-4">
-                    <Button
+                    <CtaButton
                       variant={plan.popular ? "primary" : "outline"}
-                      size="md"
                       className={twMerge(
                         clsx(
-                          "",
                           plan.popular
-                            ? "bg-[#a72346] hover:bg-[#8e1c3a] text-white "
+                            ? "bg-[#a72346] hover:bg-[#8e1c3a] text-white"
                             : "border-gray-300 bg-[#1a1a1a] text-white",
                         ),
                       )}
-                      fullWidth
                       onClick={() => handleSubscribe(plan.id)}
                     >
                       {plan.popular ? "Subscribe Now" : "Choose Plan"}
-                    </Button>
+                    </CtaButton>
                   </CardFooter>
                 </Card>
               ))}
@@ -716,21 +708,17 @@ export default function PricingPage() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
             <Link href="/signup" className="w-full sm:w-auto">
-              <Button
+              <CtaButton
                 variant="primary"
-                className="w-full bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold uppercase tracking-wider text-xs py-4 px-8 rounded-lg shadow-lg shadow-[#a72346]/20 transition-all duration-300"
+                className="bg-[#a72346] hover:bg-[#8e1c3a] font-bold uppercase tracking-wider shadow-lg shadow-[#a72346]/20"
               >
                 Sign Up Free <FaArrowRight className="ml-2" />
-              </Button>
+              </CtaButton>
             </Link>
             <Link href="/docs" className="w-full sm:w-auto">
-              <Button
-                variant="inverse"
-                size="lg"
-                className="w-full font-bold uppercase tracking-wider"
-              >
+              <CtaButton variant="inverse" className="font-bold uppercase tracking-wider">
                 Contact Sales
-              </Button>
+              </CtaButton>
             </Link>
           </div>
         </Container>

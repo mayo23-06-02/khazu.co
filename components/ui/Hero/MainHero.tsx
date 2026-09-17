@@ -23,7 +23,6 @@ import {
   Caption,
   InputText,
   Select,
-  Button,
   Badge,
   IconButton,
   Avatar,
@@ -278,10 +277,7 @@ export function MainHero({
                   </div>
                 </div>
 
-                <CtaButton
-                  className="text-white h-12 md:h-14 text-sm md:text-base"
-                  onClick={handleSearch}
-                >
+                <CtaButton className="text-white" onClick={handleSearch}>
                   Search {formattedCount} {carWord}
                   <div className="w-8 h-8 md:w-10 md:h-10 ml-2 md:ml-4 rounded-full flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
                     <FaSearch size={14} />
@@ -310,14 +306,14 @@ export function MainHero({
                     widest selection of quality vehicles across Eswatini — all
                     in one trusted marketplace.
                   </p>
-                  <Button
+                  <CtaButton
                     variant="inverse"
-                    size="lg"
+                    fullWidth={false}
                     className="rounded-full px-6 md:px-8"
                     onClick={() => router.push("/listings")}
                   >
                     Browse cars for sale
-                  </Button>
+                  </CtaButton>
                   <div className="mt-4 md:mt-6 border-t border-gray-50/20 pt-4 md:pt-5 flex flex-wrap items-center gap-3 md:gap-4">
                     <span className="text-gray-100 text-xs md:text-sm flex items-center gap-1.5">
                       <FaCar className="text-primary" size={14} />

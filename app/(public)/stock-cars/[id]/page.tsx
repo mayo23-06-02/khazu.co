@@ -4,6 +4,7 @@ import {
   Container,
   Navbar,
   Button,
+  CtaButton,
   Section,
   Grid,
   Stack,
@@ -350,20 +351,18 @@ export default function ProductPage() {
               </div>
 
               <Stack spacing="md">
-                <Button
+                <CtaButton
                   variant="primary"
-                  size="lg"
-                  className="w-full font-black uppercase tracking-widest text-sm py-4"
+                  className="font-black uppercase tracking-widest"
                 >
                   <MdPhone className="mr-2" size={18} /> Reveal Phone
-                </Button>
-                <Button
+                </CtaButton>
+                <CtaButton
                   variant="secondary"
-                  size="lg"
-                  className="w-full font-black uppercase tracking-widest text-sm py-4 bg-gray-900 hover:bg-[#1a1a1a] text-white"
+                  className="font-black uppercase tracking-widest bg-gray-900 hover:bg-[#1a1a1a] text-white"
                 >
                   <MdEmail className="mr-2" size={18} /> Message Seller
-                </Button>
+                </CtaButton>
               </Stack>
 
               <div className="mt-6 pt-6 border-t border-black/5">

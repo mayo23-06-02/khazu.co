@@ -605,46 +605,66 @@ function SellCarContent() {
     "Account",
   ];
 
-  return (
-    <div className="min-h-dvh w-full overflow-x-hidden bg-[#e6e6e6]">
-      {/* Header */}
+  const percentComplete = Math.round((currentStep / stepLabels.length) * 100);
 
-      <div className="py-4 sm:py-8 min-h-dvh sm:h-dvh flex justify-between flex-col items-center bg-white w-full max-w-6xl mx-auto px-0 sm:px-2">
-        {/* Toast notifications */}
-        <div className="fixed top-4 right-4 z-50 space-y-2">
-          {toast && (
-            <Toast
-              type={toast.type}
-              message={toast.message}
-              onClose={() => setToast(null)}
-            />
-          )}
-        </div>
-        <div className="flex max-w-4xl items-center px-4 w-full mx-auto justify-between  mb-6">
+  return (
+    // No overflow-x-hidden here: it forces an implicit overflow-y: auto
+    // (per spec, when one axis is non-visible the other computes to auto),
+    // which turns this div into an intermediate scroll container and
+    // breaks position:sticky for the header below - it would stick to
+    // this div's own (never-scrolling) box instead of the real page
+    // scroll. The global <html> rule already prevents horizontal scroll.
+    <div className="min-h-dvh w-full bg-surface-alt">
+      {/* Toast notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {toast && (
+          <Toast
+            type={toast.type}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </div>
+
+      {/* Sticky header + progress - stays visible while scrolling instead of
+          disappearing above the fold like the old inline header did. */}
+      <div className="sticky top-0 z-40 w-full bg-white border-b border-line safe-area-pt">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-2.5 sm:py-3">
           <Logo />
-          <Button
-            size="sm"
-            color="primary"
-            variant="outline"
-            onClick={() => router.push("/login")}
-          >
+          <Button size="sm" variant="outline" onClick={() => router.push("/login")}>
             Login
           </Button>
         </div>
-        <div className="max-w-4xl mx-auto h-full flex flex-col  justify-between w-full">
-          <div className="my-6 px-4">
-            <div className="mb-6">
-              <p className=" font-extrabold text-4xl text-black">
-                Follow these steps to get your car in front of thousands of
-                buyers.
-              </p>
-            </div>
+        <div className="mx-auto max-w-4xl px-4 pb-3">
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <span className="truncate text-xs font-semibold text-ink">
+              {stepLabels[currentStep - 1]}
+            </span>
+            <span className="shrink-0 text-xs font-semibold text-primary">
+              Step {currentStep} of {stepLabels.length} &middot; {percentComplete}%
+            </span>
           </div>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-sunken">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+              style={{ width: `${percentComplete}%` }}
+            />
+          </div>
+        </div>
+      </div>
 
-          {/* Main Card */}
-          <div className="border-none w-full h-full mb-24 py4 overflow-auto custom-scrollbar  flex flex-col justify-between ">
-            <div className="pb-6 lg:pb-12 px-4">
-              {/* Step 1: Vehicle Details */}
+      <div className="mx-auto w-full max-w-4xl bg-white">
+        <div className="px-4 pt-5 sm:pt-6">
+          <p className="font-display text-lg sm:text-2xl md:text-4xl font-extrabold text-black">
+            Follow these steps to get your car in front of thousands of
+            buyers.
+          </p>
+        </div>
+
+        {/* Main Card */}
+        <div className="w-full">
+          <div className="px-4 pb-6 pt-5 sm:pt-6 lg:pb-12">
+            {/* Step 1: Vehicle Details */}
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <div className="px-4">
@@ -654,13 +674,13 @@ function SellCarContent() {
                     </Body>
                   </div>
 
-                  <div className="bg-white p-4 lg:p-8 ">
+                  <div className="bg-white p-4 sm:p-6 lg:p-8">
                     <div className="flex flex-col lg:items-center mb-8">
                       <label className="text-md font-semibold  text-gray-600 mb-4 block">
                         Enter Registration
                       </label>
                       <div className="relative group w-full max-w-[500px]">
-                        <div className="w-full relative h-[130px]  flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
+                        <div className="w-full relative h-[80px] sm:h-[100px] md:h-[130px] flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[4px] sm:border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
                           <Image
                             src="/plate-bg.svg"
                             alt="Plate Background"
@@ -668,7 +688,7 @@ function SellCarContent() {
                             className="object-cover"
                           />
                           <input
-                            className="font-mono max-h-[430px] bg-transparent w-full h-full text-center font-black text-6xl md:text-7xl focus:outline-none transition-all uppercase placeholder:text-black/5 text-black drop-shadow-sm"
+                            className="font-mono max-h-[430px] bg-transparent w-full h-full px-3 sm:px-5 md:px-8 text-center font-black text-[37px] sm:text-[56px] focus:outline-none transition-all uppercase placeholder:text-black/20 text-black drop-shadow-sm"
                             type="text"
                             placeholder="ABC 123 CM"
                             value={carData.regNumber}
@@ -692,6 +712,7 @@ function SellCarContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-50">
                       <div className="space-y-2">
                         <Autocomplete
+                          size="lg"
                           label="Make / Brand"
                           placeholder="Select make (e.g. Toyota)"
                           options={CAR_MAKES}
@@ -705,6 +726,7 @@ function SellCarContent() {
                       </div>
                       <div className="space-y-2">
                         <Autocomplete
+                          size="lg"
                           label="Model"
                           placeholder="Select model (e.g. Hilux)"
                           options={(
@@ -1008,6 +1030,7 @@ function SellCarContent() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <InputText
+                        size="lg"
                         label="Year"
                         placeholder="2024"
                         value={carData.year}
@@ -1017,6 +1040,7 @@ function SellCarContent() {
                         fullWidth
                       />
                       <InputText
+                        size="lg"
                         label="Mileage (km)"
                         placeholder="45000"
                         value={carData.mileage}
@@ -1027,7 +1051,7 @@ function SellCarContent() {
                       />
                     </div>
                   </div>
-                  <div className="bg-[#1a1a1a] p-6  rounded-lg ">
+                  <div className="bg-[#1a1a1a] p-4 sm:p-6 rounded-lg">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                       <div className="space-y-2">
                         <p className="text-white uppercase tracking-wider px-1 flex gap-2">
@@ -1035,6 +1059,7 @@ function SellCarContent() {
                           Engine
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="2.0L"
                           value={carData.engineSize}
                           onChange={(e) =>
@@ -1049,6 +1074,7 @@ function SellCarContent() {
                           <MdSpeed className="text-2xl text-white" /> Power
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="120 hp"
                           value={carData.power}
                           onChange={(e) => updateCar({ power: e.target.value })}
@@ -1062,6 +1088,7 @@ function SellCarContent() {
                           <GiCarDoor className="text-2xl text-white" /> Doors
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="4"
                           value={carData.doors}
                           onChange={(e) => updateCar({ doors: e.target.value })}
@@ -1075,6 +1102,7 @@ function SellCarContent() {
                           <GiCarSeat className="text-2xl text-white" /> Seats
                         </p>
                         <InputText
+                          size="lg"
                           placeholder="5"
                           value={carData.seats}
                           onChange={(e) => updateCar({ seats: e.target.value })}
@@ -1124,6 +1152,7 @@ function SellCarContent() {
                     </div>
                   </FormGroup>
                   <Textarea
+                    size="lg"
                     label="Description (optional)"
                     placeholder="Describe your car's condition, service history, extras..."
                     value={carData.description}
@@ -1140,7 +1169,7 @@ function SellCarContent() {
                   <Heading3>Pricing & Photos</Heading3>
                   <Body muted>Set your asking price and add clear photos.</Body>
 
-                  <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm space-y-8">
+                  <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg border border-gray-100 shadow-sm space-y-6 sm:space-y-8">
                     <div className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
@@ -1488,7 +1517,7 @@ function SellCarContent() {
                       </Body>
                     </div>
                   ) : (
-                    <div className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm space-y-6">
+                    <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg border border-gray-100 shadow-sm space-y-6">
                       <div className="flex flex-col space-y-4">
                         <label className="text-sm font-bold text-gray-800 uppercase tracking-wider block px-1">
                           Signup as
@@ -1523,6 +1552,7 @@ function SellCarContent() {
 
                       {authData.role === "dealer" && (
                         <InputText
+                          size="lg"
                           label="Dealer / Business Name"
                           placeholder="e.g. Mbabane Motors"
                           value={authData.dealerName}
@@ -1536,6 +1566,7 @@ function SellCarContent() {
 
                       <FormGroup direction="horizontal" spacing="md">
                         <InputText
+                          size="lg"
                           label="First name"
                           placeholder="e.g. Sipho"
                           value={authData.firstName}
@@ -1546,6 +1577,7 @@ function SellCarContent() {
                           fullWidth
                         />
                         <InputText
+                          size="lg"
                           label="Last name"
                           placeholder="e.g. Dlamini"
                           value={authData.lastName}
@@ -1558,6 +1590,7 @@ function SellCarContent() {
                       </FormGroup>
 
                       <InputText
+                        size="lg"
                         label="Email address"
                         type="email"
                         placeholder="e.g. sipho@email.com"
@@ -1568,6 +1601,7 @@ function SellCarContent() {
                       />
 
                       <InputText
+                        size="lg"
                         label="Phone number"
                         placeholder="+268 7654 3210"
                         value={authData.phone}
@@ -1578,6 +1612,7 @@ function SellCarContent() {
 
                       <FormGroup direction="horizontal" spacing="md">
                         <InputPassword
+                          size="lg"
                           label="Password"
                           value={authData.password}
                           onChange={(e) =>
@@ -1587,6 +1622,7 @@ function SellCarContent() {
                           fullWidth
                         />
                         <InputPassword
+                          size="lg"
                           label="Confirm password"
                           value={authData.confirmPassword}
                           onChange={(e) =>
@@ -1624,7 +1660,7 @@ function SellCarContent() {
               )}
             </div>
 
-            <div className="px-3 sm:px-4 pb-4 sm:pb-0">
+            <div className="px-3 sm:px-4 pb-4 sm:pb-6">
               <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
                 <Button
                   variant="outline"
@@ -1635,40 +1671,34 @@ function SellCarContent() {
                 >
                   <FaArrowLeft className="mr-2" /> Back
                 </Button>
-                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                  <Small muted className="text-gray-400 shrink-0">
-                    Step {currentStep} of 5
-                  </Small>
-                  {currentStep === 5 ? (
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={handleSubmit}
-                      className="flex-1 sm:flex-none"
-                      disabled={!authData.termsAccepted || isSubmitting}
-                      loading={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <FaSpinner className="animate-spin mr-2" />
-                      ) : null}
-                      {isSubmitting ? "Posting..." : "Post Listing"}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={handleNext}
-                      className="flex-1 sm:flex-none"
-                    >
-                      Next <FaArrowRight className="ml-2" />
-                    </Button>
-                  )}
-                </div>
+                {currentStep === stepLabels.length ? (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleSubmit}
+                    className="w-full sm:w-auto"
+                    disabled={!authData.termsAccepted || isSubmitting}
+                    loading={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <FaSpinner className="animate-spin mr-2" />
+                    ) : null}
+                    {isSubmitting ? "Posting..." : "Post Listing"}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleNext}
+                    className="w-full sm:w-auto"
+                  >
+                    Next <FaArrowRight className="ml-2" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }

@@ -21,7 +21,7 @@ import {
   Body,
   Small,
   Caption,
-  Button,
+  CtaButton,
   IconButton,
   Badge,
   Divider,
@@ -141,14 +141,13 @@ export default function SellMyCarPage() {
               Sell to thousands of dealers across Eswatini or choose a buyer
               who'll collect from your home.
             </p>
-            <Button
-              variant="primary"
-              size="md"
-              className="shadow-lg px-6 sm:px-10 text-sm sm:text-base whitespace-nowrap"
+            <CtaButton
+              fullWidth={false}
+              className="shadow-lg px-6 sm:px-10 whitespace-nowrap"
               onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}
             >
               Get started for FREE <FaArrowRight className="ml-2" />
-            </Button>
+            </CtaButton>
           </div>
         </Container>
       </section>
@@ -267,9 +266,9 @@ export default function SellMyCarPage() {
                     <Link
                       href={`/sell/upload?reg=${encodeURIComponent(formData.reg)}`}
                     >
-                      <Button className=" w-full text-white hover:bg-[#a72346] rounded-md px-10 py-4 text-lg font-bold transition-all transform active:scale-95">
+                      <CtaButton className="hover:bg-[#a72346]">
                         Sell My Car
-                      </Button>
+                      </CtaButton>
                     </Link>
                   </div>
                 </div>

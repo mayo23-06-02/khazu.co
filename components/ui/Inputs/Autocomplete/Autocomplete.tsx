@@ -4,6 +4,7 @@ import { MdExpandMore } from "react-icons/md";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { InputText } from "../InputText/InputText";
+import type { ControlSize } from "../inputStyles";
 
 interface AutocompleteOption {
   label: string;
@@ -18,6 +19,7 @@ interface AutocompleteProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   label?: string;
   error?: string;
   placeholder?: string;
+  size?: ControlSize;
   className?: string;
 }
 
@@ -28,6 +30,7 @@ export function Autocomplete({
   label,
   error,
   placeholder,
+  size,
   className = "",
   ...props
 }: AutocompleteProps) {
@@ -77,6 +80,7 @@ export function Autocomplete({
         label={label}
         error={error}
         placeholder={placeholder}
+        size={size}
         value={inputValue}
         onChange={(e) => {
           const val = e.target.value;
