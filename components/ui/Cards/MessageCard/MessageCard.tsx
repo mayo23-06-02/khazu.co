@@ -34,12 +34,12 @@ export function MessageCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <MdPerson className="text-gray-800/40" />
-          <span className="font-medium text-gray-800">${sender}</span>
+          <span className="font-medium text-gray-800">{sender}</span>
           {unread && <Badge variant="primary">New</Badge>}
         </div>
-        <span className="text-xs text-gray-800/50">${timestamp}</span>
+        <span className="text-xs text-gray-800/50">{timestamp}</span>
       </div>
-      <p className="mt-1 text-sm text-gray-800/60 truncate">${preview}</p>
+      <p className="mt-1 text-sm text-gray-800/60 truncate">{preview}</p>
     </button>
   );
 }

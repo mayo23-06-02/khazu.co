@@ -2,40 +2,47 @@
 import { forwardRef, TextareaHTMLAttributes } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  fieldWrap, labelClass, hintClass, errorClass,
+  controlBase, textareaSizes, tone, type ControlSize,
+} from "../inputStyles";
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
+  hint?: string;
+  size?: ControlSize;
   fullWidth?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, fullWidth = false, className = "", ...props }, ref) => (
-    <div
-      className={twMerge(clsx("flex flex-col gap-1", fullWidth && "w-full"))}
-    >
-      {label && (
-        <label className="text-sm font-medium text-gray-800">{label}</label>
-      )}
-      <textarea
-        ref={ref}
-        className={twMerge(
-          clsx(
-            "w-full rounded-lg border bg-white px-4 py-2.5 text-gray-800 placeholder:text-gray-800/40 transition-colors focus:outline-none focus:ring-2",
-            error
-              ? "border-danger focus:ring-danger/30"
-              : "border-black/20 focus:border[#CD2C58] focus:ring[#CD2C58]/30",
-            className,
-          ),
+  ({ label, error, hint, size = "md", fullWidth = true, className = "", id, rows = 4, ...props }, ref) => {
+    const fieldId = id ?? props.name;
+    return (
+      <div className={twMerge(clsx(fieldWrap, fullWidth && "w-full"))}>
+        {label && (
+          <label htmlFor={fieldId} className={labelClass}>
+            {label}
+          </label>
         )}
-        {...props}
-      />
-      {error && (
-        <p className="text-sm text-danger" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
-  ),
+        <textarea
+          ref={ref}
+          id={fieldId}
+          rows={rows}
+          aria-invalid={!!error || undefined}
+          className={twMerge(
+            clsx(controlBase, textareaSizes[size], tone(error), "resize-y min-h-20", className),
+          )}
+          {...props}
+        />
+        {hint && !error && <p className={hintClass}>{hint}</p>}
+        {error && (
+          <p className={errorClass} role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  },
 );
 Textarea.displayName = "Textarea";

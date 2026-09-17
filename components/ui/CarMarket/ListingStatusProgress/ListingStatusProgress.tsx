@@ -25,9 +25,9 @@ export function ListingStatusProgress({
             className={twMerge(
               clsx(
                 "w-3 h-3 rounded-full border-2 transition-colors",
-                step.status === "completed" && "bg[#CD2C58] border[#CD2C58]",
+                step.status === "completed" && "bg-[#CD2C58] border-[#CD2C58]",
                 step.status === "active" &&
-                  "bg-white border[#CD2C58] animate-pulse",
+                  "bg-white border-[#CD2C58] animate-pulse",
                 step.status === "error" && "bg-danger border-danger",
                 step.status === "pending" && "bg-white border-black/10",
               ),
@@ -40,7 +40,7 @@ export function ListingStatusProgress({
                 clsx(
                   "w-8 h-0.5 mx-1 transition-colors",
                   steps[index].status === "completed"
-                    ? "bg[#CD2C58]"
+                    ? "bg-[#CD2C58]"
                     : "bg-dark/10",
                 ),
               )}

@@ -59,7 +59,7 @@ export function MileageInfographic({
     if (avgMileagePerYear < 20000)
       return {
         label: "Optimal",
-        color: "text[#CD2C58]",
+        color: "text-[#CD2C58]",
         icon: <MdCompareArrows />,
       };
     if (avgMileagePerYear < 30000)
@@ -145,14 +145,14 @@ export function MileageInfographic({
                 cx="50"
                 cy="50"
                 r="45"
-                className="stroke[#CD2C58] fill-none stroke-[8] transition-all duration-1000 ease-out"
+                className="stroke-[#CD2C58] fill-none stroke-[8] transition-all duration-1000 ease-out"
                 strokeDasharray={`${2 * Math.PI * 45}`}
                 strokeDashoffset={`${2 * Math.PI * 45 * (1 - mileagePercentile / 100)}`}
                 strokeLinecap="round"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-              <MdSpeed size={32} className="text[#CD2C58] mb-2" />
+              <MdSpeed size={32} className="text-[#CD2C58] mb-2" />
               <span className="text-3xl sm:text-4xl font-display font-black text-gray-800 tracking-tight">
                 {mileage > 99999
                   ? (mileage / 1000).toFixed(1) + "k"
@@ -174,7 +174,7 @@ export function MileageInfographic({
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 bg-cream/30 rounded-lg border border-black/5">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-white rounded-lg shadow-sm text[#CD2C58]">
+              <div className="p-2 bg-white rounded-lg shadow-sm text-[#CD2C58]">
                 <FaRoad size={18} />
               </div>
               <span className="text-xs font-bold text-gray-800/60 uppercase tracking-wider">
@@ -189,7 +189,7 @@ export function MileageInfographic({
 
           <div className="p-4 bg-cream/30 rounded-lg border border-black/5">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-white rounded-lg shadow-sm text[#CD2C58]">
+              <div className="p-2 bg-white rounded-lg shadow-sm text-[#CD2C58]">
                 <MdCalendarToday size={18} />
               </div>
               <span className="text-xs font-bold text-gray-800/60 uppercase tracking-wider">
@@ -206,7 +206,7 @@ export function MileageInfographic({
 
           <div className="sm:col-span-2 p-4 bg-cream/30 rounded-lg border border-black/5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-white rounded-lg shadow-sm text[#CD2C58]">
+              <div className="p-2 bg-white rounded-lg shadow-sm text-[#CD2C58]">
                 <MdAccessTime size={18} />
               </div>
               <span className="text-xs font-bold text-gray-800/60 uppercase tracking-wider">
@@ -262,7 +262,7 @@ function HealthBar({
   icon: React.ReactNode;
 }) {
   const getStatusColor = (v: number) => {
-    if (v > 70) return "bg[#CD2C58]";
+    if (v > 70) return "bg-[#CD2C58]";
     if (v > 30) return "bg-yellow-500";
     return "bg-danger";
   };
@@ -271,7 +271,7 @@ function HealthBar({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text[#CD2C58]">{icon}</span>
+          <span className="text-[#CD2C58]">{icon}</span>
           <span className="text-sm font-bold text-gray-800/80">{label}</span>
         </div>
         <span className="text-sm font-display font-bold text-gray-800">

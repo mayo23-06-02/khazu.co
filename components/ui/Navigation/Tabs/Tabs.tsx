@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 interface TabItem {
   id: string;
   label: ReactNode;
-  content: ReactNode;
+  content?: ReactNode;
   disabled?: boolean;
 }
 
@@ -25,76 +25,71 @@ export function Tabs({
   className = "",
   variant = "underline",
 }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id);
-  const handleChange = (tabId: string) => {
-    setActiveTab(tabId);
-    onChange?.(tabId);
+  const [active, setActive] = useState(defaultTab ?? tabs[0]?.id);
+  const select = (id: string) => {
+    setActive(id);
+    onChange?.(id);
+  };
+  const activeTab = tabs.find((t) => t.id === active);
+
+  const listStyles = {
+    underline: "border-b border-line gap-1",
+    pills: "gap-1.5",
+    full: "gap-1.5 w-full",
   };
 
-  const variantClasses = {
-    underline: {
-      list: "border-b border-black/5 gap-1",
-      item: (isActive: boolean, disabled: boolean) =>
-        clsx(
-          "px-4 py-2.5 text-sm font-medium transition-colors border-b-2",
-          isActive
-            ? "border[#CD2C58] text-gray-800"
-            : "border-transparent text-gray-800/50 hover:text-gray-800 hover:border-black/10",
-          disabled && "opacity-50 cursor-not-allowed",
-        ),
-    },
-    pills: {
-      list: "gap-1",
-      item: (isActive: boolean, disabled: boolean) =>
-        clsx(
-          "px-4 py-2 text-sm font-medium transition-colors rounded-lg",
-          isActive
-            ? "bg[#CD2C58] text-gray-800"
-            : "text-gray-800/60 hover:bg-dark/5 hover:text-gray-800",
-          disabled && "opacity-50 cursor-not-allowed",
-        ),
-    },
-    full: {
-      list: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1",
-      item: (isActive: boolean, disabled: boolean) =>
-        clsx(
-          "px-4 py-2.5 text-sm font-medium transition-colors rounded-lg text-center",
-          isActive
-            ? "bg[#CD2C58] text-gray-800"
-            : "bg-dark/5 text-gray-800/60 hover:bg-dark/10 hover:text-gray-800",
-          disabled && "opacity-50 cursor-not-allowed",
-        ),
-    },
+  const tabStyles = (isActive: boolean) => {
+    if (variant === "underline") {
+      return clsx(
+        "-mb-px border-b-2 px-3 py-2",
+        isActive
+          ? "border-primary text-primary"
+          : "border-transparent text-muted hover:text-ink",
+      );
+    }
+    return clsx(
+      "rounded-xl px-3 py-1.5",
+      variant === "full" && "flex-1",
+      isActive ? "bg-primary text-white" : "text-muted hover:bg-surface-sunken hover:text-ink",
+    );
   };
 
   return (
     <div className={twMerge(clsx("w-full", className))}>
       <div
-        className={twMerge(
-          clsx("flex flex-wrap", variantClasses[variant].list),
-        )}
         role="tablist"
+        className={clsx(
+          "flex items-center overflow-x-auto scrollbar-hide",
+          listStyles[variant],
+        )}
       >
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => !tab.disabled && handleChange(tab.id)}
-            className={variantClasses[variant].item(
-              activeTab === tab.id,
-              !!tab.disabled,
-            )}
-            role="tab"
-            aria-selected={activeTab === tab.id}
-            aria-disabled={tab.disabled}
-            disabled={tab.disabled}
-          >
-            {tab.label}
-          </button>
-        ))}
+        {tabs.map((tab) => {
+          const isActive = tab.id === active;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              type="button"
+              aria-selected={isActive}
+              disabled={tab.disabled}
+              onClick={() => select(tab.id)}
+              className={clsx(
+                "shrink-0 whitespace-nowrap text-xs font-semibold transition-colors duration-200",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                "disabled:cursor-not-allowed disabled:opacity-40",
+                tabStyles(isActive),
+              )}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
-      <div className="mt-4">
-        {tabs.find((t) => t.id === activeTab)?.content}
-      </div>
+      {activeTab?.content && (
+        <div role="tabpanel" className="pt-3">
+          {activeTab.content}
+        </div>
+      )}
     </div>
   );
 }

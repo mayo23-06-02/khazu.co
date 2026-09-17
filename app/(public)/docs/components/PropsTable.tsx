@@ -50,7 +50,7 @@ export function PropsTable({ props }: PropsTableProps) {
                 <TableCell className="font-mono text-sm text-gray-800 font-bold">
                   {prop.name}
                 </TableCell>
-                <TableCell className="font-mono text-xs text[#CD2C58]-dark">
+                <TableCell className="font-mono text-xs text-[#CD2C58]-dark">
                   {prop.type}
                 </TableCell>
                 <TableCell className="font-mono text-xs text-gray-800/40">

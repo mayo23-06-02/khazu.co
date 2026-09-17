@@ -1,43 +1,48 @@
 "use client";
 import { forwardRef, InputHTMLAttributes } from "react";
-import { MdCheck } from "react-icons/md";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { errorClass, hintClass } from "../inputStyles";
 
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  hint?: string;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ label, error, className = "", ...props }, ref) => (
-    <div className="flex flex-col gap-1">
-      <label className="flex items-center gap-2.5 cursor-pointer">
-        <div className="relative">
+  ({ label, error, hint, className = "", id, ...props }, ref) => {
+    const fieldId = id ?? props.name;
+    return (
+      <div className="flex flex-col gap-1">
+        <label htmlFor={fieldId} className="flex cursor-pointer items-start gap-2.5">
           <input
             ref={ref}
+            id={fieldId}
             type="checkbox"
+            aria-invalid={!!error || undefined}
             className={twMerge(
               clsx(
-                "peer h-5 w-5 rounded border-black/30 text[#CD2C58] focus:ring-2 focus:ring[#CD2C58]/30 transition-colors",
+                "mt-px size-4 shrink-0 cursor-pointer rounded-sm border border-line-strong",
+                "accent-primary text-primary",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                "disabled:cursor-not-allowed disabled:opacity-50",
+                error && "border-danger",
                 className,
               ),
             )}
             {...props}
           />
-          <MdCheck
-            size={12}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
-          />
-        </div>
-        {label && <span className="text-sm text-gray-800/80">{label}</span>}
-      </label>
-      {error && (
-        <p className="text-sm text-danger" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
-  ),
+          {label && <span className="text-sm leading-snug text-ink">{label}</span>}
+        </label>
+        {hint && !error && <p className={clsx(hintClass, "pl-6.5")}>{hint}</p>}
+        {error && (
+          <p className={clsx(errorClass, "pl-6.5")} role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  },
 );
 Checkbox.displayName = "Checkbox";

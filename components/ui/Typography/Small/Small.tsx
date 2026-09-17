@@ -1,18 +1,20 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, ElementType } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface SmallProps {
   children: ReactNode;
   className?: string;
+  as?: ElementType;
   muted?: boolean;
-  weight?: "normal" | "medium" | "semibold";
+  weight?: "normal" | "medium" | "semibold" | "bold";
 }
 
 export function Small({
   children,
   className = "",
+  as: Tag = "p",
   muted = false,
   weight = "normal",
 }: SmallProps) {
@@ -20,19 +22,15 @@ export function Small({
     normal: "font-normal",
     medium: "font-medium",
     semibold: "font-semibold",
+    bold: "font-bold",
   };
   return (
-    <small
+    <Tag
       className={twMerge(
-        clsx(
-          "text-sm leading-normal",
-          weights[weight],
-          muted ? "text-gray-800" : "text-gray-800",
-          className,
-        ),
+        clsx("text-xs leading-normal", weights[weight], muted ? "text-muted" : "text-ink", className),
       )}
     >
-      <p>{children}</p>
-    </small>
+      {children}
+    </Tag>
   );
 }

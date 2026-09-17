@@ -1,24 +1,18 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, ElementType } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface Heading4Props {
   children: ReactNode;
   className?: string;
+  as?: ElementType;
 }
 
-export function Heading4({ children, className = "" }: Heading4Props) {
+export function Heading4({ children, className = "", as: Tag = "h4" }: Heading4Props) {
   return (
-    <h4
-      className={twMerge(
-        clsx(
-          "font-display font-medium text-black leading-snug text-lg md:text-xl",
-          className,
-        ),
-      )}
-    >
+    <Tag className={twMerge(clsx("font-display font-semibold tracking-tight text-ink text-base sm:text-lg", className))}>
       {children}
-    </h4>
+    </Tag>
   );
 }

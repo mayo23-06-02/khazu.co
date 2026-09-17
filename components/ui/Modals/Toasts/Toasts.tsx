@@ -37,7 +37,7 @@ export function Toast({
     success: "bg-green-50 border-green-200 text-green-800",
     error: "bg-danger/10 border-danger/30 text-danger",
     warning: "bg-orange-50 border-orange-200 text-orange-800",
-    info: "bg[#CD2C58]/10 border[#CD2C58]/30 text-gray-800",
+    info: "bg-[#CD2C58]/10 border-[#CD2C58]/30 text-gray-800",
   };
   if (!visible) return null;
   return (

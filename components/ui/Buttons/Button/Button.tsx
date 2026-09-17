@@ -1,10 +1,14 @@
 "use client";
-import { ReactNode, ButtonHTMLAttributes } from "react";
+import { ReactNode, ButtonHTMLAttributes, ElementType } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-
-type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger";
-type ButtonSize = "sm" | "md" | "lg";
+import {
+  buttonBase,
+  buttonVariants,
+  buttonSizes,
+  type ButtonVariant,
+  type ButtonSize,
+} from "../buttonStyles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -12,7 +16,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   fullWidth?: boolean;
   loading?: boolean;
-  as?: any;
+  leadingIcon?: ReactNode;
+  trailingIcon?: ReactNode;
+  as?: ElementType;
   href?: string;
 }
 
@@ -22,45 +28,38 @@ export function Button({
   size = "md",
   fullWidth = false,
   loading = false,
+  leadingIcon,
+  trailingIcon,
   className = "",
   disabled,
   as: Component = "button",
   ...props
 }: ButtonProps) {
-  const base =
-    "inline-flex items-center justify-center cursor-pointer rounded-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
-  const variants = {
-    primary: "bg-[#1a1a1a] text-white hover:bg-[#CD2C58] hover:text-white",
-    secondary:
-      "bg-[#CD2C58] text-white hover:bg-[#1a1a1a] hover:text-white focus:ring-black/50",
-    outline:
-      "border border-black bg-transparent text-gray-800 hover:bg-dark/10",
-    ghost: "bg-transparent text-gray-800 hover:bg-dark/5",
-    danger: "bg-danger text-white hover:bg-danger/90 focus:ring-danger/50",
-  };
-  const sizes = {
-    sm: "px-6 py-2.5 text-sm",
-    md: "px-10 py-3.5 text-base",
-    lg: "px-14 py-6 text-lg",
-  };
   return (
     <Component
       className={twMerge(
         clsx(
-          base,
-          variants[variant],
-          sizes[size],
+          buttonBase,
+          buttonVariants[variant],
+          buttonSizes[size],
           fullWidth && "w-full",
           className,
         ),
       )}
-      disabled={disabled || loading}
+      disabled={Component === "button" ? disabled || loading : undefined}
+      aria-busy={loading || undefined}
       {...props}
     >
-      {loading && (
-        <span className="inline-block animate-spin border-2 border-current border-t-transparent rounded-full w-4 h-4 mr-2" />
+      {loading ? (
+        <span
+          aria-hidden="true"
+          className="inline-block size-3.5 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
+        />
+      ) : (
+        leadingIcon
       )}
       {children}
+      {!loading && trailingIcon}
     </Component>
   );
 }

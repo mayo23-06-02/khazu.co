@@ -25,7 +25,7 @@ export function SubscriptionCard({
       className={twMerge(
         clsx(
           "bg-white rounded-lg shadow-sm border border-black/5 p-6 text-center relative",
-          isPopular && "border[#CD2C58] ring-1 ring[#CD2C58]",
+          isPopular && "border-[#CD2C58] ring-1 ring-[#CD2C58]",
           className,
         ),
       )}
@@ -35,13 +35,13 @@ export function SubscriptionCard({
           Popular
         </Badge>
       )}
-      <h3 className="font-display text-2xl font-bold text-gray-800">${name}</h3>
-      <p className="text-3xl font-display font-bold text[#CD2C58] mt-2">
-        ${price}
+      <h3 className="font-display text-2xl font-bold text-gray-800">{name}</h3>
+      <p className="text-3xl font-display font-bold text-[#CD2C58] mt-2">
+        {price}
       </p>
       <div className="mt-4 space-y-2 text-sm text-gray-800/60">
         {features.map((f, i) => (
-          <div key={i}>${f}</div>
+          <div key={i}>{f}</div>
         ))}
       </div>
       <Button

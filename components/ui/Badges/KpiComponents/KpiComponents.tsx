@@ -13,7 +13,7 @@ interface KpiGaugeProps {
 export function KpiGauge({
   value,
   label,
-  color = "stroke[#CD2C58]",
+  color = "stroke-[#CD2C58]",
   size = "md",
   className = "",
 }: KpiGaugeProps) {
@@ -93,7 +93,7 @@ export function ValueScoreBadge({ score }: { score: number }) {
     if (v >= 75)
       return {
         label: "Great Value",
-        color: "bg[#CD2C58]/20 text-gray-800 border[#CD2C58]/30",
+        color: "bg-[#CD2C58]/20 text-gray-800 border-[#CD2C58]/30",
       };
     if (v >= 50)
       return {
@@ -123,7 +123,7 @@ export function ValueScoreBadge({ score }: { score: number }) {
 export function MarketRankBadge({ rank }: { rank: number }) {
   return (
     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-dark text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg border border-white/10">
-      <span className="text[#CD2C58]">#{rank}</span> in segment
+      <span className="text-[#CD2C58]">#{rank}</span> in segment
     </div>
   );
 }

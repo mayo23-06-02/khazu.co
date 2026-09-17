@@ -44,7 +44,7 @@ export default function DocsPage() {
           <main className="flex-1 max-w-4xl">
             <Section padding="none" className="mb-16">
               <Stack spacing="lg">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg[#CD2C58]/10 text[#CD2C58]-dark rounded-full text-xs font-bold uppercase tracking-wider">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#CD2C58]/10 text-[#CD2C58]-dark rounded-full text-xs font-bold uppercase tracking-wider">
                   <MdFlashOn />
                   Khazu Design System v4.0
                 </div>
@@ -73,7 +73,7 @@ export default function DocsPage() {
                 hover
                 className="bg-white/50 backdrop-blur-sm border-black/5 p-8"
               >
-                <div className="w-12 h-12 bg[#CD2C58] rounded-lg flex items-center justify-center mb-6 shadow-lg shadow[#CD2C58]/20">
+                <div className="w-12 h-12 bg-[#CD2C58] rounded-lg flex items-center justify-center mb-6 shadow-lg shadow-[#CD2C58]/20">
                   <MdLayers className="text-gray-800" size={24} />
                 </div>
                 <Heading2 className="text-xl mb-3">Modular Components</Heading2>
@@ -87,7 +87,7 @@ export default function DocsPage() {
                 className="bg-white/50 backdrop-blur-sm border-black/5 p-8"
               >
                 <div className="w-12 h-12 bg-dark rounded-lg flex items-center justify-center mb-6 shadow-lg shadow-dark/20">
-                  <MdCheckBoxOutlineBlank className="text[#CD2C58]" size={24} />
+                  <MdCheckBoxOutlineBlank className="text-[#CD2C58]" size={24} />
                 </div>
                 <Heading2 className="text-xl mb-3">Design Driven</Heading2>
                 <Body size="sm" muted>
@@ -102,15 +102,15 @@ export default function DocsPage() {
               <Card className="bg-dark text-white border-none p-6 font-mono text-sm">
                 <div className="flex items-center gap-2 mb-4 text-white/40">
                   <div className="w-3 h-3 rounded-full bg-danger" />
-                  <div className="w-3 h-3 rounded-full bg[#CD2C58]" />
+                  <div className="w-3 h-3 rounded-full bg-[#CD2C58]" />
                   <div className="w-3 h-3 rounded-full bg-white/20" />
                   <span className="ml-2">terminal</span>
                 </div>
-                <div className="text[#CD2C58]">
+                <div className="text-[#CD2C58]">
                   npm install <span className="text-white">@khazu/ui</span>
                 </div>
                 <div className="text-gray-800-subtle"># or</div>
-                <div className="text[#CD2C58]">
+                <div className="text-[#CD2C58]">
                   yarn add <span className="text-white">@khazu/ui</span>
                 </div>
               </Card>

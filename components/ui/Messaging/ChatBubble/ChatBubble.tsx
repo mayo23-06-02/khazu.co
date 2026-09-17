@@ -31,7 +31,7 @@ export function ChatBubble({
           clsx(
             "max-w-[75%] rounded-lg p-3 text-sm",
             variant === "sent"
-              ? "bg[#CD2C58] text-gray-800"
+              ? "bg-[#CD2C58] text-gray-800"
               : "bg-dark/10 text-gray-800",
             className,
           ),

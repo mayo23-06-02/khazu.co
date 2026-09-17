@@ -22,16 +22,16 @@ export function FraudAlert({
       <div className="flex items-center gap-3">
         <MdWarning className="text-danger" size={24} />
         <div>
-          <h3 className="font-medium text-gray-800">${pattern}</h3>
+          <h3 className="font-medium text-gray-800">{pattern}</h3>
           <p className="text-sm text-gray-800/60">
-            Detected in ${count} listings
+            Detected in {count} listings
           </p>
         </div>
       </div>
       <div className="mt-3 flex gap-2">
         {actions.map((a, i) => (
           <Button key={i} variant="outline" size="sm" onClick={a.onClick}>
-            ${a.label}
+            {a.label}
           </Button>
         ))}
       </div>

@@ -311,9 +311,9 @@ export function MainHero({
                     in one trusted marketplace.
                   </p>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-2 border-gray-100 text-gray-100 rounded-full px-6 md:px-8 py-2 md:py-3 hover:bg-dark hover:text-white transition-all text-sm md:text-base"
+                    variant="inverse"
+                    size="lg"
+                    className="rounded-full px-6 md:px-8"
                     onClick={() => router.push("/listings")}
                   >
                     Browse cars for sale

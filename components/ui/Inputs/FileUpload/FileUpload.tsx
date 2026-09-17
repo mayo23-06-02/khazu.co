@@ -56,7 +56,7 @@ export function FileUpload({
           clsx(
             "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
             isDragging
-              ? "border[#CD2C58] bg[#CD2C58]/5"
+              ? "border-[#CD2C58] bg-[#CD2C58]/5"
               : "border-black/20 hover:border-black/40",
             error && "border-danger bg-danger/5",
           ),

@@ -30,7 +30,7 @@ export function BulkActionBar({
       )}
     >
       <span className="text-sm text-gray-800/60">
-        ${selectedCount} selected
+        {selectedCount} selected
       </span>
       <div className="flex gap-2">
         {actions.map((a, i) => (
@@ -40,7 +40,7 @@ export function BulkActionBar({
             size="sm"
             onClick={a.onClick}
           >
-            ${a.label}
+            {a.label}
           </Button>
         ))}
       </div>

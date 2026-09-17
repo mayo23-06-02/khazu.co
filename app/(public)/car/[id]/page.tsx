@@ -193,6 +193,7 @@ export default function DealPage({ params }: DealPageProps) {
                 {/* Action Buttons */}
                 <div className="absolute top-4 right-4 flex flex-col gap-2">
                   <IconButton
+                    label={saved ? "Remove from saved" : "Save this car"}
                     variant="secondary"
                     size="md"
                     onClick={() => setSaved(!saved)}
@@ -204,6 +205,7 @@ export default function DealPage({ params }: DealPageProps) {
                     />
                   </IconButton>
                   <IconButton
+                    label="Share this car"
                     variant="secondary"
                     size="md"
                     className="bg-white/90 backdrop-blur hover:bg-white shadow-xl"

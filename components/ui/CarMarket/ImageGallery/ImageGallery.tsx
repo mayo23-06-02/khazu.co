@@ -28,7 +28,7 @@ export function ImageGallery({ images, className = "" }: ImageGalleryProps) {
               clsx(
                 "w-20 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all",
                 i === current
-                  ? "border[#CD2C58] ring-2 ring[#CD2C58]/20 scale-95"
+                  ? "border-[#CD2C58] ring-2 ring-[#CD2C58]/20 scale-95"
                   : "border-transparent opacity-60 hover:opacity-100",
               ),
             )}

@@ -1,30 +1,37 @@
 "use client";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Spinner } from "../../Badges/Spinner/Spinner";
 
 interface LoadingOverlayProps {
   isLoading: boolean;
   className?: string;
   message?: string;
+  /** Cover the nearest positioned ancestor instead of the whole viewport. */
+  contained?: boolean;
 }
 
 export function LoadingOverlay({
   isLoading,
   className = "",
-  message = "Loading...",
+  message = "Loading…",
+  contained = false,
 }: LoadingOverlayProps) {
   if (!isLoading) return null;
   return (
     <div
+      role="status"
+      aria-live="polite"
       className={twMerge(
         clsx(
-          "fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm",
+          "inset-0 z-50 flex flex-col items-center justify-center gap-2 bg-white/85 backdrop-blur-sm",
+          contained ? "absolute" : "fixed",
           className,
         ),
       )}
     >
-      <div className="w-12 h-12 border-4 border[#CD2C58] border-t-transparent rounded-full animate-spin" />
-      <p className="mt-4 text-sm text-gray-800/60">${message}</p>
+      <Spinner size="lg" />
+      {message && <p className="text-xs font-medium text-muted">{message}</p>}
     </div>
   );
 }

@@ -206,7 +206,7 @@ export default function ProductPage() {
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-sm font-bold text[#CD2C58] uppercase tracking-widest">
+                    <span className="text-sm font-bold text-[#CD2C58] uppercase tracking-widest">
                       {car.year} Model
                     </span>
                     <span className="w-1 h-1 rounded-full bg-dark/10" />
@@ -217,10 +217,10 @@ export default function ProductPage() {
                   </Heading1>
                   <div className="flex items-center gap-4 mt-4 text-gray-800/40 font-bold uppercase tracking-wider text-xs">
                     <span className="flex items-center gap-1.5">
-                      <MdPlace className="text[#CD2C58]" /> {car.location}
+                      <MdPlace className="text-[#CD2C58]" /> {car.location}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <MdSpeed className="text[#CD2C58]" />{" "}
+                      <MdSpeed className="text-[#CD2C58]" />{" "}
                       {car.mileage.toLocaleString()} km
                     </span>
                   </div>
@@ -261,10 +261,10 @@ export default function ProductPage() {
 
             {/* KPI Dashboard */}
             <div className="bg-dark text-white rounded-lg p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg[#CD2C58]/10 blur-[80px] -mr-32 -mt-32" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#CD2C58]/10 blur-[80px] -mr-32 -mt-32" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-8">
-                  <MdInsights className="text[#CD2C58]" size={24} />
+                  <MdInsights className="text-[#CD2C58]" size={24} />
                   <h3 className="text-xl font-black uppercase tracking-widest">
                     Khazu KPI Dashboard
                   </h3>
@@ -274,28 +274,28 @@ export default function ProductPage() {
                   <KpiGauge
                     value={car.valueScore}
                     label="Market Value"
-                    color="stroke[#CD2C58]"
+                    color="stroke-[#CD2C58]"
                   />
                   <KpiGauge
                     value={car.conditionScore}
                     label="Mechanical"
-                    color="stroke[#CD2C58]"
+                    color="stroke-[#CD2C58]"
                   />
                   <KpiGauge
                     value={88}
                     label="Price History"
-                    color="stroke[#CD2C58]"
+                    color="stroke-[#CD2C58]"
                   />
                 </div>
 
                 <div className="mt-10 p-4 bg-white/5 rounded-lg border border-white/10 flex items-start gap-4">
                   <MdInfoOutline
-                    className="text[#CD2C58] shrink-0 mt-1"
+                    className="text-[#CD2C58] shrink-0 mt-1"
                     size={20}
                   />
                   <p className="text-sm text-white/60 leading-relaxed">
                     <b>Khazu AI Analysis:</b> This vehicle is priced{" "}
-                    <span className="text[#CD2C58]">4.2% below average</span>{" "}
+                    <span className="text-[#CD2C58]">4.2% below average</span>{" "}
                     for the Mbabane region. Given its exceptional mechanical
                     score of {car.conditionScore}%, we rate this as a{" "}
                     <b>Great Deal</b> for long-term ownership.
@@ -310,7 +310,7 @@ export default function ProductPage() {
             {/* Detailed Specs */}
             <div className="bg-white rounded-lg p-8 border border-black/5 shadow-sm">
               <h3 className="text-xl font-black uppercase tracking-widest mb-8 flex items-center gap-3">
-                <MdBuild className="text[#CD2C58]" /> Technical Specifications
+                <MdBuild className="text-[#CD2C58]" /> Technical Specifications
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
                 <SpecRow label="Engine Size" value={car.engineSize} />
@@ -369,7 +369,7 @@ export default function ProductPage() {
               <div className="mt-6 pt-6 border-t border-black/5">
                 <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-gray-800/40 mb-4">
                   <span>Safety Checklist</span>
-                  <span className="text[#CD2C58]">100% Secure</span>
+                  <span className="text-[#CD2C58]">100% Secure</span>
                 </div>
                 <ul className="space-y-2">
                   <CheckListItem text="Verified Vehicle Identity" />
@@ -411,7 +411,7 @@ function SpecItem({
 }) {
   return (
     <div className="flex flex-col items-center p-4 bg-cream/30 rounded-lg border border-black/5">
-      <div className="text[#CD2C58] mb-2 text-2xl">
+      <div className="text-[#CD2C58] mb-2 text-2xl">
         {icon}
       </div>
       <span className="text-[10px] font-black uppercase tracking-widest text-gray-800/40 mb-1">
@@ -436,7 +436,7 @@ function SpecRow({ label, value }: { label: string; value: any }) {
 function CheckListItem({ text }: { text: string }) {
   return (
     <li className="flex items-center gap-2 text-xs font-bold text-gray-800/60">
-      <MdVerified className="text[#CD2C58] shrink-0" /> {text}
+      <MdVerified className="text-[#CD2C58] shrink-0" /> {text}
     </li>
   );
 }
@@ -453,7 +453,7 @@ function ComparisonBar({
   return (
     <div>
       <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-1">
-        <span className={active ? "text[#CD2C58]" : "text-gray-800/40"}>
+        <span className={active ? "text-[#CD2C58]" : "text-gray-800/40"}>
           {label}
         </span>
         <span className="text-gray-800">{value}%</span>
@@ -463,7 +463,7 @@ function ComparisonBar({
           className={twMerge(
             clsx(
               "h-full rounded-full transition-all duration-1000",
-              active ? "bg[#CD2C58]" : "bg-dark/20",
+              active ? "bg-[#CD2C58]" : "bg-dark/20",
             ),
           )}
           style={{ width: `${value}%` }}

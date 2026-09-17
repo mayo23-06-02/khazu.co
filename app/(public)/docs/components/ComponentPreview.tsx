@@ -74,7 +74,7 @@ export function ComponentPreview({
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-danger" />
-              <div className="w-3 h-3 rounded-full bg[#CD2C58]" />
+              <div className="w-3 h-3 rounded-full bg-[#CD2C58]" />
               <div className="w-3 h-3 rounded-full bg-dark/20" />
             </div>
             <span className="text-xs font-medium text-gray-800/70 hidden sm:inline">
@@ -95,7 +95,7 @@ export function ComponentPreview({
               title="Copy code"
             >
               {copied ? (
-                <MdCheck size={16} className="text[#CD2C58]" />
+                <MdCheck size={16} className="text-[#CD2C58]" />
               ) : (
                 <MdContentCopy size={16} />
               )}

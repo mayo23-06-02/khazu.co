@@ -1,14 +1,25 @@
-'use client'
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+"use client";
+import { ReactNode } from "react";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 interface IconProps {
-  children: React.ReactNode
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  className?: string
+  children: ReactNode;
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  className?: string;
+  label?: string;
 }
 
-export function Icon({ children, size = 'md', className = '' }: IconProps) {
-  const sizes = { sm: 'w-4 h-4', md: 'w-5 h-5', lg: 'w-6 h-6', xl: 'w-8 h-8' }
-  return <span className={twMerge(clsx('inline-flex items-center justify-center', sizes[size], className))}>{children}</span>
+export function Icon({ children, size = "md", className = "", label }: IconProps) {
+  const sizes = { xs: "size-3", sm: "size-4", md: "size-5", lg: "size-6", xl: "size-8" };
+  return (
+    <span
+      role={label ? "img" : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+      className={twMerge(clsx("inline-flex items-center justify-center", sizes[size], className))}
+    >
+      {children}
+    </span>
+  );
 }

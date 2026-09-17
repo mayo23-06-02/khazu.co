@@ -14,7 +14,7 @@ export function ReportTable({ data, columns }: ReportTableProps) {
       </TableHead>
       <tbody>
         {data.map((row, i) => (
-          <TableRow key={i}>{columns.map(col => <TableCell key={col.key}>${row[col.key]}</TableCell>)}</TableRow>
+          <TableRow key={i}>{columns.map(col => <TableCell key={col.key}>{row[col.key]}</TableCell>)}</TableRow>
         ))}
       </tbody>
     </Table>

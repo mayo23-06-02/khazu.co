@@ -11,7 +11,7 @@ interface AutocompleteOption {
   icon?: React.ComponentType<{ className?: string }>;
 }
 
-interface AutocompleteProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface AutocompleteProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   options: AutocompleteOption[];
   value?: string;
   onChange?: (value: any) => void;

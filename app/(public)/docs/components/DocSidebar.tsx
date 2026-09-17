@@ -105,8 +105,8 @@ export function DocSidebar() {
       <nav className="space-y-8">
         {categories.map((cat) => (
           <div key={cat.name}>
-            <div className="flex items-center gap-2 mb-3 px-3 py-1 bg[#CD2C58]/5 rounded-lg border border[#CD2C58]/10">
-              <cat.icon className="text[#CD2C58]" size={18} />
+            <div className="flex items-center gap-2 mb-3 px-3 py-1 bg-[#CD2C58]/5 rounded-lg border border-[#CD2C58]/10">
+              <cat.icon className="text-[#CD2C58]" size={18} />
               <h5 className="text-xs font-bold uppercase tracking-widest text-gray-800/70">
                 {cat.name}
               </h5>
@@ -125,7 +125,7 @@ export function DocSidebar() {
                         clsx(
                           "block px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
                           isActive
-                            ? "bg[#CD2C58] text-gray-800 shadow-sm"
+                            ? "bg-[#CD2C58] text-gray-800 shadow-sm"
                             : "text-gray-800/50 hover:bg-dark/5 hover:text-gray-800",
                         ),
                       )}

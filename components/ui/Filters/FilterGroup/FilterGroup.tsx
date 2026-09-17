@@ -24,7 +24,7 @@ export function FilterGroup({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between text-sm font-medium text-gray-800"
       >
-        ${label}
+        {label}
         {isOpen ? <MdExpandLess size={14} /> : <MdExpandMore size={14} />}
       </button>
       {isOpen && <div className="mt-2">{children}</div>}

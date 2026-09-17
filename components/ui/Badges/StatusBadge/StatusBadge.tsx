@@ -1,18 +1,28 @@
-'use client'
-import { Badge } from '../Badge/Badge'
+"use client";
+import { Badge, type BadgeVariant } from "../Badge/Badge";
+
+type Status = "active" | "pending" | "sold" | "expired" | "flagged" | "draft" | "archived";
 
 interface StatusBadgeProps {
-  status: 'active' | 'pending' | 'sold' | 'expired' | 'flagged'
-  className?: string
+  status: Status;
+  className?: string;
 }
 
-export function StatusBadge({ status, className = '' }: StatusBadgeProps) {
-  const colors = {
-    active: 'success',
-    pending: 'warning',
-    sold: 'secondary',
-    expired: 'secondary',
-    flagged: 'danger',
-  } as const
-  return <Badge variant={colors[status]} className={className}>{status}</Badge>
+const map: Record<Status, { variant: BadgeVariant; label: string }> = {
+  active: { variant: "success", label: "Active" },
+  pending: { variant: "warning", label: "Pending" },
+  sold: { variant: "info", label: "Sold" },
+  expired: { variant: "secondary", label: "Expired" },
+  flagged: { variant: "danger", label: "Flagged" },
+  draft: { variant: "secondary", label: "Draft" },
+  archived: { variant: "secondary", label: "Archived" },
+};
+
+export function StatusBadge({ status, className = "" }: StatusBadgeProps) {
+  const { variant, label } = map[status] ?? map.draft;
+  return (
+    <Badge variant={variant} dot className={className}>
+      {label}
+    </Badge>
+  );
 }

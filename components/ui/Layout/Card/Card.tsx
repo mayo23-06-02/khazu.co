@@ -8,6 +8,9 @@ interface CardProps {
   className?: string;
   padding?: "none" | "sm" | "md" | "lg";
   hover?: boolean;
+  /** Lift the card off the page with a shadow instead of a hairline border. */
+  elevated?: boolean;
+  as?: "div" | "article" | "section" | "li";
 }
 
 export function Card({
@@ -15,66 +18,48 @@ export function Card({
   className = "",
   padding = "md",
   hover = false,
+  elevated = false,
+  as: Tag = "div",
 }: CardProps) {
   const paddings = {
     none: "p-0",
     sm: "p-3",
-    md: "p-4 sm:p-5",
-    lg: "p-6 sm:p-8",
+    md: "p-3.5 sm:p-4",
+    lg: "p-4 sm:p-6",
   };
   return (
-    <div
+    <Tag
       className={twMerge(
         clsx(
-          "bg-white rounded-md  border border-black/5",
+          "rounded-xl bg-white",
+          elevated ? "shadow-md" : "border border-line",
           paddings[padding],
-          hover && "hover:shadow-md transition-shadow duration-200",
+          hover &&
+            "transition-shadow duration-200 ease-out hover:shadow-md focus-within:shadow-md",
           className,
         ),
       )}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
 
-export function CardHeader({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function CardHeader({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={twMerge(clsx("border-b border-black/5 pb-1 mb-4", className))}
-    >
+    <div className={twMerge(clsx("mb-3 flex items-start justify-between gap-3 border-b border-line pb-3", className))}>
       {children}
     </div>
   );
 }
 
-export function CardBody({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function CardBody({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={twMerge(clsx("flex-1", className))}>{children}</div>;
 }
 
-export function CardFooter({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function CardFooter({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={twMerge(clsx("border-t border-black/5 pt-3 mt-4", className))}
-    >
+    <div className={twMerge(clsx("mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3", className))}>
       {children}
     </div>
   );

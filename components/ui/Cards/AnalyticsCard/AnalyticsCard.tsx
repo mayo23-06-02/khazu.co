@@ -27,9 +27,9 @@ export function AnalyticsCard({
         ),
       )}
     >
-      <div className="text-sm text-gray-800/60">${title}</div>
+      <div className="text-sm text-gray-800/60">{title}</div>
       <div className="text-2xl font-display font-bold text-gray-800 mt-1">
-        ${value}
+        {value}
       </div>
       {change !== undefined && (
         <div

@@ -114,7 +114,7 @@ export function PublicFooter({ className = "" }: PublicFooterProps) {
           {/* Column 1: Brand & About */}
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
             <Logo className="text-2xl font-bold text-white flex items-center gap-2 mb-3">
-              <span className="text[#CD2C58]">Khazu</span>
+              <span className="text-[#CD2C58]">Khazu</span>
               <span className="text-white/50 font-normal text-sm">• cars</span>
             </Logo>
             <p className="text-sm text-white/60 mb-4 max-w-xs">
@@ -147,7 +147,7 @@ export function PublicFooter({ className = "" }: PublicFooterProps) {
                     href={link.href}
                     className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
                   >
-                    <FaChevronRight size={10} className="text[#CD2C58]/60" />
+                    <FaChevronRight size={10} className="text-[#CD2C58]/60" />
                     {link.label}
                   </Link>
                 </li>
@@ -186,7 +186,7 @@ export function PublicFooter({ className = "" }: PublicFooterProps) {
                     href={link.href}
                     className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
                   >
-                    <FaChevronRight size={10} className="text[#CD2C58]/60" />
+                    <FaChevronRight size={10} className="text-[#CD2C58]/60" />
                     {link.label}
                   </Link>
                 </li>
@@ -202,7 +202,7 @@ export function PublicFooter({ className = "" }: PublicFooterProps) {
             <ul className="space-y-3">
               {contactInfo.map((item, index) => (
                 <li key={index} className="flex items-start gap-2">
-                  <span className="text[#CD2C58]/80 mt-0.5">{item.icon}</span>
+                  <span className="text-[#CD2C58]/80 mt-0.5">{item.icon}</span>
                   <div>
                     <p className="text-xs text-white/40">{item.label}</p>
                     <p className="text-sm text-white/80">{item.value}</p>
@@ -230,7 +230,7 @@ export function PublicFooter({ className = "" }: PublicFooterProps) {
         <Container>
           <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="text-xs text-white/40">
-              © {currentYear} <span className="text[#CD2C58]/60">Khazu</span>.
+              © {currentYear} <span className="text-[#CD2C58]/60">Khazu</span>.
               All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-xs text-white/40">

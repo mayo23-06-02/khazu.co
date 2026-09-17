@@ -4,39 +4,48 @@ import { twMerge } from "tailwind-merge";
 
 interface AvatarProps {
   src?: string;
+  alt?: string;
   initials?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }
 
-export function Avatar({
-  src,
-  initials,
-  size = "md",
-  className = "",
-}: AvatarProps) {
+export function Avatar({ src, alt = "", initials, size = "md", className = "" }: AvatarProps) {
   const sizes = {
-    xs: "w-6 h-6 text-xs",
-    sm: "w-8 h-8 text-sm",
-    md: "w-10 h-10 text-base",
-    lg: "w-14 h-14 text-lg",
-    xl: "w-20 h-20 text-2xl",
+    xs: "size-6 text-2xs",
+    sm: "size-7 text-2xs",
+    md: "size-9 text-xs",
+    lg: "size-11 text-sm",
+    xl: "size-14 text-base",
   };
+  const base = clsx(
+    "inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full",
+    sizes[size],
+  );
+
+  if (src) {
+    // Plain <img>: avatar sources are frequently remote and unconfigured hosts
+    // would throw with next/image.
+    // eslint-disable-next-line @next/next/no-img-element
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={twMerge(clsx(base, "object-cover", className))}
+        loading="lazy"
+      />
+    );
+  }
+
   return (
-    <div
+    <span
+      role="img"
+      aria-label={alt || initials || "Avatar"}
       className={twMerge(
-        clsx(
-          "relative flex items-center justify-center rounded-full bg-dark/10 text-gray-800 font-medium overflow-hidden",
-          sizes[size],
-          className,
-        ),
+        clsx(base, "bg-primary-subtle font-semibold uppercase text-primary", className),
       )}
     >
-      {src ? (
-        <img src={src} alt="Avatar" className="w-full h-full object-cover" />
-      ) : (
-        initials || "?"
-      )}
-    </div>
+      {initials?.slice(0, 2) ?? "?"}
+    </span>
   );
 }
