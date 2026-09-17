@@ -3,7 +3,6 @@ import { PublicHeader, PublicFooter, SellYourCarAd } from "@/components/ui";
 import { MainHero } from "@/components/ui/Hero/MainHero";
 import { BrowseByManufacturer } from "@/components/sections/BrowseByManufacturer";
 import { BrowseByBodyType } from "@/components/sections/BrowseByBodyType";
-import { PopularModels } from "@/components/sections/PopularModels";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { getActiveListingsCount } from "@/lib/marketplace/listings";
 import { getDealerCount } from "@/lib/marketplace/dealers";
@@ -32,9 +31,6 @@ export default async function LandingPage() {
 
       {/* ─── Browse by Car Manufacturer ─── */}
       <BrowseByManufacturer />
-
-      {/* ─── Popular Used Car Models ─── */}
-      <PopularModels />
 
       {/* ─── FAQ Section ─── */}
       <FaqSection />

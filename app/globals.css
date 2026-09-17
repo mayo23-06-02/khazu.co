@@ -145,11 +145,13 @@
     min-height: 100dvh;
   }
 
+  /* No forced color here: a raw <h1>-<h6> must keep inheriting from its
+     parent (e.g. text-white on a dark hero section) rather than always
+     rendering ink-black regardless of context. */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.021em;
-    color: var(--color-ink);
   }
 
   img, video {
