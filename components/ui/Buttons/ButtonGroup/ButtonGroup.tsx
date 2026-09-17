@@ -28,7 +28,7 @@ export function ButtonGroup({
           "inline-flex",
           direction === "row" ? "flex-row flex-wrap items-center" : "flex-col",
           attached
-            ? "gap-0 [&>*]:rounded-none [&>*:first-child]:rounded-l-sm [&>*:last-child]:rounded-r-sm -space-x-px"
+            ? "gap-0 [&>*]:rounded-none [&>*:first-child]:rounded-l-xs [&>*:last-child]:rounded-r-xs -space-x-px"
             : gaps[gap],
           className,
         ),

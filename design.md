@@ -62,16 +62,16 @@ paragraph text — that's what made the old UI feel scaled up.
 
 ### Radius
 
-**Buttons use `rounded-sm` (6px). Text inputs use no radius (`rounded-none`,
-square corners).** These are set once in `buttonStyles.ts`'s `buttonBase` and
-`inputStyles.ts`'s `controlBase` — never override radius on an individual
-button or input; change the shared constant instead so every consumer stays
-in sync.
+**Buttons and text inputs both use `rounded-xs` (4px)** — the smallest step
+on the scale, so controls read as barely-softened squares rather than pills.
+Set once in `buttonStyles.ts`'s `buttonBase` and `inputStyles.ts`'s
+`controlBase` — never override radius on an individual button or input;
+change the shared constant instead so every consumer stays in sync.
 
 | Token | Value | Use |
 |---|---|---|
-| **`rounded-sm`** | **6px** | **Buttons — the default control radius.** Also small chips, checkboxes. |
-| **`rounded-none`** | **0** | **Text inputs, selects, textareas — square corners.** |
+| **`rounded-xs`** | **4px** | **Buttons and text inputs/selects/textareas — the shared control radius.** |
+| `rounded-sm` | 6px | Small chips, checkboxes. |
 | `rounded-md` / `lg` | 8 / 10px | Misc small surfaces (dropdowns, tooltips). |
 | `rounded-xl` / `2xl` / `3xl` | 12 / 16 / 20px | Cards, modals, large surfaces — hero panels, bottom sheets. |
 | `rounded-full` | — | Pills, badges, avatars, icon-only round buttons (`IconButton round`), toggle switches. |

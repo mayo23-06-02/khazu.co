@@ -65,7 +65,7 @@ export function Gallery() {
     <div className="flex flex-col gap-10">
       {/* ─────────────── Buttons ─────────────── */}
       <Group id="buttons" title="Buttons" count={12}>
-        <Spec name="Button · variants" note="rounded-sm">
+        <Spec name="Button · variants" note="rounded-xs">
           <Row>
             <Button variant="primary">Primary</Button>
             <Button variant="secondary">Secondary</Button>

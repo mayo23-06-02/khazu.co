@@ -12,7 +12,7 @@ export const hintClass = "text-2xs text-muted";
 export const errorClass = "text-2xs font-medium text-danger";
 
 export const controlBase =
-  "w-full bg-white text-ink rounded-none border transition-colors duration-200 ease-out " +
+  "w-full bg-white text-ink rounded-xs border transition-colors duration-200 ease-out " +
   "placeholder:text-muted placeholder:font-normal " +
   "focus:outline-none focus:ring-2 " +
   "disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-muted";
