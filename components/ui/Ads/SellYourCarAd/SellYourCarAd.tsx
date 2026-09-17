@@ -41,15 +41,15 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
     <section className={`bg-surface py-8 ${className}`}>
       <Container>
         {/* Category Quick Links */}
-        <div className="flex items-center justify-center gap-3 overflow-x-auto no-scrollbar pb-6 mb-2">
+        <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar pb-6 mb-2">
           {categories.map((cat, idx) => (
             <Link
               key={idx}
               href={cat.href}
-              className="flex items-center gap-2 px-6 py-4 bg-gray-200 hover:bg-gray-300 rounded-md whitespace-nowrap transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-sm whitespace-nowrap transition-colors"
             >
-              <span className="text-gray-900 text-xl">{cat.icon}</span>
-              <span className="text-sm  text-gray-900">{cat.label}</span>
+              <span className="text-gray-900 text-sm">{cat.icon}</span>
+              <span className="text-xs font-medium text-gray-900">{cat.label}</span>
             </Link>
           ))}
         </div>
@@ -66,15 +66,15 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
               Eswatini, guaranteed.*
             </p>
 
-            <div className="w-full grid grid-cols-2 gap-4">
+            <div className="w-full flex flex-col md:flex-row gap-4">
               <input
                 type="text"
                 placeholder="Plate Number"
                 value={plate}
                 onChange={(e) => setPlate(e.target.value.toUpperCase())}
-                className="w-full h-15 rounded-md placeholder:gray-300 bg-white text-black uppercase font-black font-mono text-4xl text-center"
+                className="w-full md:flex-1 min-w-0 h-14 md:h-15 rounded-md placeholder:gray-300 bg-white text-black uppercase font-black font-mono text-2xl sm:text-3xl md:text-4xl text-center"
               />
-              <Link href={`/sell/upload?reg=${encodeURIComponent(plate)}`}>
+              <Link href={`/sell/upload?reg=${encodeURIComponent(plate)}`} className="w-full md:flex-1">
                 <Button className="bg-white w-full text-black hover:bg-gray-100 rounded-md px-10 py-4 text-lg font-bold transition-all transform active:scale-95">
                   Sell My Car
                 </Button>

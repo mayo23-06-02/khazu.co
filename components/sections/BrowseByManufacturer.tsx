@@ -73,7 +73,7 @@ export function BrowseByManufacturer() {
     <section className="py-8 md:py-12 bg-white">
       <Container>
         <Heading1 className="mb-6 text-xl md:text-2xl">Browse by Car Manufacturer</Heading1>
-        <Grid cols={2} gap="sm">
+        <Grid cols={2} md={3} lg={4} gap="sm">
           {manufacturers.map((brand, i) => (
             <Link
               key={i}
