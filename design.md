@@ -108,6 +108,15 @@ Defined once in `components/ui/Buttons/buttonStyles.ts` and
 from there. **Don't hardcode `px-*`/`py-*`/`h-*` on a new button or input.**
 Add a size to the shared map instead, so every consumer updates together.
 
+**iOS zoom-on-focus**: `controlSizes`/`textareaSizes` render at `text-[16px]`
+below `sm:` and only drop to the compact `text-xs`/`text-sm` from `sm:` up.
+This isn't decorative — iOS Safari auto-zooms the page when a focused input's
+font-size is under 16px, which visibly breaks the layout. Note our
+`text-base` token is 14px (part of this compact scale, not the Tailwind
+default 16px), so this needed an explicit `text-[16px]`, not `text-base`.
+Any new input variant must keep this pattern; don't drop below 16px on
+mobile even if the desktop size looks fine.
+
 ### Button variants
 
 `primary` · `secondary` · `outline` · `ghost` · `subtle` · `inverse` · `danger`

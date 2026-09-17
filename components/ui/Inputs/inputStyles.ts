@@ -22,17 +22,22 @@ export const controlTone = {
   error: "border-danger focus:border-danger focus:ring-danger/20",
 };
 
+// 16px below sm: iOS Safari auto-zooms on focus for any input rendering
+// under 16px, which visibly breaks the layout. text-[16px] (not our
+// redefined text-base, which is 14px in this compact scale) only applies
+// below sm - the compact text-xs/text-sm take over from sm: up, where that
+// zoom behavior doesn't apply.
 export const controlSizes: Record<ControlSize, string> = {
-  sm: "h-8 px-2.5 text-xs",
-  md: "h-9 px-3 text-sm",
-  lg: "h-10 px-3.5 text-sm",
+  sm: "h-8 px-2.5 text-[16px] sm:text-xs",
+  md: "h-9 px-3 text-[16px] sm:text-sm",
+  lg: "h-10 px-3.5 text-[16px] sm:text-sm",
 };
 
 /** Multi-line controls need padding rather than a fixed height. */
 export const textareaSizes: Record<ControlSize, string> = {
-  sm: "px-2.5 py-2 text-xs",
-  md: "px-3 py-2 text-sm",
-  lg: "px-3.5 py-2.5 text-sm",
+  sm: "px-2.5 py-2 text-[16px] sm:text-xs",
+  md: "px-3 py-2 text-[16px] sm:text-sm",
+  lg: "px-3.5 py-2.5 text-[16px] sm:text-sm",
 };
 
 export function tone(hasError?: unknown) {
