@@ -119,7 +119,7 @@ export default function SellMyCarPage() {
       <PublicHeader />
 
       {/* ─── Hero Section ─── */}
-      <section className="bg-cream relative h-[600px] ">
+      <section className="bg-cream relative min-h-[480px] py-16 md:h-[600px] md:py-0">
         <span className=" top-0 left-0 right-0 h-1 bg-primary/10 z-0">
           <Image
             fill
@@ -130,24 +130,24 @@ export default function SellMyCarPage() {
           <div className="absolute inset-0 bg-[#1a1a1a]/50"></div>
         </span>
         <Container>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-5xl mx-auto text-center">
-            <h1 className="text-5xl bg-white  font-extrabold uppercase md:text-7xl text-black px-4 rounded-md mb-4">
+          <div className="relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 max-w-5xl mx-auto text-center">
+            <h1 className="text-3xl sm:text-4xl bg-white  font-extrabold uppercase md:text-7xl text-black px-4 rounded-md mb-4">
               Sell your car.{" "}
               <span className="bg-[#a72346] text-white lg:px-6 px-2 rounded-md">
                 It's FREE
               </span>
             </h1>
-            <p className="max-w-2xl text-md text-lg text-white mx-auto mb-8">
+            <p className="max-w-2xl text-md text-base sm:text-lg text-white mx-auto mb-8">
               Sell to thousands of dealers across Eswatini or choose a buyer
               who'll collect from your home.
             </p>
             <Button
               variant="primary"
               size="md"
-              className="shadow-lg"
+              className="shadow-lg px-6 sm:px-10 text-sm sm:text-base whitespace-nowrap"
               onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}
             >
-              Get start for FREE Today <FaArrowRight className="ml-2" />
+              Get started for FREE <FaArrowRight className="ml-2" />
             </Button>
           </div>
         </Container>

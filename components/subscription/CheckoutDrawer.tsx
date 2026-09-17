@@ -51,6 +51,7 @@ export function CheckoutDrawer({
   const planPrice = plan?.priceSzl ?? 0;
   const addonsTotal = addons.reduce((s, a) => s + a.priceSzl, 0);
   const total = planPrice + addonsTotal;
+  const isFree = total === 0;
 
   const trialActive =
     !!trialEndsAt && new Date(trialEndsAt).getTime() > Date.now();
@@ -90,7 +91,7 @@ export function CheckoutDrawer({
       setError("Invalid plan.");
       return;
     }
-    if (!momoNumber.trim()) {
+    if (!isFree && !momoNumber.trim()) {
       setError(
         deferred
           ? "Enter MoMo number for the charge after your trial."
@@ -207,21 +208,30 @@ export function CheckoutDrawer({
               )}
 
               <div>
-                <InputText
-                  label="MTN MoMo number"
-                  placeholder="76 000 000"
-                  value={momoNumber}
-                  onChange={(e) => setMomoNumber(e.target.value)}
-                  fullWidth
-                  inputMode="tel"
-                  autoComplete="tel"
-                  disabled={isPending}
-                />
-                <Small className="text-gray-400 mt-1.5 block">
-                  {deferred
-                    ? "Saved for the automatic charge when trial ends"
-                    : "You’ll get a MoMo prompt on this number"}
-                </Small>
+                {isFree ? (
+                  <div className="rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2.5 text-sm text-emerald-800 font-medium">
+                    This plan is free — no payment details needed. Confirm
+                    below to activate.
+                  </div>
+                ) : (
+                  <>
+                    <InputText
+                      label="MTN MoMo number"
+                      placeholder="76 000 000"
+                      value={momoNumber}
+                      onChange={(e) => setMomoNumber(e.target.value)}
+                      fullWidth
+                      inputMode="tel"
+                      autoComplete="tel"
+                      disabled={isPending}
+                    />
+                    <Small className="text-gray-400 mt-1.5 block">
+                      {deferred
+                        ? "Saved for the automatic charge when trial ends"
+                        : "You’ll get a MoMo prompt on this number"}
+                    </Small>
+                  </>
+                )}
               </div>
 
               {error && (

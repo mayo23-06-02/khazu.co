@@ -46,7 +46,7 @@ export function PopularModels() {
     <section className="py-12 md:py-16 bg-white">
       <Container>
         <Heading1 className="mb-8">Popular used car models</Heading1>
-        <Grid cols={4} sm={3} md={4} lg={5} gap="md">
+        <Grid cols={1} sm={2} md={3} lg={5} gap="md">
           {popularModels.map((model, i) => (
             <Link
               key={i}
