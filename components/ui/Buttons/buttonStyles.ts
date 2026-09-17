@@ -15,7 +15,7 @@ export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export const buttonBase =
   "inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-semibold " +
-  "rounded-xl border border-transparent cursor-pointer select-none " +
+  "rounded-sm border border-transparent cursor-pointer select-none " +
   "transition-colors duration-200 ease-out " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary " +
   "disabled:opacity-50 disabled:pointer-events-none";

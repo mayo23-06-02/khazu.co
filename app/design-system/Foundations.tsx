@@ -119,7 +119,7 @@ export function Foundations() {
         </div>
       </Spec>
 
-      <Spec name="Radius" note="controls use xl">
+      <Spec name="Radius" note="buttons sm · inputs none">
         <div className="grid grid-cols-3 gap-2">
           {radii.map((r) => (
             <div key={r.cls} className="flex flex-col items-center gap-1">
@@ -145,9 +145,9 @@ export function Foundations() {
 
       <Spec name="Control heights" note="buttons + inputs align">
         <Row>
-          <span className="flex h-8 items-center rounded-xl bg-surface-sunken px-3 text-xs">sm · 32</span>
-          <span className="flex h-9 items-center rounded-xl bg-surface-sunken px-3 text-xs">md · 36</span>
-          <span className="flex h-10 items-center rounded-xl bg-surface-sunken px-3 text-xs">lg · 40</span>
+          <span className="flex h-8 items-center rounded-sm bg-surface-sunken px-3 text-xs">sm · 32</span>
+          <span className="flex h-9 items-center rounded-sm bg-surface-sunken px-3 text-xs">md · 36</span>
+          <span className="flex h-10 items-center rounded-sm bg-surface-sunken px-3 text-xs">lg · 40</span>
         </Row>
       </Spec>
 
@@ -155,7 +155,7 @@ export function Foundations() {
         <Row>
           <button
             type="button"
-            className="rounded-xl border border-line-strong px-3 py-1.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="rounded-sm border border-line-strong px-3 py-1.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Tab to me
           </button>
