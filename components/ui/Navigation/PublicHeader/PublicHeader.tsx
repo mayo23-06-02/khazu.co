@@ -90,7 +90,7 @@ export function PublicHeader({ className = "" }: PublicHeaderProps) {
             >
             Login
             </Link>
-            <Link href="/sell">
+            <Link href="/sell/upload">
               <Button variant="primary" size="sm" className="ml-1">
                 <FaBagShopping className="mr-2" size={16} />
                 Sell My Car
