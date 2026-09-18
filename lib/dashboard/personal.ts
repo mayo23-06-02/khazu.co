@@ -21,6 +21,8 @@ import {
   shortDayLabel,
 } from "./format";
 
+export { getSellerListings } from "@/lib/listings/queries";
+
 const CHART_DAYS = 14;
 
 function emptyStats(): DashboardStats {
@@ -455,20 +457,4 @@ export async function getPersonalDashboardData(
     trialEndsAt: trialEndsAt ?? null,
     scheduledChargeAt: scheduledChargeAt ?? null,
   };
-}
-
-export async function getSellerListings(userId: string): Promise<Listing[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("listings")
-    .select("*")
-    .eq("seller_id", userId)
-    .neq("status", "archived")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("getSellerListings:", error.message);
-    return [];
-  }
-  return (data ?? []) as Listing[];
 }

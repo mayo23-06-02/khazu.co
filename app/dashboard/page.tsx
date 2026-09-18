@@ -1,23 +1,22 @@
-'use client'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { UserRole } from '@/types/user'
-import { Container, Body } from '@/components/ui'
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { normalizeRole, getDashboardPath } from "@/lib/auth/roles";
 
-export default function DashboardRedirectPage() {
-  const router = useRouter()
+export default async function DashboardRedirectPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  useEffect(() => {
-    // -----------------------------------------------------------------
-    // AUTHENTICATION COMPLETELY REMOVED FOR DEVELOPMENT
-    // Forcing Personal Dashboard state
-    // -----------------------------------------------------------------
-    router.replace('/dashboard/personal')
-  }, [router])
+  if (!user) {
+    redirect("/auth/login?next=/dashboard");
+  }
 
-  return (
-    <Container className="h-full flex items-center justify-center">
-      <Body muted>Redirecting to your workspace...</Body>
-    </Container>
-  )
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  redirect(getDashboardPath(normalizeRole(profile?.role)));
 }

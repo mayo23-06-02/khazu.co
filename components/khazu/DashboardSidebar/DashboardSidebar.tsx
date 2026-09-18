@@ -13,11 +13,9 @@ import { UserRole } from "@/types/user";
 import { twMerge } from "tailwind-merge";
 import {
   BiCar,
-  BiChart,
   BiCreditCard,
   BiEnvelope,
   BiHome,
-  BiRocket,
   BiUser,
 } from "react-icons/bi";
 import Image from "next/image";
@@ -68,12 +66,6 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         label: "Enquiries",
         href: "/dashboard/dealer/leads",
         icon: BiEnvelope,
-      },
-      { label: "Boost", href: "/dashboard/dealer/boost", icon: BiRocket },
-      {
-        label: "Analytics",
-        href: "/dashboard/dealer/analytics",
-        icon: BiChart,
       },
       {
         label: "Subscription",
