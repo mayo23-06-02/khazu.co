@@ -147,7 +147,7 @@ export function RegisterWizard() {
     <div className="min-h-dvh w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
        
-        <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-[#a72346]/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-primary-hover/10" />
       </div>
 
       {/* Form panel */}
@@ -227,7 +227,7 @@ export function RegisterWizard() {
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
-                  className="text-[#a72346] hover:underline font-bold"
+                  className="text-primary hover:underline font-bold"
                 >
                   Sign in
                 </Link>

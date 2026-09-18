@@ -49,7 +49,7 @@ function LoginForm() {
     <div className="min-h-dvh w-full flex items-center justify-center bg-primary p-6 py-10">
       <div className="w-full max-w-md">
         <div className="bg-white/95 backdrop-blur-xl rounded-lg shadow-2xl overflow-hidden">
-            <div className="h-1.5 bg-gradient-to-r from-[#a72346] to-[#e05573]" />
+            <div className="h-1.5 bg-primary" />
             <div className="flex justify-center items-center pt-12">
               <Logo />
               </div>
@@ -96,7 +96,7 @@ function LoginForm() {
                 <div className="flex justify-end">
                   <Link
                     href="/auth/forgot-password"
-                    className="text-xs text-[#a72346] hover:underline font-semibold"
+                    className="text-xs text-primary hover:underline font-semibold"
                   >
                     Forgot password?
                   </Link>
@@ -116,7 +116,7 @@ function LoginForm() {
                   fullWidth
                   type="submit"
                   loading={isPending}
-                  className="bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold tracking-wide mt-2"
+                  className="font-bold tracking-wide mt-2"
                 >
                   <FaSignInAlt className="mr-2" /> Sign In
                 </Button>
@@ -130,7 +130,7 @@ function LoginForm() {
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/register"
-                  className="text-[#a72346] hover:underline font-bold"
+                  className="text-primary hover:underline font-bold"
                 >
                   Create one here
                 </Link>

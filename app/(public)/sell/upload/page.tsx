@@ -807,7 +807,7 @@ function SellCarContent() {
                           />
                         </div>
 
-                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-[#1a1a1a]/5 blur-xl rounded-full -z-10" />
+                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-ink/5 blur-xl rounded-full -z-10" />
                       </div>
                       {errors.regNumber && (
                         <p className="text-red-500 text-xs mt-4 font-medium">
@@ -1130,7 +1130,7 @@ function SellCarContent() {
                   </div>
                   <div className="space-y-6">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 bg-[#a72346] rounded-sm">
+                      <div className="p-2 bg-primary-hover rounded-sm">
                         <FaCar className="text-white text-lg" />
                       </div>
                       <h4 className="font-bold text-gray-800">Vehicle Info</h4>
@@ -1158,7 +1158,7 @@ function SellCarContent() {
                       />
                     </div>
                   </div>
-                  <div className="bg-[#1a1a1a] p-4 sm:p-6 rounded-lg">
+                  <div className="bg-ink p-4 sm:p-6 rounded-lg">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                       <div className="space-y-2">
                         <p className="text-white uppercase tracking-wider px-1 flex gap-2">

@@ -56,13 +56,13 @@ function VerifyForm() {
     <div className="min-h-dvh w-full flex items-center justify-center p-6 py-10 bg-gray-50">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
-          <div className="h-1.5 bg-gradient-to-r from-[#a72346] to-[#e05573]" />
+          <div className="h-1.5 bg-primary" />
           <div className="flex justify-center items-center pt-12">
             <Logo />
           </div>
           <div className="p-8">
             <div className="text-center mb-8">
-              <FaEnvelopeOpenText className="text-[#a72346] mx-auto mb-3" size={28} />
+              <FaEnvelopeOpenText className="text-primary mx-auto mb-3" size={28} />
               <h2 className="text-2xl font-black text-gray-900">
                 Verify your email
               </h2>
@@ -107,7 +107,7 @@ function VerifyForm() {
                 fullWidth
                 type="submit"
                 loading={isPending}
-                className="bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold tracking-wide mt-2"
+                className="font-bold tracking-wide mt-2"
               >
                 Verify
               </Button>
@@ -118,7 +118,7 @@ function VerifyForm() {
                 type="button"
                 onClick={handleResend}
                 disabled={isResending}
-                className="text-xs text-[#a72346] hover:underline font-semibold disabled:opacity-50"
+                className="text-xs text-primary hover:underline font-semibold disabled:opacity-50"
               >
                 {isResending ? "Sending…" : "Resend code"}
               </button>
@@ -130,7 +130,7 @@ function VerifyForm() {
               Wrong email?{" "}
               <Link
                 href="/auth/register"
-                className="text-[#a72346] hover:underline font-bold"
+                className="text-primary hover:underline font-bold"
               >
                 Start over
               </Link>
