@@ -2,7 +2,7 @@
 
 import type { Ref } from "react";
 import { useFormContext } from "react-hook-form";
-import { FaBuilding, FaUser } from "react-icons/fa";
+import { FaBuilding, FaCheckCircle, FaUser } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import type { RegisterFormValues } from "../schema";
 import { StepHeading } from "../StepHeading";
@@ -59,24 +59,31 @@ export function AccountTypeStep({
                 setValue("account_type", opt.id, { shouldValidate: true })
               }
               className={twMerge(
-                "rounded-md border-2 p-5 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a72346]/50",
+                "relative rounded-md border-2 p-5 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 selected
-                  ? "border-[#a72346] bg-[#a72346]/5 shadow-md"
-                  : "border-gray-200 hover:border-gray-300 bg-white",
+                  ? "border-primary bg-primary-subtle shadow-md"
+                  : "border-line hover:border-line-strong bg-white",
               )}
             >
+              {selected && (
+                <FaCheckCircle
+                  className="absolute top-3 right-3 text-primary"
+                  size={18}
+                  aria-hidden="true"
+                />
+              )}
               <div
                 className={twMerge(
                   "w-10 h-10 rounded-sm flex items-center justify-center mb-3",
                   selected
-                    ? "bg-[#a72346] text-white"
-                    : "bg-gray-100 text-gray-500",
+                    ? "bg-primary text-white"
+                    : "bg-surface-sunken text-muted",
                 )}
               >
                 <Icon size={18} />
               </div>
-              <p className="font-bold text-gray-900">{opt.label}</p>
-              <p className="text-sm text-gray-500 mt-1">{opt.desc}</p>
+              <p className="font-bold text-ink">{opt.label}</p>
+              <p className="text-sm text-muted mt-1">{opt.desc}</p>
             </button>
           );
         })}

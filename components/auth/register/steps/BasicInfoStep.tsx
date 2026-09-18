@@ -56,6 +56,7 @@ export function BasicInfoStep({
           label="Phone"
           aria-label="Phone number"
           placeholder="76123456"
+          hint={errors.phone ? undefined : "Eswatini number, no country code"}
           error={errors.phone?.message}
           {...register("phone")}
         />
@@ -65,6 +66,7 @@ export function BasicInfoStep({
         label="Password"
         aria-label="Password"
         fullWidth
+        hint={!password && !errors.password ? "At least 6 characters" : undefined}
         error={errors.password?.message}
         {...register("password")}
       />

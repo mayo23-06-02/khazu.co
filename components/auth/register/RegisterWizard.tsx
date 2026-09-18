@@ -3,11 +3,9 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Body, Logo, StepProgress } from "@/components/ui";
 import { checkContactAvailability, registerUser } from "@/lib/auth/actions";
-import { BrandPanel } from "./BrandPanel";
 import { buildRegisterFormData } from "./buildFormData";
 import { RegisterFeedback, type RegisterFeedbackStatus } from "./RegisterFeedback";
 import { defaultRegisterValues, REGISTER_STEPS } from "./schema";
@@ -222,8 +220,8 @@ export function RegisterWizard() {
               )}
             </div>
 
-            <div className="bg-gray-50 border-t border-gray-100 px-8 py-4 text-center flex-shrink-0">
-              <Body size="sm" className="text-gray-400">
+            <div className="bg-surface-alt border-t border-line px-8 py-4 text-center flex-shrink-0">
+              <Body size="sm" className="text-muted">
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"

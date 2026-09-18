@@ -29,20 +29,16 @@ export function RegisterFeedback({
       </div>
 
       <div>
-        <h3 className="text-xl font-black text-gray-900">
+        <h3 className="text-xl font-black text-ink">
           {isSuccess ? "Account created!" : "Registration failed"}
         </h3>
-        <Body size="sm" className="mt-1 max-w-xs text-gray-400">
+        <Body size="sm" className="mt-1 max-w-xs text-muted">
           {message}
         </Body>
       </div>
 
       {isSuccess ? (
-        <ButtonLink
-          href={loginHref}
-          fullWidth
-          className="bg-[#a72346] text-white font-bold hover:bg-[#8e1c3a]"
-        >
+        <ButtonLink href={loginHref} fullWidth className="font-bold">
           Sign in
         </ButtonLink>
       ) : (

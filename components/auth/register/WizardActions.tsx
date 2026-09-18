@@ -20,7 +20,6 @@ export function WizardActions({
         <Button
           type="button"
           variant="outline"
-          
           onClick={onBack}
           disabled={isPending}
           className="flex-1"
@@ -31,9 +30,8 @@ export function WizardActions({
       <Button
         type="submit"
         variant="primary"
-        
         loading={isPending}
-        className="flex-1 bg-[#a72346] hover:bg-[#8e1c3a] text-white font-bold"
+        className="flex-1 font-bold"
       >
         {isReview ? (
           <>
