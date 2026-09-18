@@ -255,6 +255,8 @@ export async function archiveListing(
 
     revalidatePath("/dashboard/personal");
     revalidatePath("/dashboard/personal/listings");
+    revalidatePath("/dashboard/dealer");
+    revalidatePath("/dashboard/dealer/listings");
     return { success: true, listingId };
   } catch (err) {
     return {
@@ -355,6 +357,8 @@ export async function createMockBoost(listingId: string): Promise<ListingActionR
 
     revalidatePath("/dashboard/personal");
     revalidatePath("/dashboard/personal/listings");
+    revalidatePath("/dashboard/dealer");
+    revalidatePath("/dashboard/dealer/listings");
     return { success: true, listingId: listing.id };
   } catch (err) {
     return {
@@ -393,6 +397,8 @@ export async function updateProfile(input: {
 
     revalidatePath("/dashboard/personal");
     revalidatePath("/dashboard/personal/profile");
+    revalidatePath("/dashboard/dealer");
+    revalidatePath("/dashboard/dealer/profile");
     return { success: true };
   } catch (err) {
     return {

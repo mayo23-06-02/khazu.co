@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Container } from "@/components/ui";
 import { createClient } from "@/lib/supabase/server";
-import { getSellerListings } from "@/lib/dashboard/personal";
+import { getSellerListings } from "@/lib/listings/queries";
 import { PersonalListingsView } from "@/components/khazu/PersonalListingsView";
 
 export default async function PersonalListingsPage() {

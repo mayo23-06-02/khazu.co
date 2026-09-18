@@ -12,9 +12,11 @@ import {
 export function PersonalListingsActions({
   listingId,
   isFeatured,
+  editHref = `/dashboard/personal/listings/${listingId}/edit`,
 }: {
   listingId: string;
   isFeatured: boolean;
+  editHref?: string;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -39,7 +41,7 @@ export function PersonalListingsActions({
   return (
     <div className="flex items-center gap-2">
       <Link
-        href={`/dashboard/personal/listings/${listingId}/edit`}
+        href={editHref}
         title="Edit listing"
         className="p-3 bg-gray-50 text-gray-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-all"
       >

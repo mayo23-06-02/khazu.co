@@ -64,3 +64,11 @@ export interface PersonalDashboardData {
   trialEndsAt?: string | null;
   scheduledChargeAt?: string | null;
 }
+
+export interface DealerDashboardData extends PersonalDashboardData {
+  soldThisMonth: number;
+  soldTrendPct: number | null;
+  totalLeads: number;
+  leadsTrendPct: number | null;
+  conversionRatePct: number;
+}

@@ -43,7 +43,13 @@ const toOptions = (values: string[]) => [
   })),
 ];
 
-export function EditListingForm({ listing }: { listing: Listing }) {
+export function EditListingForm({
+  listing,
+  backHref = "/dashboard/personal/listings",
+}: {
+  listing: Listing;
+  backHref?: string;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -118,7 +124,7 @@ export function EditListingForm({ listing }: { listing: Listing }) {
         setError(res.error || "Failed to update listing");
         return;
       }
-      router.push("/dashboard/personal/listings");
+      router.push(backHref);
       router.refresh();
     });
   };
@@ -127,7 +133,7 @@ export function EditListingForm({ listing }: { listing: Listing }) {
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="flex items-center gap-3">
         <Link
-          href="/dashboard/personal/listings"
+          href={backHref}
           className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
           aria-label="Back to listings"
         >
@@ -289,7 +295,7 @@ export function EditListingForm({ listing }: { listing: Listing }) {
         <Button type="submit" variant="primary" disabled={pending}>
           {pending ? "Saving..." : "Save changes"}
         </Button>
-        <Link href="/dashboard/personal/listings">
+        <Link href={backHref}>
           <Button type="button" variant="outline" disabled={pending}>
             Cancel
           </Button>
