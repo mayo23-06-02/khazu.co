@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Body, Logo, StepProgress } from "@/components/ui";
@@ -20,6 +21,10 @@ import { IndividualDetailsStep } from "./steps/IndividualDetailsStep";
 import { ReviewStep } from "./steps/ReviewStep";
 
 export function RegisterWizard() {
+  const searchParams = useSearchParams();
+  const accountTypeParam = searchParams.get("accountType");
+  const nextParam = searchParams.get("next") || "";
+
   const [stepIndex, setStepIndex] = useState(0);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -35,11 +40,19 @@ export function RegisterWizard() {
     defaultValues: defaultRegisterValues,
     mode: "onTouched",
   });
-  const { watch, getValues, setError: setFieldError, clearErrors } = form;
+  const { watch, getValues, setValue, setError: setFieldError, clearErrors } = form;
   const accountType = watch("account_type");
 
   const steps = REGISTER_STEPS;
   const currentStep = steps[stepIndex];
+
+  // Arriving from the sell/upload wizard's dealer hand-off — skip re-picking
+  // the account type, since it was already chosen there.
+  useEffect(() => {
+    if (accountTypeParam === "dealer" || accountTypeParam === "individual") {
+      setValue("account_type", accountTypeParam);
+    }
+  }, [accountTypeParam, setValue]);
 
   // Move focus to the step heading whenever the step changes — keeps
   // screen reader / keyboard users oriented without a full page reload.
@@ -106,10 +119,22 @@ export function RegisterWizard() {
         return;
       }
 
+      if (result.needsVerification) {
+        const verifyHref = nextParam
+          ? `${result.redirectTo}&next=${encodeURIComponent(nextParam)}`
+          : result.redirectTo || `/auth/verify?email=${encodeURIComponent(result.email || "")}`;
+        setSubmitResult({
+          status: "success",
+          message: "Your account has been created. Check your email for a verification code.",
+          loginHref: verifyHref,
+        });
+        return;
+      }
+
       setSubmitResult({
         status: "success",
         message: "Your account has been created. Sign in to get started.",
-        loginHref: result.redirectTo || "/auth/login",
+        loginHref: (nextParam ? `${result.redirectTo}?next=${encodeURIComponent(nextParam)}` : result.redirectTo) || "/auth/login",
       });
     });
   };

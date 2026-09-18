@@ -162,9 +162,11 @@ export function PublicHeaderWithSearch({
                   </Link>
                 </>
               )}
-              <Button variant="primary" size="sm" className="ml-1">
-                Sell My Car
-              </Button>
+              <Link href="/sell/upload">
+                <Button variant="primary" size="sm" className="ml-1">
+                  Sell My Car
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -283,9 +285,11 @@ export function PublicHeaderWithSearch({
                     </Link>
                   </>
                 )}
-                <Button variant="primary" size="sm" fullWidth className="mt-2">
-                  Sell My Car
-                </Button>
+                <Link href="/sell/upload" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="primary" size="sm" fullWidth className="mt-2">
+                    Sell My Car
+                  </Button>
+                </Link>
               </div>
             </div>
           )}

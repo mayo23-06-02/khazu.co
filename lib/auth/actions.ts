@@ -7,11 +7,18 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getDashboardPath, toDbRole } from "@/lib/auth/roles";
 import type { DbRole } from "@/lib/auth/roles";
 import { uploadMedia } from "@/lib/supabase/media";
+import {
+  issueVerificationCode,
+  reissueVerificationCode,
+  verifyCode,
+} from "@/lib/auth/verification";
 
 export type ActionResult = {
   success: boolean;
   error?: string;
   redirectTo?: string;
+  needsVerification?: boolean;
+  email?: string;
 };
 
 function sanitizeFileName(name: string) {
@@ -258,25 +265,72 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
       console.warn("Auto-trial setup skipped:", trialErr);
     }
 
-    // If we have a session (email confirm off), go straight to dashboard.
-    // Otherwise ask them to log in after confirming email.
-    if (signUpData.session) {
-      revalidatePath("/", "layout");
+    // Supabase's own "confirm email" requirement is disabled for this
+    // project — our EmailJS-sent code is the sole verification gate, so a
+    // fresh account always needs to verify before it's treated as active,
+    // whether or not auth.signUp happened to return a session.
+    try {
+      await issueVerificationCode(admin, email, userId);
+    } catch (verifyErr) {
+      console.error("issueVerificationCode error:", verifyErr);
       return {
-        success: true,
-        redirectTo: getDashboardPath(role),
+        success: false,
+        error:
+          verifyErr instanceof Error
+            ? verifyErr.message
+            : "Could not send verification code.",
       };
     }
 
+    revalidatePath("/", "layout");
     return {
       success: true,
-      redirectTo: `/auth/login?registered=1&email=${encodeURIComponent(email)}`,
+      needsVerification: true,
+      email,
+      redirectTo: `/auth/verify?email=${encodeURIComponent(email)}`,
     };
   } catch (err) {
     console.error("registerUser error:", err);
     return {
       success: false,
       error: err instanceof Error ? err.message : "Registration failed",
+    };
+  }
+}
+
+export async function verifyEmailCode(
+  email: string,
+  code: string,
+): Promise<ActionResult> {
+  try {
+    const admin = createAdminClient();
+    const result = await verifyCode(admin, email, code);
+    if (!result.success) {
+      return { success: false, error: result.error };
+    }
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err) {
+    console.error("verifyEmailCode error:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Verification failed",
+    };
+  }
+}
+
+export async function resendVerificationCode(
+  email: string,
+): Promise<ActionResult> {
+  try {
+    const admin = createAdminClient();
+    await reissueVerificationCode(admin, email);
+    return { success: true };
+  } catch (err) {
+    console.error("resendVerificationCode error:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Could not resend code",
     };
   }
 }
