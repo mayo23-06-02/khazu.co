@@ -62,8 +62,8 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
               NO HASSLE.
             </h2>
             <p className="text-lg md:text-xl text-white/80 max-w-md mb-8 font-light">
-              Get an instant online valuation in 60 seconds. Best prices in
-              Eswatini, guaranteed.*
+              List your car for free in minutes and set the price you want —
+              no appraisal, no hidden fees.
             </p>
 
             <div className="w-full flex flex-col md:flex-row gap-4">
@@ -81,8 +81,8 @@ export function SellYourCarAd({ className = "" }: SellYourCarAdProps) {
               </Link>
             </div>
 
-            <p className="mt-8 text-[10px] text-white/40  font-medium">
-              *Terms and conditions apply. Valuation based on market data.
+            <p className="mt-8 text-[10px] text-white/40 font-medium">
+              Terms and conditions apply.
             </p>
           </div>
 

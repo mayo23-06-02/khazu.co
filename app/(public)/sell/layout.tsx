@@ -6,12 +6,12 @@ import { absoluteUrl } from "@/lib/seo/site";
 export const metadata: Metadata = {
   title: "Sell Your Car in Eswatini",
   description:
-    "List your car on Khazu in minutes. Get a free valuation, upload photos and reach buyers across Eswatini — your first listing is free.",
+    "List your car on Khazu for free in minutes. Set your own price, upload photos and reach buyers and dealers across Eswatini.",
   alternates: { canonical: absoluteUrl("/sell") },
   openGraph: {
     title: "Sell Your Car in Eswatini | Khazu",
     description:
-      "List your car in minutes, get a free valuation and reach buyers across Eswatini. Your first listing is free.",
+      "List your car for free in minutes, set your own price, and reach buyers and dealers across Eswatini.",
     url: absoluteUrl("/sell"),
   },
 };
