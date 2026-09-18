@@ -5,6 +5,16 @@ import { sendVerificationEmail } from "@/lib/email/emailjs";
 const CODE_LENGTH = 6;
 const CODE_TTL_MINUTES = 30;
 
+/**
+ * Dev-only bypass: set SKIP_EMAIL_VERIFICATION=true to skip sending/checking
+ * codes (avoids EmailJS sends while testing signup repeatedly). Must be
+ * explicitly "true" — never bypassed implicitly by NODE_ENV — so a
+ * misconfigured production build can't silently disable verification.
+ */
+export function verificationEnabled(): boolean {
+  return process.env.SKIP_EMAIL_VERIFICATION !== "true";
+}
+
 function generateCode(): string {
   const max = 10 ** CODE_LENGTH;
   return crypto.randomInt(0, max).toString().padStart(CODE_LENGTH, "0");

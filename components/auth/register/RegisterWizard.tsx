@@ -131,10 +131,14 @@ export function RegisterWizard() {
         return;
       }
 
+      const dest = result.redirectTo || "/auth/login";
+      const loginHref = nextParam
+        ? `${dest}${dest.includes("?") ? "&" : "?"}next=${encodeURIComponent(nextParam)}`
+        : dest;
       setSubmitResult({
         status: "success",
         message: "Your account has been created. Sign in to get started.",
-        loginHref: (nextParam ? `${result.redirectTo}?next=${encodeURIComponent(nextParam)}` : result.redirectTo) || "/auth/login",
+        loginHref,
       });
     });
   };

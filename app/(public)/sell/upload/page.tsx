@@ -625,12 +625,18 @@ function SellCarContent() {
           throw new Error(regResult.error || "Could not create your account.");
         }
 
-        // registerUser() always requires our EmailJS code before the
-        // account is usable — save progress and send them to verify.
-        await saveDraftAndRedirect(
-          `/auth/verify?email=${encodeURIComponent(authData.email)}&next=${resumeNext}`,
-        );
-        return;
+        if (regResult.needsVerification) {
+          // Account needs an EmailJS code before it's usable — save
+          // progress and send them to verify.
+          await saveDraftAndRedirect(
+            `/auth/verify?email=${encodeURIComponent(authData.email)}&next=${resumeNext}`,
+          );
+          return;
+        }
+
+        // Verification is bypassed (SKIP_EMAIL_VERIFICATION=true, dev only)
+        // — the account is already usable, so fall through and post the
+        // listing in this same submit instead of redirecting to verify.
       }
 
       // 2. Upload images to Supabase Storage (already uploaded if resuming
