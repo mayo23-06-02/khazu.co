@@ -10,6 +10,7 @@ import { uploadMedia } from "@/lib/supabase/media";
 import {
   issueVerificationCode,
   reissueVerificationCode,
+  verificationEnabled,
   verifyCode,
 } from "@/lib/auth/verification";
 
@@ -239,6 +240,7 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
         address: address || null,
         city: city || null,
         bio: bio || null,
+        email_verified_at: verificationEnabled() ? null : new Date().toISOString(),
       },
       { onConflict: "id" },
     );
@@ -267,8 +269,22 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
 
     // Supabase's own "confirm email" requirement is disabled for this
     // project — our EmailJS-sent code is the sole verification gate, so a
-    // fresh account always needs to verify before it's treated as active,
-    // whether or not auth.signUp happened to return a session.
+    // fresh account normally needs to verify before it's treated as active,
+    // whether or not auth.signUp happened to return a session. In dev,
+    // SKIP_EMAIL_VERIFICATION=true skips the send entirely (profile was
+    // already marked verified above) so signup/login can be tested freely
+    // without spending EmailJS sends.
+    if (!verificationEnabled()) {
+      revalidatePath("/", "layout");
+      if (signUpData.session) {
+        return { success: true, redirectTo: getDashboardPath(role) };
+      }
+      return {
+        success: true,
+        redirectTo: `/auth/login?registered=1&email=${encodeURIComponent(email)}`,
+      };
+    }
+
     try {
       await issueVerificationCode(admin, email, userId);
     } catch (verifyErr) {
