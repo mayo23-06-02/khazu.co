@@ -72,3 +72,75 @@ export interface DealerDashboardData extends PersonalDashboardData {
   leadsTrendPct: number | null;
   conversionRatePct: number;
 }
+
+export interface AdminDashboardData {
+  totalUsers: number;
+  totalUsersTrendPct: number | null;
+  totalDealers: number;
+  totalListings: number;
+  pendingModeration: number;
+  monthlyRevenueSzl: number;
+  revenueTrendPct: number | null;
+  openFraudFlags: number;
+  revenueSeries: { name: string; value: number }[];
+  pendingListings: AdminListingRow[];
+  fraudPatterns: { pattern: string; count: number }[];
+}
+
+export interface AdminUserRow {
+  id: string;
+  fullName: string;
+  businessName: string | null;
+  role: string;
+  accountStatus: "active" | "suspended";
+  createdAt: string;
+}
+
+export interface AdminListingRow {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  price: number;
+  image: string | null;
+  status: string;
+  moderationStatus: "pending" | "approved" | "rejected";
+  moderationNotes: string | null;
+  sellerName: string;
+  createdAt: string;
+}
+
+export interface AdminPaymentRow {
+  id: string;
+  userName: string;
+  planName: string;
+  priceSzl: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface AdminFraudFlagRow {
+  id: string;
+  pattern: string;
+  riskScore: number;
+  status: "open" | "dismissed" | "actioned";
+  listingId: string | null;
+  listingLabel: string | null;
+  userId: string | null;
+  userName: string | null;
+  createdAt: string;
+}
+
+export interface AdminReportRow {
+  label: string;
+  listings: number;
+  newUsers: number;
+  revenueSzl: number;
+}
+
+export interface PaginatedResult<T> {
+  rows: T[];
+  page: number;
+  totalPages: number;
+  totalCount: number;
+}

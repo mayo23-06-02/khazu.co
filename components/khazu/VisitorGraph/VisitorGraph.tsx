@@ -42,14 +42,14 @@ export function VisitorGraph({
   );
 
   return (
-    <Card padding="lg" className="border-gray-200 h-full">
+    <Card padding="lg" elevated="sm" className="h-full">
       <CardBody className="flex flex-col h-full justify-between">
         <div className="flex items-center justify-between mb-4 gap-2">
-          <Heading6 className="mb-0 text-lg uppercase font-bold text-gray-700 truncate">
+          <Heading6 className="mb-0 text-lg uppercase font-bold text-dark-light truncate">
             {selectedLabel}
           </Heading6>
           <select
-            className="bg-gray-50 border border-gray-200 text-xs font-bold rounded-lg px-3 py-1.5 text-gray-700 outline-none focus:border-[#CD2C58] focus:ring-1 focus:ring-[#CD2C58] max-w-[50%]"
+            className="bg-surface-alt border border-line text-xs font-bold rounded-lg px-3 py-1.5 text-dark-light outline-none focus:border-primary focus:ring-1 focus:ring-primary max-w-[50%]"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
@@ -79,30 +79,30 @@ export function VisitorGraph({
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke="#f3f4f6"
+                  stroke="var(--color-line)"
                 />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#9ca3af", fontSize: 11 }}
+                  tick={{ fill: "var(--color-muted)", fontSize: 11 }}
                   dy={8}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#9ca3af", fontSize: 11 }}
+                  tick={{ fill: "var(--color-muted)", fontSize: 11 }}
                   allowDecimals={false}
                 />
                 <Tooltip
                   contentStyle={{
                     borderRadius: "12px",
-                    border: "1px solid #f3f4f6",
+                    border: "1px solid var(--color-line)",
                     boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
                   }}
                   labelStyle={{
                     fontWeight: "bold",
-                    color: "#111827",
+                    color: "var(--color-ink)",
                     marginBottom: "4px",
                   }}
                 />
@@ -116,19 +116,19 @@ export function VisitorGraph({
                 <Bar
                   dataKey="views"
                   name="Visitors"
-                  fill="#CD2C58"
+                  fill="var(--color-primary)"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   dataKey="likes"
                   name="Likes"
-                  fill="#3b82f6"
+                  fill="var(--color-info)"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   dataKey="comments"
                   name="Comments"
-                  fill="#10b981"
+                  fill="var(--color-success)"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>

@@ -10,9 +10,12 @@ import {
   Card,
   Badge,
   Button,
+  InputText,
+  Select,
+  DataTable,
+  EmptyState,
 } from "@/components/ui";
-import { FaSearch, FaPlus, FaEye, FaEnvelope } from "react-icons/fa";
-import { twMerge } from "tailwind-merge";
+import { FaSearch, FaPlus, FaEye, FaEnvelope, FaCar } from "react-icons/fa";
 import { PersonalListingsActions } from "@/components/khazu/PersonalListingsActions";
 import { formatSzl } from "@/lib/marketplace/format";
 import { formatCompactNumber } from "@/lib/dashboard/format";
@@ -56,159 +59,138 @@ export function DealerListingsView({ listings }: { listings: Listing[] }) {
         </Link>
       </div>
 
-      <Card className="bg-white border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 bg-gray-50/30">
+      <Card padding="none" elevated="sm" className="overflow-hidden">
+        <div className="p-4 border-b border-line bg-surface-alt/50">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="relative flex-1 w-full">
-              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted z-10" />
+              <InputText
                 placeholder="Search by make or model..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                className="pl-10"
+                fullWidth
               />
             </div>
-            <select
+            <Select
               value={status}
               onChange={(e) => setStatus(e.target.value as StatusFilter)}
-              className="w-full sm:w-auto bg-white border border-gray-200 rounded-lg text-sm px-4 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-            >
-              {STATUS_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              options={STATUS_OPTIONS}
+              className="w-full sm:w-auto sm:min-w-[160px]"
+            />
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-50/50">
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                  Vehicle
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                  Price
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-                  Analytics
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filteredListings.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center">
-                    <Body muted>
-                      {listings.length === 0
-                        ? "You haven't listed any vehicles yet."
-                        : "No vehicles found matching your search."}
-                    </Body>
-                  </td>
-                </tr>
-              ) : (
-                filteredListings.map((car) => (
-                  <tr
-                    key={car.id}
-                    className="hover:bg-gray-50/50 transition-colors group"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="relative w-16 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
-                          {car.images?.[0] && (
-                            <Image
-                              src={car.images[0]}
-                              alt={car.model}
-                              fill
-                              className="object-cover"
-                              sizes="64px"
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <Body className="font-bold leading-none">
-                            {car.make} {car.model}
-                          </Body>
-                          <Body size="xs" muted className="mt-1">
-                            {car.year} • {car.reg_number || "—"}
-                          </Body>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Body className="font-bold text-gray-900">
-                        {formatSzl(car.price)}
-                      </Body>
-                      {car.negotiable && (
-                        <Badge variant="secondary" size="xs" className="mt-1">
-                          Negotiable
-                        </Badge>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge
-                        variant={car.status === "active" ? "success" : "secondary"}
-                        size="sm"
-                        className="capitalize"
-                      >
-                        {car.status}
-                      </Badge>
-                      {car.is_featured && (
-                        <div className="mt-1 flex items-center gap-1 text-[10px] font-bold text-primary uppercase">
-                          Boosted
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div
-                          className="flex items-center gap-1.5 text-gray-500"
-                          title="Total Views"
-                        >
-                          <FaEye size={14} />
-                          <span className="text-xs font-bold">
-                            {formatCompactNumber(car.views_count ?? 0)}
-                          </span>
-                        </div>
-                        <div
-                          className="flex items-center gap-1.5 text-gray-500"
-                          title="Lead Contacts"
-                        >
-                          <FaEnvelope size={14} />
-                          <span className="text-xs font-bold">
-                            {formatCompactNumber(car.contacts_count ?? 0)}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div
-                        className={twMerge(
-                          "flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity",
-                        )}
-                      >
-                        <PersonalListingsActions
-                          listingId={car.id}
-                          isFeatured={car.is_featured}
-                          editHref={`/dashboard/dealer/listings/${car.id}/edit`}
+        {filteredListings.length === 0 ? (
+          <EmptyState
+            icon={<FaCar size={18} />}
+            title={
+              listings.length === 0
+                ? "You haven't listed any vehicles yet."
+                : "No vehicles found matching your search."
+            }
+          />
+        ) : (
+          <DataTable
+            data={filteredListings}
+            columns={[
+              {
+                key: "vehicle",
+                label: "Vehicle",
+                render: (car) => (
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-16 h-12 bg-surface-alt rounded-lg overflow-hidden flex-shrink-0 border border-line">
+                      {car.images?.[0] && (
+                        <Image
+                          src={car.images[0]}
+                          alt={car.model}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
                         />
+                      )}
+                    </div>
+                    <div>
+                      <Body className="font-bold leading-none">
+                        {car.make} {car.model}
+                      </Body>
+                      <Body size="xs" muted className="mt-1">
+                        {car.year} • {car.reg_number || "—"}
+                      </Body>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "price",
+                label: "Price",
+                render: (car) => (
+                  <div>
+                    <Body className="font-bold text-ink">{formatSzl(car.price)}</Body>
+                    {car.negotiable && (
+                      <Badge variant="secondary" size="xs" className="mt-1">
+                        Negotiable
+                      </Badge>
+                    )}
+                  </div>
+                ),
+              },
+              {
+                key: "status",
+                label: "Status",
+                render: (car) => (
+                  <div>
+                    <Badge
+                      variant={car.status === "active" ? "success" : "secondary"}
+                      size="sm"
+                      className="capitalize"
+                    >
+                      {car.status}
+                    </Badge>
+                    {car.is_featured && (
+                      <div className="mt-1 flex items-center gap-1 text-[10px] font-bold text-primary uppercase">
+                        Boosted
                       </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                    )}
+                  </div>
+                ),
+              },
+              {
+                key: "analytics",
+                label: "Analytics",
+                render: (car) => (
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1.5 text-muted" title="Total Views">
+                      <FaEye size={14} />
+                      <span className="text-xs font-bold">
+                        {formatCompactNumber(car.views_count ?? 0)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-muted" title="Lead Contacts">
+                      <FaEnvelope size={14} />
+                      <span className="text-xs font-bold">
+                        {formatCompactNumber(car.contacts_count ?? 0)}
+                      </span>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "actions",
+                label: "Actions",
+                render: (car) => (
+                  <div className="flex items-center justify-end gap-2">
+                    <PersonalListingsActions
+                      listingId={car.id}
+                      isFeatured={car.is_featured}
+                      editHref={`/dashboard/dealer/listings/${car.id}/edit`}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+          />
+        )}
       </Card>
     </Container>
   );

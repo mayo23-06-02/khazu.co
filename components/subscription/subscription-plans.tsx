@@ -262,7 +262,7 @@ export function SubscriptionPlans({
       </div>
 
       {/* Optional add-ons (apply to next checkout) */}
-      <Card padding="none" className="border border-gray-100 overflow-hidden">
+      <Card padding="none" elevated="sm" className="overflow-hidden">
         <div className="bg-gradient-to-r from-gray-900 to-[#2a1520] px-6 py-5 text-white">
           <Heading3 className="text-lg font-black text-white mb-1">
             Sponsorship add-ons

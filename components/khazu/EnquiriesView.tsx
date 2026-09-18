@@ -5,6 +5,7 @@ import Image from "next/image";
 import {
   Body,
   Card,
+  Container,
   DataTable,
   EmptyState,
   Heading1,
@@ -32,7 +33,7 @@ export function EnquiriesView({
   const [selected, setSelected] = useState<EnquiryWithListing | null>(null);
 
   return (
-    <div className="py-8 px-4 sm:px-6 max-w-5xl mx-auto">
+    <Container className="py-8 max-w-7xl">
       <div className="mb-8">
         <Heading1>Enquiries</Heading1>
         <Body muted>
@@ -42,7 +43,7 @@ export function EnquiriesView({
       </div>
 
       {enquiries.length === 0 ? (
-        <Card padding="lg" className="bg-white border-gray-100">
+        <Card padding="lg" elevated="sm">
           <EmptyState
             icon={<FaEnvelopeOpenText />}
             title="No enquiries yet"
@@ -50,7 +51,7 @@ export function EnquiriesView({
           />
         </Card>
       ) : (
-        <Card className="bg-white border-gray-100 overflow-hidden">
+        <Card padding="none" elevated="sm" className="overflow-hidden">
           <DataTable
             data={enquiries}
             onRowClick={(e) => setSelected(e)}
@@ -147,7 +148,7 @@ export function EnquiriesView({
               <p className="font-bold text-gray-900">{selected.name}</p>
               <a
                 href={`tel:${selected.phone}`}
-                className="text-sm text-[#CD2C58] font-semibold flex items-center gap-1.5 mt-1"
+                className="text-sm text-primary font-semibold flex items-center gap-1.5 mt-1"
               >
                 <FaPhoneAlt size={12} /> {selected.phone}
               </a>
@@ -168,6 +169,6 @@ export function EnquiriesView({
           </div>
         )}
       </Modal>
-    </div>
+    </Container>
   );
 }

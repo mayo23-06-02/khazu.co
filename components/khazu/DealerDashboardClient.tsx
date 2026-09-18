@@ -57,7 +57,7 @@ export function DealerDashboardClient({
               : "Currently active"
           }
           icon={<FaCar size={20} />}
-          iconBgClass="bg-[#4085aa]"
+          iconBgClass="bg-info"
           slug="dealer/listings"
           {...trendProps(stats.listingsTrendPct)}
         />
@@ -66,7 +66,7 @@ export function DealerDashboardClient({
           value={formatCompactNumber(data.soldThisMonth)}
           subtitle="This calendar month"
           icon={<FaMoneyBillWave size={20} />}
-          iconBgClass="bg-[#00a859]"
+          iconBgClass="bg-success"
           slug="dealer/listings"
           {...trendProps(data.soldTrendPct)}
         />
@@ -75,7 +75,7 @@ export function DealerDashboardClient({
           value={formatCompactNumber(data.totalLeads)}
           subtitle="Across all active inventory"
           icon={<FaPhoneAlt size={20} />}
-          iconBgClass="bg-[#2a3042]"
+          iconBgClass="bg-ink"
           slug="dealer/leads"
           {...trendProps(data.leadsTrendPct)}
         />
@@ -85,7 +85,7 @@ export function DealerDashboardClient({
           unit="%"
           subtitle="Leads to sale"
           icon={<FaPercentage size={20} />}
-          iconBgClass="bg-[#2a3042]"
+          iconBgClass="bg-ink"
         />
       </Grid>
 
@@ -113,7 +113,7 @@ export function DealerDashboardClient({
       </div>
 
       {/* Boost Banner */}
-      <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-none overflow-hidden relative shadow-xl">
+      <Card elevated="xl" className="bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden relative">
         <div className="absolute top-0 right-0 p-8 opacity-10 text-white">
           <FaRocket size={120} />
         </div>
@@ -130,7 +130,7 @@ export function DealerDashboardClient({
             <Button
               variant="primary"
               size="lg"
-              className="shrink-0 w-full md:w-auto shadow-lg shadow-[#CD2C58]/30"
+              className="shrink-0 w-full md:w-auto shadow-brand"
             >
               <FaRocket className="mr-2" /> Boost a Car
             </Button>
