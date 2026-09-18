@@ -6,112 +6,35 @@ import {
   Container,
   Grid,
   Flex,
-  Stack,
-  Section,
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
-  Heading1,
   Heading2,
   Heading3,
   Heading4,
-  Heading5,
-  Heading6,
-  Body,
   Small,
-  Caption,
   CtaButton,
-  IconButton,
-  Badge,
-  Divider,
-  Spacer,
-  Avatar,
-  TagList,
-  RatingStars,
-  Separator,
-  ProgressBar,
-  Tabs,
   Accordion,
-  InputText,
-  Select,
-  Checkbox,
-  RadioGroup,
-  ToggleSwitch,
-  Slider,
-  SearchBar,
-  Autocomplete,
-  FormGroup,
-  Fieldset,
-  Textarea,
-  FileUpload,
-  ImageUpload,
-  DatePicker,
-  SellYourCarAd,
+  PublicHeader,
+  PublicFooter,
 } from "@/components/ui";
 import {
   FaCar,
-  FaHeart,
-  FaUser,
-  FaCheckCircle,
   FaClock,
-  FaStar,
   FaShieldAlt,
   FaArrowRight,
-  FaPhone,
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaInfoCircle,
-  FaChevronDown,
-  FaChevronUp,
-  FaCalculator,
-  FaTag,
   FaMoneyBillWave,
-  FaTrophy,
-  FaChartLine,
-  FaHome,
-  FaKey,
   FaHandshake,
   FaSmile,
-  FaThumbsUp,
-  FaCamera,
-  FaPencilAlt,
-  FaCreditCard,
 } from "react-icons/fa";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { PublicHeader, PublicFooter } from "@/components/ui";
 
 export default function SellMyCarPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    reg: "",
-    mileage: "",
-    condition: "good",
-    colour: "",
-    postcode: "",
-    name: "",
-    email: "",
-    phone: "",
-    pickupMethod: "collection",
-  });
+  const [reg, setReg] = useState("");
 
-  const [valuation, setValuation] = useState<number | null>(null);
-
-  const handleValuation = () => {
-    // Simulate valuation call
-    const basePrice = 250000;
-    const mileageDeduction = parseInt(formData.mileage || "0") * 0.5;
-    const conditionMultiplier =
-      formData.condition === "excellent"
-        ? 1.1
-        : formData.condition === "good"
-          ? 1.0
-          : 0.85;
-    const estimatedValue = Math.round(
-      (basePrice - mileageDeduction) * conditionMultiplier,
-    );
-    setValuation(estimatedValue);
+  const scrollToListForm = () => {
+    document
+      .getElementById("list-form")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -119,34 +42,32 @@ export default function SellMyCarPage() {
       <PublicHeader />
 
       {/* ─── Hero Section ─── */}
-      <section className="bg-cream relative min-h-[480px] py-16 md:h-[600px] md:py-0">
-        <span className=" top-0 left-0 right-0 h-1 bg-primary/10 z-0">
+      <section className="relative min-h-[420px] py-16 sm:py-20 md:min-h-[600px] md:py-0">
+        <div className="absolute inset-0 z-0">
           <Image
             fill
             src="/sell-bg.jpg"
             alt="Sell your car"
             className="object-cover"
+            priority
           />
-          <div className="absolute inset-0 bg-[#1a1a1a]/50"></div>
-        </span>
-        <Container>
-          <div className="relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 max-w-5xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl bg-white  font-extrabold uppercase md:text-7xl text-black px-4 rounded-md mb-4">
-              Sell your car.{" "}
-              <span className="bg-[#a72346] text-white lg:px-6 px-2 rounded-md">
-                It's FREE
-              </span>
+          <div className="absolute inset-0 bg-[#1a1a1a]/60" />
+        </div>
+        <Container className="relative z-10 h-full">
+          <div className="md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 max-w-3xl mx-auto text-center px-2">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-4 text-balance">
+              Sell your car. <span className="text-primary">It&apos;s free</span>
             </h1>
-            <p className="max-w-2xl text-md text-base sm:text-lg text-white mx-auto mb-8">
-              Sell to thousands of dealers across Eswatini or choose a buyer
-              who'll collect from your home.
+            <p className="max-w-xl text-base sm:text-lg text-white/85 mx-auto mb-8">
+              List your car for buyers and dealers across Eswatini to see —
+              you set the price, we help you find the sale.
             </p>
             <CtaButton
               fullWidth={false}
               className="shadow-lg px-6 sm:px-10 whitespace-nowrap"
-              onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}
+              onClick={scrollToListForm}
             >
-              Get started for FREE <FaArrowRight className="ml-2" />
+              Get started for free <FaArrowRight className="ml-2" />
             </CtaButton>
           </div>
         </Container>
@@ -163,16 +84,14 @@ export default function SellMyCarPage() {
           <Grid cols={3} gap="lg">
             {[
               {
-                step: 1,
-                title: "Get a valuation",
+                title: "List your car",
                 description:
-                  "Enter your car details and we'll give you an instant, free estimate based on thousands of recent sales.",
+                  "Enter your registration and car details, then set the asking price yourself — no appraisal, no waiting.",
                 icon: <FaCar size={32} />,
                 image: "/sell/step1.jpg",
                 tooltip: "Post your car for free",
               },
               {
-                step: 2,
                 title: "We find a buyer",
                 description:
                   "We match your car to dealers across Eswatini who are actively searching for vehicles like yours.",
@@ -181,7 +100,6 @@ export default function SellMyCarPage() {
                 tooltip: "Listing completes instantly",
               },
               {
-                step: 3,
                 title: "Get paid & collected",
                 description:
                   "Dealer collects from your home. You get paid quickly and securely via bank transfer or cash.",
@@ -194,26 +112,30 @@ export default function SellMyCarPage() {
                 key={i}
                 padding="none"
                 hover
-                className="text-center border-none"
+                className="text-center border-none overflow-hidden"
               >
-                <div className="relative w-full h-60">
+                <div className="relative w-full h-48 sm:h-60">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    className="object-cover rounded-lg w-full h-full"
+                    className="object-cover"
                   />
-                  <div className="absolute flex  items-center justify-center gap-2 bottom-3 right-3 bg-[#a72346] text-white rounded-md p-2">
-                    <div className="text-primary  flex justify-center">
-                      <p className="text-sm"> {item.icon}</p>
-                    </div>
-                    <p className="">{item.tooltip}</p>
+                  <div className="absolute flex items-center gap-2 bottom-3 right-3 left-3 sm:left-auto bg-[#a72346] text-white rounded-md px-3 py-2">
+                    <span className="shrink-0 flex items-center justify-center text-sm">
+                      {item.icon}
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium truncate">
+                      {item.tooltip}
+                    </span>
                   </div>
                 </div>
 
                 <div className="p-4">
                   <Heading3 className="mb-1">{item.title}</Heading3>
-                  <p className=" text-gray-800">{item.description}</p>
+                  <p className="text-gray-800 text-sm sm:text-base">
+                    {item.description}
+                  </p>
                 </div>
               </Card>
             ))}
@@ -221,12 +143,12 @@ export default function SellMyCarPage() {
         </Container>
       </section>
 
-      {/* ─── Valuation Form ─── */}
+      {/* ─── List Your Car Form ─── */}
       <section
-        className="py-10 h-[90vh] flex justify-center relative md:py-14"
-        id="valuation-form"
+        className="py-10 md:py-14 relative"
+        id="list-form"
       >
-        <span className=" top-0 left-0 right-0 h- bg-primary/10 z-0">
+        <div className="absolute inset-0 z-0">
           <Image
             fill
             src="/sell-bg3.jpg"
@@ -234,45 +156,38 @@ export default function SellMyCarPage() {
             quality={100}
             className="object-cover"
           />
-          <div className="absolute inset-0 "></div>
-        </span>
-        <Container className="absolute max-w-[1400px] bottom-24 mx-auto  w-full - z-10  flex justify-start items-center">
+          <div className="absolute inset-0 bg-[#1a1a1a]/40" />
+        </div>
+        <Container className="relative z-10">
           <div className="max-w-4xl mx-auto">
-            <Card
-              padding="lg"
-              className="shadow-xl bg-white/60 backdrop-blur-xl"
-            >
+            <Card padding="lg" className="shadow-xl bg-white/90 backdrop-blur-xl">
               <CardHeader>
                 <Heading3 className="text-dark">
-                  Claim your free 45 days
+                  Ready to list your car?
                 </Heading3>
-                <p>No hidden fees. No obligation.</p>
+                <p className="text-gray-600">
+                  No hidden fees. You choose the price.
+                </p>
               </CardHeader>
               <CardBody>
-                <div className="space-y-4 flex">
-                  <div className="w-full grid lg:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      placeholder="Plate Number"
-                      value={formData.reg}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          reg: e.target.value.toUpperCase(),
-                        }))
-                      }
-                      className="w-full h-15 rounded-md placeholder:gray-300 border border-gray-200 bg-white text-black uppercase font-black font-mono text-4xl text-center"
-                    />
-                    <Link
-                      href={`/sell/upload?reg=${encodeURIComponent(formData.reg)}`}
-                    >
-                      <CtaButton className="hover:bg-[#a72346]">
-                        Sell My Car
-                      </CtaButton>
-                    </Link>
-                  </div>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <input
+                    type="text"
+                    placeholder="Plate Number"
+                    value={reg}
+                    onChange={(e) => setReg(e.target.value.toUpperCase())}
+                    className="w-full md:flex-1 min-w-0 h-14 rounded-md placeholder:text-gray-400 border border-gray-200 bg-white text-black uppercase font-black font-mono text-2xl sm:text-3xl md:text-4xl text-center px-3"
+                  />
+                  <Link
+                    href={`/sell/upload?reg=${encodeURIComponent(reg)}`}
+                    className="w-full md:flex-1"
+                  >
+                    <CtaButton className="hover:bg-[#a72346]">
+                      Sell My Car
+                    </CtaButton>
+                  </Link>
                 </div>
-                <Small muted className="block text-center mt-2">
+                <Small muted className="block text-center mt-3">
                   Enter your registration number to get started.
                 </Small>
               </CardBody>
@@ -285,32 +200,32 @@ export default function SellMyCarPage() {
       <section className="py-10 md:py-14 bg-white">
         <Container>
           <div className="text-center mb-8">
-            <Heading2 className="mb-2">
+            <Heading2 className="mb-2 text-balance">
               We make selling your car faster, safer, and more rewarding
             </Heading2>
           </div>
           <Grid cols={4} gap="md">
             {[
               {
-                icon: <FaMoneyBillWave size={64} />,
-                title: "Get the best price",
+                icon: <FaMoneyBillWave size={48} />,
+                title: "You set the price",
                 description:
-                  "Our valuation engine compares thousands of recent sales to give you an accurate, fair price.",
+                  "List at the price you want to sell for — no appraisal, no waiting on someone else's estimate.",
               },
               {
-                icon: <FaClock size={64} />,
-                title: "Sell in 24 hours",
+                icon: <FaClock size={48} />,
+                title: "Sell fast",
                 description:
-                  "From valuation to collection, we move fast. Most sellers receive an offer within minutes.",
+                  "From listing to collection, we move fast. Most sellers receive an offer within minutes.",
               },
               {
-                icon: <FaShieldAlt size={64} />,
+                icon: <FaShieldAlt size={48} />,
                 title: "Safe & secure payments",
                 description:
                   "All transactions are protected. You get paid before the car leaves your home.",
               },
               {
-                icon: <FaSmile size={64} />,
+                icon: <FaSmile size={48} />,
                 title: "Zero hidden fees",
                 description:
                   "No listing fees, no commission. We only charge when you successfully sell.",
@@ -318,12 +233,14 @@ export default function SellMyCarPage() {
             ].map((item, i) => (
               <Card key={i} padding="lg" hover className="border-none">
                 <Flex direction="col" justify="center" gap="md" items="center">
-                  <div className="text-black text-4xl shrink-0">
+                  <div className="text-black text-3xl sm:text-4xl shrink-0">
                     {item.icon}
                   </div>
                   <div className="space-y-2 flex items-center flex-col">
-                    <Heading4 className="mb-0.5">{item.title}</Heading4>
-                    <p className=" text-gray-800 text-center">
+                    <Heading4 className="mb-0.5 text-center">
+                      {item.title}
+                    </Heading4>
+                    <p className="text-gray-800 text-sm sm:text-base text-center">
                       {item.description}
                     </p>
                   </div>
@@ -337,24 +254,24 @@ export default function SellMyCarPage() {
       {/* ─── FAQ ─── */}
       <section className="py-10 md:py-14 bg-white">
         <Container className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto ">
+          <div className="max-w-3xl mx-auto">
             <Heading2 className="text-center mb-6">
               Frequently asked questions
             </Heading2>
             <Accordion
-              className="border border-gray-200  rounded-md"
+              className="border border-gray-200 rounded-md"
               items={[
                 {
                   id: "1",
                   title: "How does Khazu work?",
                   content:
-                    "Simply enter your car details to get an instant valuation. If you accept the price, we'll match you with a verified dealer who will collect your car and pay you – all within 24 hours.",
+                    "Simply enter your car's registration and details to list it at the price you choose. We'll match you with a verified dealer who can collect your car and pay you — often within 24 hours.",
                 },
                 {
                   id: "2",
                   title: "Is it really free?",
                   content:
-                    "Yes! Getting a valuation and listing your car on Khazu is completely free. We only charge dealers to access your contact details when you sell.",
+                    "Yes! Listing your car on Khazu is completely free. We only charge dealers to access your contact details when you sell.",
                 },
                 {
                   id: "3",

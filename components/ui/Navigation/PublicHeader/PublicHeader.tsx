@@ -70,7 +70,7 @@ export function PublicHeader({ className = "" }: PublicHeaderProps) {
             <Logo />
           </div>
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2 mx-auto">
+          <nav className="hidden lg:flex items-center gap-1 lg:gap-2 mx-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -83,7 +83,7 @@ export function PublicHeader({ className = "" }: PublicHeaderProps) {
             ))}
           </nav>
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2 shrink-0">
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             <Link
               href="/dashboard/personal"
               className="text-sm font-bold flex items-center space-x-2  text-black hover:text-dark hover:bg-dark/5 rounded-sm transition-colors px-4 py-2"
@@ -98,10 +98,11 @@ export function PublicHeader({ className = "" }: PublicHeaderProps) {
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle - covers both phone and tablet widths, since
+              the full desktop nav only has room from lg: up. */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-dark/5 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-dark/5 transition-colors"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
@@ -110,7 +111,7 @@ export function PublicHeader({ className = "" }: PublicHeaderProps) {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-black/5">
+          <div className="lg:hidden py-4 border-t border-black/5">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
