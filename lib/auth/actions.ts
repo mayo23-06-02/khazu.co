@@ -273,17 +273,31 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
     );
 
     if (profileError) {
+      // PGRST205 = the table/view itself is missing (schema.sql was never
+      // run). PGRST204 = the table exists but a specific column is missing
+      // (a later, more targeted migration wasn't run) — these need very
+      // different fixes, so don't lump them into one "run schema.sql"
+      // message; that sends people re-running a migration that's already
+      // applied while the real gap (e.g. supabase/email_verifications.sql)
+      // goes unnoticed. See supabase/README.md for the full migration list.
       const missingTable =
-        profileError.message.includes("schema cache") ||
-        profileError.message.includes("Could not find the table") ||
-        profileError.code === "PGRST205";
+        profileError.code === "PGRST205" ||
+        profileError.message.includes("Could not find the table");
+      const missingColumn =
+        profileError.code === "PGRST204" ||
+        profileError.message.includes("Could not find the");
 
-      return {
-        success: false,
-        error: missingTable
-          ? "Database not set up yet: run supabase/schema.sql in the Supabase SQL Editor (Dashboard → SQL → New query), then try again. If you already registered once, delete that user under Authentication → Users first."
-          : `Account created but profile failed: ${profileError.message}`,
-      };
+      let error: string;
+      if (missingTable) {
+        error =
+          "Database not set up yet: run supabase/schema.sql in the Supabase SQL Editor (Dashboard → SQL → New query), then try again. If you already registered once, delete that user under Authentication → Users first.";
+      } else if (missingColumn) {
+        error = `Database schema is out of date (${profileError.message}). Run the migrations listed in supabase/README.md — most likely one was skipped — then try again.`;
+      } else {
+        error = `Account created but profile failed: ${profileError.message}`;
+      }
+
+      return { success: false, error };
     }
 
     // Automatic 45-day free trial for every new account
