@@ -153,17 +153,17 @@ export function DashboardCalendar({
   for (let i = 1; i <= daysInMonth; i++) calendarCells.push(i);
 
   return (
-    <Card padding="lg" className="border-gray-200 h-full relative min-w-0">
+    <Card padding="lg" elevated="sm" className="h-full relative min-w-0">
       <CardBody className="flex flex-col h-full justify-between overflow-x-auto">
-        <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2 gap-2">
+        <div className="flex items-center justify-between mb-4 border-b border-line pb-2 gap-2">
           <div className="flex items-center gap-1.5 min-w-0">
-            <Heading6 className="mb-0 text-base sm:text-lg font-bold text-gray-700">
+            <Heading6 className="mb-0 text-base sm:text-lg font-bold text-dark-light">
               Calendar
             </Heading6>
-            <FaChevronDown className="text-gray-400 text-xs mt-0.5 shrink-0" />
+            <FaChevronDown className="text-muted text-xs mt-0.5 shrink-0" />
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <span className="text-[10px] sm:text-xs font-bold text-gray-600">
+            <span className="text-[10px] sm:text-xs font-bold text-dark-light">
               {monthNames[month]} {year}
             </span>
             <div className="flex items-center gap-1">
@@ -213,7 +213,7 @@ export function DashboardCalendar({
 
             if (todayFlag) {
               dayClass +=
-                "bg-[#CD2C58] text-white shadow-md shadow-[#CD2C58]/20 z-10";
+                "bg-primary text-white shadow-brand z-10";
             } else if (pay) {
               dayClass += "bg-amber-500 text-white z-10";
             } else if (sub) {
@@ -258,7 +258,7 @@ export function DashboardCalendar({
                       <span className="absolute bottom-1 w-1 h-1 rounded-full bg-white" />
                     )}
                   {!todayFlag && !pay && !sub && isPast && engagement && (
-                    <span className="absolute bottom-1 w-1 h-1 rounded-full bg-[#10b981]/70" />
+                    <span className="absolute bottom-1 w-1 h-1 rounded-full bg-success/70" />
                   )}
                 </div>
 
@@ -311,7 +311,7 @@ export function DashboardCalendar({
                       <div className="space-y-1 mt-1 pt-1 border-t border-gray-50">
                         <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
                           <span className="flex items-center gap-1.5">
-                            <FaEye className="text-[#CD2C58] text-[10px]" />{" "}
+                            <FaEye className="text-primary text-[10px]" />{" "}
                             Visitors
                           </span>
                           <span className="font-bold text-gray-700">
@@ -329,7 +329,7 @@ export function DashboardCalendar({
                         </div>
                         <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
                           <span className="flex items-center gap-1.5">
-                            <FaComment className="text-[#10b981] text-[10px]" />{" "}
+                            <FaComment className="text-success text-[10px]" />{" "}
                             Comments
                           </span>
                           <span className="font-bold text-gray-700">
@@ -367,7 +367,7 @@ export function DashboardCalendar({
             <span>Boost</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#10b981] shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-success shrink-0" />
             <span>Visitors</span>
           </div>
         </div>

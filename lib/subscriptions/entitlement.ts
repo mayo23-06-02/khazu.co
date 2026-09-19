@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { ensureUserTrial, isTrialActive, TRIAL_LISTING_LIMIT } from "./trial";
+import { ensureUserTrial, isTrialActive, trialListingLimitForRole } from "./trial";
 import type { PlanRole } from "@/components/subscription/plans-data";
 import { getPlanById, type PlanId } from "@/components/subscription/plans-data";
 
@@ -13,6 +13,8 @@ export type ListingEntitlement = {
   trialEndsAt: string | null;
   listingsUsed: number;
   listingLimit: number;
+  /** True when the active plan has no listing cap — ignore `listingLimit`'s sentinel value. */
+  unlimited: boolean;
   freeSlotsRemaining: number;
   paidSlotsRemaining: number;
   role: PlanRole;
@@ -80,20 +82,26 @@ export async function getListingEntitlement(): Promise<ListingEntitlement | null
   const trialEndsAt = (profile2?.trial_ends_at as string | null) ?? null;
   const trialOn = isTrialActive(trialEndsAt);
 
+  const trialListingLimit = trialListingLimitForRole(role);
+  const trialPlanId: PlanId = role === "dealer" ? "dealer_trial" : "individual_trial";
+
   // Paid plan limit (from active sub or profile)
   let paidLimit = 0;
   let activePlanId: string | null = null;
   let activePlanName: string | null = null;
   let subscriptionStatus: string | null = null;
+  let unlimitedPlan = false;
 
   if (paidActive) {
     paidLimit = paidActive.listing_limit || 0;
     activePlanId = paidActive.plan_id;
     activePlanName = paidActive.plan_name;
     subscriptionStatus = "active";
+    unlimitedPlan = getPlanById(paidActive.plan_id as PlanId)?.unlimited ?? false;
   } else if (
     profile2?.subscription_plan_id &&
     profile2.subscription_plan_id !== "individual_trial" &&
+    profile2.subscription_plan_id !== "dealer_trial" &&
     profile2.subscription_ends_at &&
     new Date(profile2.subscription_ends_at).getTime() > now
   ) {
@@ -102,38 +110,40 @@ export async function getListingEntitlement(): Promise<ListingEntitlement | null
     activePlanId = profile2.subscription_plan_id;
     activePlanName = plan?.name || profile2.subscription_plan_id;
     subscriptionStatus = "active";
+    unlimitedPlan = plan?.unlimited ?? false;
   } else if (trialOn) {
     subscriptionStatus = "trialing";
-    activePlanId = "individual_trial";
+    activePlanId = trialPlanId;
     activePlanName = "Free trial";
   }
 
-  // Free trial: exactly 1 free listing while trial is active and not yet used
+  // Free trial: role-based listing cap while trial is active and not yet used
   const freeSlotsRemaining =
-    trialOn && listingsUsed < TRIAL_LISTING_LIMIT
-      ? TRIAL_LISTING_LIMIT - listingsUsed
+    trialOn && listingsUsed < trialListingLimit
+      ? trialListingLimit - listingsUsed
       : 0;
 
   const paidSlotsRemaining =
     paidLimit > 0 ? Math.max(0, paidLimit - listingsUsed) : 0;
 
   const canUseFree = freeSlotsRemaining > 0;
-  const canUsePaid = paidSlotsRemaining > 0;
+  const canUsePaid = unlimitedPlan || paidSlotsRemaining > 0;
   const canPost = canUseFree || canUsePaid;
 
   let reason = "";
   if (canUseFree) {
     reason = `Free trial listing available (${freeSlotsRemaining} left).`;
+  } else if (unlimitedPlan) {
+    reason = `Covered by ${activePlanName} (unlimited listings).`;
   } else if (canUsePaid) {
     reason = `Covered by ${activePlanName} (${paidSlotsRemaining} slot${paidSlotsRemaining === 1 ? "" : "s"} left).`;
-  } else if (trialOn && listingsUsed >= TRIAL_LISTING_LIMIT) {
+  } else if (trialOn && listingsUsed >= trialListingLimit) {
     reason =
       "Your free trial listing is used. Choose a paid plan before posting another vehicle.";
   } else if (!trialOn && !paidActive) {
-    reason =
-      "No active plan. Subscribe to post listings (new users get 1 free trial listing once).";
+    reason = `No active plan. Subscribe to post listings (new ${role === "dealer" ? "dealerships" : "users"} get ${trialListingLimit} free trial listing${trialListingLimit === 1 ? "" : "s"} once).`;
   } else {
-    reason = `Listing limit reached (${listingsUsed}/${paidLimit || TRIAL_LISTING_LIMIT}). Upgrade your plan.`;
+    reason = `Listing limit reached (${listingsUsed}/${paidLimit || trialListingLimit}). Upgrade your plan.`;
   }
 
   const suggestedPlanId: PlanId =
@@ -146,7 +156,8 @@ export async function getListingEntitlement(): Promise<ListingEntitlement | null
     isTrialActive: trialOn,
     trialEndsAt,
     listingsUsed,
-    listingLimit: paidLimit > 0 ? paidLimit : trialOn ? TRIAL_LISTING_LIMIT : 0,
+    listingLimit: paidLimit > 0 ? paidLimit : trialOn ? trialListingLimit : 0,
+    unlimited: unlimitedPlan,
     freeSlotsRemaining,
     paidSlotsRemaining,
     role,

@@ -15,6 +15,7 @@ import { FaCheckCircle, FaMobileAlt, FaShieldAlt } from "react-icons/fa";
 import {
   formatEmalangeni,
   getAddonById,
+  getAddonPrice,
   getPlanById,
   type AddonId,
   type PlanId,
@@ -29,6 +30,8 @@ export type CheckoutDrawerProps = {
   planId: PlanId;
   addonIds: AddonId[];
   trialEndsAt?: string | null;
+  /** Target listing when addonIds includes a per-listing boost. */
+  listingId?: string;
   onSuccess?: (message: string) => void;
 };
 
@@ -39,6 +42,7 @@ export function CheckoutDrawer({
   planId,
   addonIds,
   trialEndsAt = null,
+  listingId,
   onSuccess,
 }: CheckoutDrawerProps) {
   const router = useRouter();
@@ -49,7 +53,7 @@ export function CheckoutDrawer({
     .filter((a) => !a.dealerOnly || role === "dealer");
 
   const planPrice = plan?.priceSzl ?? 0;
-  const addonsTotal = addons.reduce((s, a) => s + a.priceSzl, 0);
+  const addonsTotal = addons.reduce((s, a) => s + getAddonPrice(a, role), 0);
   const total = planPrice + addonsTotal;
   const isFree = total === 0;
 
@@ -106,6 +110,7 @@ export function CheckoutDrawer({
         planId,
         addonIds: addons.map((a) => a.id),
         momoNumber,
+        listingId,
       });
 
       if (!res.success) {
@@ -189,7 +194,7 @@ export function CheckoutDrawer({
                       {a.name}
                     </span>
                     <span className="font-semibold text-gray-800">
-                      {formatEmalangeni(a.priceSzl)}
+                      {formatEmalangeni(getAddonPrice(a, role))}
                     </span>
                   </div>
                 ))}

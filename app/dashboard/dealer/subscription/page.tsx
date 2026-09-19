@@ -34,7 +34,7 @@ export default async function DealerSubscriptionPage() {
   const profile = profileRes.data;
 
   return (
-    <Container className="py-8 max-w-6xl">
+    <Container className="py-8 max-w-7xl">
       <div className="mb-8">
         <Heading1>Subscription & billing</Heading1>
         <Body muted>

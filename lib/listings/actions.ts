@@ -307,67 +307,6 @@ export async function recordListingEvent(input: {
   }
 }
 
-export async function createMockBoost(listingId: string): Promise<ListingActionResult> {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return { success: false, error: "Unauthorized" };
-
-    const { data: listing } = await supabase
-      .from("listings")
-      .select("id, seller_id")
-      .eq("id", listingId)
-      .eq("seller_id", user.id)
-      .maybeSingle();
-
-    if (!listing) return { success: false, error: "Listing not found" };
-
-    const starts = new Date();
-    const ends = new Date();
-    ends.setDate(ends.getDate() + 14);
-
-    const startsAt = starts.toISOString().slice(0, 10);
-    const endsAt = ends.toISOString().slice(0, 10);
-
-    const { error } = await supabase.from("listing_boosts").insert({
-      listing_id: listing.id,
-      seller_id: user.id,
-      amount_szl: 25,
-      starts_at: startsAt,
-      ends_at: endsAt,
-      status: "active",
-    });
-
-    if (error) return { success: false, error: error.message };
-
-    await supabase.from("listing_events").insert({
-      listing_id: listing.id,
-      seller_id: user.id,
-      actor_id: user.id,
-      event_type: "boost_started",
-      message: "SZL 25 for 14-day featured placement",
-    });
-
-    await supabase
-      .from("listings")
-      .update({ is_featured: true })
-      .eq("id", listing.id);
-
-    revalidatePath("/dashboard/personal");
-    revalidatePath("/dashboard/personal/listings");
-    revalidatePath("/dashboard/dealer");
-    revalidatePath("/dashboard/dealer/listings");
-    return { success: true, listingId: listing.id };
-  } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : "Failed to create boost",
-    };
-  }
-}
-
 export async function updateProfile(input: {
   full_name: string;
   phone?: string;

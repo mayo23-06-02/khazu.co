@@ -14,14 +14,14 @@ export function RecentActivity({ activities = [] }: RecentActivityProps) {
   const getIcon = (type: DashboardActivityItem["type"]) => {
     switch (type) {
       case "like":
-        return <FaHeart className="text-red-500 text-sm" />;
+        return <FaHeart className="text-danger text-sm" />;
       case "comment":
-        return <FaComment className="text-[#3b82f6] text-sm" />;
+        return <FaComment className="text-info text-sm" />;
       case "notification":
-        return <FaBell className="text-green-500 text-sm" />;
+        return <FaBell className="text-success text-sm" />;
       case "reminder":
         return (
-          <FaInfoCircle className="text-orange-500 text-sm animate-pulse" />
+          <FaInfoCircle className="text-warning text-sm animate-pulse" />
         );
     }
   };
@@ -29,21 +29,21 @@ export function RecentActivity({ activities = [] }: RecentActivityProps) {
   const getIconBg = (type: DashboardActivityItem["type"]) => {
     switch (type) {
       case "like":
-        return "bg-red-50 border-red-100";
+        return "bg-danger-light border-danger-light";
       case "comment":
-        return "bg-blue-50 border-blue-100";
+        return "bg-info-light border-info-light";
       case "notification":
-        return "bg-green-50 border-green-100";
+        return "bg-success-light border-success-light";
       case "reminder":
-        return "bg-orange-50 border-orange-100";
+        return "bg-warning-light border-warning-light";
     }
   };
 
   return (
-    <Card padding="lg" className="border-gray-200 h-full">
+    <Card padding="lg" elevated="sm" className="h-full">
       <CardBody className="flex flex-col h-full justify-between">
-        <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
-          <Heading6 className="mb-0 text-lg uppercase font-bold text-gray-700">
+        <div className="flex items-center justify-between mb-4 border-b border-line pb-2">
+          <Heading6 className="mb-0 text-lg uppercase font-bold text-dark-light">
             Recent Activity
           </Heading6>
         </div>
@@ -61,8 +61,8 @@ export function RecentActivity({ activities = [] }: RecentActivityProps) {
                 key={activity.id}
                 className={`flex items-start gap-3 p-3 rounded-lg border transition-all duration-300 hover:shadow-sm ${
                   activity.isUpcoming
-                    ? "bg-linear-to-r from-orange-50/70 to-yellow-50/30 border-orange-200/80 "
-                    : "bg-white border-gray-200 hover:border-gray-200"
+                    ? "bg-linear-to-r from-warning-light/70 to-warning-light/20 border-warning/30"
+                    : "bg-white border-line hover:border-line-strong"
                 }`}
               >
                 <div
@@ -73,10 +73,10 @@ export function RecentActivity({ activities = [] }: RecentActivityProps) {
                   {getIcon(activity.type)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 leading-snug break-words">
+                  <p className="text-sm font-semibold text-ink leading-snug break-words">
                     {activity.text}
                   </p>
-                  <span className="text-[11px] font-medium text-gray-400 mt-1 block">
+                  <span className="text-[11px] font-medium text-muted mt-1 block">
                     {activity.time}
                   </span>
                 </div>

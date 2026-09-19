@@ -16,11 +16,11 @@ export function StepHeading({
       <h3
         ref={ref}
         tabIndex={-1}
-        className="text-xl font-black text-gray-900 focus:outline-none"
+        className="text-xl font-black text-ink focus:outline-none"
       >
         {title}
       </h3>
-      <p className="text-gray-500 text-sm mt-1">{subtitle}</p>
+      <p className="text-muted text-sm mt-1">{subtitle}</p>
     </div>
   );
 }

@@ -55,6 +55,7 @@ export function ListingPaymentGate({
     reason,
     listingsUsed,
     listingLimit,
+    unlimited,
     freeSlotsRemaining,
     isTrialActive,
     trialEndsAt,
@@ -107,7 +108,7 @@ export function ListingPaymentGate({
               </Body>
               <Small className="text-gray-500 block mt-1">
                 Listings used: {listingsUsed}
-                {listingLimit > 0 ? ` / ${listingLimit}` : ""}
+                {unlimited ? " / Unlimited" : listingLimit > 0 ? ` / ${listingLimit}` : ""}
                 {freeSlotsRemaining > 0
                   ? ` · ${freeSlotsRemaining} free trial slot left`
                   : ""}

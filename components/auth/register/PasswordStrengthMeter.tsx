@@ -31,7 +31,7 @@ export function PasswordStrengthMeter({ password }: { password: string }) {
           <div
             key={i}
             className={`h-1.5 flex-1 rounded-full transition-colors ${
-              i < score ? level.bar : "bg-gray-200"
+              i < score ? level.bar : "bg-surface-sunken"
             }`}
           />
         ))}

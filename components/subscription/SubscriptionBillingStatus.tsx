@@ -25,6 +25,7 @@ export function SubscriptionBillingStatus({
   const {
     listingsUsed,
     listingLimit,
+    unlimited,
     freeSlotsRemaining,
     isTrialActive,
     trialEndsAt,
@@ -39,9 +40,13 @@ export function SubscriptionBillingStatus({
     <div className="space-y-4 mb-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          icon={<FaCar className="text-[#CD2C58]" />}
+          icon={<FaCar className="text-primary" />}
           label="Listings used"
-          value={`${listingsUsed}${listingLimit ? ` / ${listingLimit}` : ""}`}
+          value={
+            unlimited
+              ? `${listingsUsed} / Unlimited`
+              : `${listingsUsed}${listingLimit ? ` / ${listingLimit}` : ""}`
+          }
           hint={
             freeSlotsRemaining > 0
               ? `${freeSlotsRemaining} free trial left`
@@ -79,8 +84,8 @@ export function SubscriptionBillingStatus({
       </div>
 
       {transactions.length > 0 && (
-        <Card padding="none" className="border border-gray-100 overflow-hidden">
-          <div className="px-5 py-3 border-b border-gray-100 bg-gray-50">
+        <Card padding="none" elevated="sm" className="overflow-hidden">
+          <div className="px-5 py-3 border-b border-line bg-surface-alt">
             <Heading3 className="text-sm font-black mb-0">
               Recent payments
             </Heading3>
@@ -137,13 +142,13 @@ function StatCard({
   hint: string;
 }) {
   return (
-    <Card padding="lg" className="border border-gray-100">
+    <Card padding="lg" elevated="sm">
       <CardBody className="p-0 space-y-1">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted">
           {icon}
           {label}
         </div>
-        <p className="text-xl font-black text-gray-900 truncate">{value}</p>
+        <p className="text-xl font-black text-ink truncate">{value}</p>
         <Body size="sm" muted>
           {hint}
         </Body>

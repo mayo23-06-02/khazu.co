@@ -3,11 +3,9 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Body, Logo, StepProgress } from "@/components/ui";
 import { checkContactAvailability, registerUser } from "@/lib/auth/actions";
-import { BrandPanel } from "./BrandPanel";
 import { buildRegisterFormData } from "./buildFormData";
 import { RegisterFeedback, type RegisterFeedbackStatus } from "./RegisterFeedback";
 import { defaultRegisterValues, REGISTER_STEPS } from "./schema";
@@ -147,7 +145,7 @@ export function RegisterWizard() {
     <div className="min-h-dvh w-full flex relative overflow-hidden">
       <div className="absolute inset-0 z-0">
        
-        <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-[#a72346]/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/15 via-black/20 to-primary-hover/10" />
       </div>
 
       {/* Form panel */}
@@ -222,12 +220,12 @@ export function RegisterWizard() {
               )}
             </div>
 
-            <div className="bg-gray-50 border-t border-gray-100 px-8 py-4 text-center flex-shrink-0">
-              <Body size="sm" className="text-gray-400">
+            <div className="bg-surface-alt border-t border-line px-8 py-4 text-center flex-shrink-0">
+              <Body size="sm" className="text-muted">
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
-                  className="text-[#a72346] hover:underline font-bold"
+                  className="text-primary hover:underline font-bold"
                 >
                   Sign in
                 </Link>

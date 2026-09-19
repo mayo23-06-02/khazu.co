@@ -69,6 +69,8 @@ import {
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { PublicHeader, PublicFooter } from "@/components/ui";
+import { CheckoutDrawer } from "@/components/subscription/CheckoutDrawer";
+import type { PlanId, PlanRole } from "@/components/subscription/plans-data";
 
 export default function PricingPage() {
   const [toast, setToast] = useState<{
@@ -83,8 +85,9 @@ export default function PricingPage() {
   const dealerPlans = [
     {
       id: "basic",
-      name: "Basic",
-      price: 459,
+      planId: "dealer_starter" as PlanId,
+      name: "Starter",
+      price: 375,
       listings: 15,
       features: [
         "15 active listings",
@@ -97,11 +100,12 @@ export default function PricingPage() {
     },
     {
       id: "standard",
-      name: "Standard",
-      price: 785,
-      listings: 30,
+      planId: "dealer_growth" as PlanId,
+      name: "Growth",
+      price: 550,
+      listings: 25,
       features: [
-        "30 active listings",
+        "25 active listings",
         "Verified dealer badge",
         "Lead inbox",
         "Advanced analytics",
@@ -112,11 +116,12 @@ export default function PricingPage() {
     },
     {
       id: "premium",
+      planId: "dealer_premium" as PlanId,
       name: "Premium",
-      price: 1550,
-      listings: 50,
+      price: 725,
+      listings: 35,
       features: [
-        "50 active listings",
+        "35 active listings",
         "Verified dealer badge",
         "Lead inbox",
         "Advanced analytics",
@@ -128,8 +133,9 @@ export default function PricingPage() {
     },
     {
       id: "enterprise",
-      name: "Enterprise",
-      price: 2250,
+      planId: "dealer_unlimited" as PlanId,
+      name: "Unlimited",
+      price: 1250,
       listings: 9999,
       features: [
         "Unlimited active listings",
@@ -144,48 +150,43 @@ export default function PricingPage() {
     },
   ];
 
-  // ─── Boost Options (Private Sellers) ─────────────────────
+  // ─── Listing Plans (Private Sellers) ──────────────────────
   const boostOptions = [
     {
       id: "basic",
-      name: "Basic",
-      days: 7,
-      price: 49,
-      label: "7 days – SZL 49",
-      description: "Quick search injection",
+      planId: "individual_14" as PlanId,
+      name: "14-Day Pass",
+      days: 14,
+      price: 45,
+      label: "14 days – SZL 45",
+      description: "One listing, live for 14 days",
     },
     {
       id: "standard",
-      name: "Standard",
-      days: 14,
-      price: 75,
-      label: "14 days – SZL 75",
-      description: "Most popular boost tier",
-    },
-    {
-      id: "premium",
-      name: "Premium",
+      planId: "individual_28" as PlanId,
+      name: "28-Day Pass",
       days: 28,
-      price: 135,
-      label: "28 days – SZL 135",
-      description: "Maximum visibility boost",
+      price: 75,
+      label: "28 days – SZL 75",
+      description: "Better value for a longer sale window",
     },
   ];
 
-  // ─── Handlers ────────────────────────────────────────────
+  // ─── Checkout ────────────────────────────────────────────
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [checkoutRole, setCheckoutRole] = useState<PlanRole>("dealer");
+  const [checkoutPlanId, setCheckoutPlanId] = useState<PlanId | null>(null);
 
-  const handleSubscribe = (planId: string) => {
-    setToast({
-      type: "success",
-      message: `Subscribed to ${planId.toUpperCase()} plan! Redirecting...`,
-    });
+  const handleSubscribe = (planId: PlanId) => {
+    setCheckoutRole("dealer");
+    setCheckoutPlanId(planId);
+    setCheckoutOpen(true);
   };
 
-  const handleBoost = (days: number) => {
-    setToast({
-      type: "success",
-      message: `Boost for ${days} days initiated! Redirecting...`,
-    });
+  const handleBoost = (planId: PlanId) => {
+    setCheckoutRole("individual");
+    setCheckoutPlanId(planId);
+    setCheckoutOpen(true);
   };
 
   return (
@@ -267,15 +268,15 @@ export default function PricingPage() {
                 For Private Sellers
               </span>
               <Heading2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                Boost Your Listing
+                List Your Car
               </Heading2>
               <div className="w-12 h-1 bg-[#a72346] mx-auto mt-4 rounded-full"></div>
               <Body
                 muted
                 className="mt-4 text-gray-500 max-w-lg mx-auto font-medium"
               >
-                List your car for free for the first 45 days. After that,
-                subscribe and boost to stay visible and sell faster.
+                Your first listing is free for 14 days. After that, choose a
+                14 or 28-day listing pass to stay live.
               </Body>
             </div>
 
@@ -336,13 +337,13 @@ export default function PricingPage() {
                           size={14}
                         />
                         <span className="text-gray-600 font-medium">
-                          Free 45 days for new users
+                          14-day free trial for new sellers
                         </span>
                       </li>
                     </ul>
                   </CardBody>
                   <CardFooter className="pt-6 pb-2">
-                    <CtaButton onClick={() => handleBoost(opt.days)}>
+                    <CtaButton onClick={() => handleBoost(opt.planId)}>
                       Subscribe
                     </CtaButton>
                   </CardFooter>
@@ -351,7 +352,8 @@ export default function PricingPage() {
             </div>
             <div className="mt-6 text-center text-xs text-gray-400">
               <p>
-                ✨ New users get 45 days of free boost on their first listing.
+                ✨ New sellers get 14 days free before their first listing
+                needs a plan.
               </p>
             </div>
           </Container>
@@ -445,7 +447,7 @@ export default function PricingPage() {
                             : "border-gray-300 bg-[#1a1a1a] text-white",
                         ),
                       )}
-                      onClick={() => handleSubscribe(plan.id)}
+                      onClick={() => handleSubscribe(plan.planId)}
                     >
                       {plan.popular ? "Subscribe Now" : "Choose Plan"}
                     </CtaButton>
@@ -670,7 +672,7 @@ export default function PricingPage() {
                 id: "3",
                 title: "Is there a free trial for dealerships?",
                 content:
-                  "Yes, new dealerships can register for a 45-day free trial on the Basic plan to explore our lead management features and list up to 10 cars.",
+                  "Yes, new dealerships get a 28-day free trial to explore our lead management features and list up to 5 cars before choosing a plan.",
               },
               {
                 id: "4",
@@ -725,6 +727,17 @@ export default function PricingPage() {
       </section>
 
       <PublicFooter />
+
+      {checkoutPlanId && (
+        <CheckoutDrawer
+          open={checkoutOpen}
+          onClose={() => setCheckoutOpen(false)}
+          role={checkoutRole}
+          planId={checkoutPlanId}
+          addonIds={[]}
+          onSuccess={(message) => setToast({ type: "success", message })}
+        />
+      )}
 
       <ToastContainer>
         {toast && (

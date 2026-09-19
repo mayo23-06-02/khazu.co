@@ -4,9 +4,11 @@ export type PlanId =
   | "individual_trial"
   | "individual_14"
   | "individual_28"
+  | "dealer_trial"
   | "dealer_starter"
   | "dealer_growth"
-  | "dealer_premium";
+  | "dealer_premium"
+  | "dealer_unlimited";
 
 export type AddonId =
   | "banner_home_listings"
@@ -20,12 +22,15 @@ export interface SubscriptionPlan {
   priceSzl: number;
   periodLabel: string;
   periodDays: number;
+  /** Sentinel large number when `unlimited` is true — never render it directly, check `unlimited` first. */
   listingLimit: number;
   includedSponsorships: number;
   tagline: string;
   features: string[];
   popular?: boolean;
   isTrial?: boolean;
+  /** True for the top dealer tier — no listing cap. */
+  unlimited?: boolean;
   ctaLabel?: string;
 }
 
@@ -33,7 +38,10 @@ export interface SponsorshipAddon {
   id: AddonId;
   name: string;
   description: string;
+  /** Price for individual sellers. */
   priceSzl: number;
+  /** Discounted dealer price, when different from `priceSzl`. */
+  dealerPriceSzl?: number;
   durationDays: number;
   /** If true, only dealers can select this addon */
   dealerOnly?: boolean;
@@ -47,15 +55,15 @@ export const INDIVIDUAL_PLANS: SubscriptionPlan[] = [
     role: "individual",
     name: "Free Trial",
     priceSzl: 0,
-    periodLabel: "45 days",
-    periodDays: 45,
+    periodLabel: "14 days",
+    periodDays: 14,
     listingLimit: 1,
     includedSponsorships: 0,
     tagline: "Try Khazu risk-free",
     isTrial: true,
     features: [
       "1 free active listing",
-      "45-day trial window",
+      "14-day trial window",
       "Buyer enquiries via WhatsApp",
       "Basic listing analytics",
       "No MoMo charge to start",
@@ -66,7 +74,7 @@ export const INDIVIDUAL_PLANS: SubscriptionPlan[] = [
     id: "individual_14",
     role: "individual",
     name: "14-Day Pass",
-    priceSzl: 0,
+    priceSzl: 45,
     periodLabel: "14 days",
     periodDays: 14,
     listingLimit: 1,
@@ -85,7 +93,7 @@ export const INDIVIDUAL_PLANS: SubscriptionPlan[] = [
     id: "individual_28",
     role: "individual",
     name: "28-Day Pass",
-    priceSzl: 0,
+    priceSzl: 75,
     periodLabel: "28 days",
     periodDays: 28,
     listingLimit: 1,
@@ -103,17 +111,37 @@ export const INDIVIDUAL_PLANS: SubscriptionPlan[] = [
 
 export const DEALER_PLANS: SubscriptionPlan[] = [
   {
+    id: "dealer_trial",
+    role: "dealer",
+    name: "Free Trial",
+    priceSzl: 0,
+    periodLabel: "28 days",
+    periodDays: 28,
+    listingLimit: 5,
+    includedSponsorships: 0,
+    tagline: "Try Khazu risk-free",
+    isTrial: true,
+    features: [
+      "Up to 5 active listings",
+      "28-day trial window",
+      "Lead inbox & contact tracking",
+      "Basic analytics dashboard",
+      "No MoMo charge to start",
+    ],
+    ctaLabel: "Start free trial",
+  },
+  {
     id: "dealer_starter",
     role: "dealer",
     name: "Starter",
-    priceSzl: 0,
+    priceSzl: 375,
     periodLabel: "per month",
     periodDays: 30,
-    listingLimit: 18,
+    listingLimit: 15,
     includedSponsorships: 3,
     tagline: "Launch your dealership online",
     features: [
-      "18 active inventory slots",
+      "15 active inventory slots",
       "3 sponsored ad placements / month",
       "Verified dealer badge",
       "Lead inbox & contact tracking",
@@ -126,7 +154,7 @@ export const DEALER_PLANS: SubscriptionPlan[] = [
     id: "dealer_growth",
     role: "dealer",
     name: "Growth",
-    priceSzl: 0,
+    priceSzl: 550,
     periodLabel: "per month",
     periodDays: 30,
     listingLimit: 25,
@@ -148,7 +176,7 @@ export const DEALER_PLANS: SubscriptionPlan[] = [
     id: "dealer_premium",
     role: "dealer",
     name: "Premium",
-    priceSzl: 0,
+    priceSzl: 725,
     periodLabel: "per month",
     periodDays: 30,
     listingLimit: 35,
@@ -166,6 +194,25 @@ export const DEALER_PLANS: SubscriptionPlan[] = [
       "Same-day support (business hours)",
     ],
   },
+  {
+    id: "dealer_unlimited",
+    role: "dealer",
+    name: "Unlimited",
+    priceSzl: 1250,
+    periodLabel: "per month",
+    periodDays: 30,
+    listingLimit: 100000,
+    unlimited: true,
+    includedSponsorships: 25,
+    tagline: "For high-volume dealerships",
+    features: [
+      "Unlimited inventory slots",
+      "25 sponsored ads / month",
+      "Everything in Premium",
+      "Dedicated account manager",
+      "Priority same-day support",
+    ],
+  },
 ];
 
 export const SPONSORSHIP_ADDONS: SponsorshipAddon[] = [
@@ -174,7 +221,7 @@ export const SPONSORSHIP_ADDONS: SponsorshipAddon[] = [
     name: "Banner Ads",
     description:
       "Premium banner on Home + Listings pages. Recommended creative ratio 12:5.",
-    priceSzl: 0,
+    priceSzl: 200,
     durationDays: 14,
     dealerOnly: true,
     badge: "Dealerships only",
@@ -185,7 +232,8 @@ export const SPONSORSHIP_ADDONS: SponsorshipAddon[] = [
     name: "Listing Sponsorship — 7 days",
     description:
       "Top position in search results + visibility on Home & Listings.",
-    priceSzl: 0,
+    priceSzl: 25,
+    dealerPriceSzl: 20,
     durationDays: 7,
   },
   {
@@ -193,11 +241,19 @@ export const SPONSORSHIP_ADDONS: SponsorshipAddon[] = [
     name: "Listing Sponsorship — 14 days",
     description:
       "Top position in search results + visibility on Home & Listings.",
-    priceSzl: 0,
+    priceSzl: 45,
+    dealerPriceSzl: 35,
     durationDays: 14,
     badge: "Best value",
   },
 ];
+
+/** Resolves an addon's price for the given role (dealers get a discounted rate where set). */
+export function getAddonPrice(addon: SponsorshipAddon, role: PlanRole): number {
+  return role === "dealer" && addon.dealerPriceSzl != null
+    ? addon.dealerPriceSzl
+    : addon.priceSzl;
+}
 
 export function plansForRole(role: PlanRole): SubscriptionPlan[] {
   return role === "dealer" ? DEALER_PLANS : INDIVIDUAL_PLANS;
