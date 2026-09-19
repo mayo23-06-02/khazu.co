@@ -30,6 +30,8 @@ export type CheckoutDrawerProps = {
   planId: PlanId;
   addonIds: AddonId[];
   trialEndsAt?: string | null;
+  /** Target listing when addonIds includes a per-listing boost. */
+  listingId?: string;
   onSuccess?: (message: string) => void;
 };
 
@@ -40,6 +42,7 @@ export function CheckoutDrawer({
   planId,
   addonIds,
   trialEndsAt = null,
+  listingId,
   onSuccess,
 }: CheckoutDrawerProps) {
   const router = useRouter();
@@ -107,6 +110,7 @@ export function CheckoutDrawer({
         planId,
         addonIds: addons.map((a) => a.id),
         momoNumber,
+        listingId,
       });
 
       if (!res.success) {

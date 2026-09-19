@@ -138,8 +138,10 @@ export async function momoInitiateRequestToPay(input: {
  * APPROVE — RazPay has no separate "approve" call; the payer confirms on
  * their handset. We re-check status once (RazPay polls MTN itself when the
  * transaction is still pending) so a fast decline surfaces immediately.
+ * (Real RazPay API call — despite the historical "simulate" name this hits
+ * the live status endpoint, it does not fabricate a result.)
  */
-export async function momoSimulateApproval(input: {
+export async function momoCheckApprovalStatus(input: {
   reference: string;
   approve: boolean;
 }): Promise<{ ok: boolean; status: MomoStatus; raw?: unknown }> {

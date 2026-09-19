@@ -13,7 +13,7 @@ import {
 import {
   isValidMtnMsisdn,
   momoInitiateRequestToPay,
-  momoSimulateApproval,
+  momoCheckApprovalStatus,
   momoValidatePayment,
   normalizeMomoMsisdn,
 } from "./momo";
@@ -65,6 +65,11 @@ async function getAuthedUser() {
 function revalidateBilling() {
   revalidatePath("/dashboard/personal/subscription");
   revalidatePath("/dashboard/dealer/subscription");
+  // Dashboard overview pages render the calendar/activity feed off the same
+  // subscriptions/profile data — revalidate them too so a new payment or
+  // scheduled charge shows up there immediately, not just on the billing tab.
+  revalidatePath("/dashboard/personal");
+  revalidatePath("/dashboard/dealer");
   revalidatePath("/dashboard");
 }
 
@@ -78,6 +83,8 @@ export async function initiateTransaction(input: {
   planId: PlanId;
   addonIds: AddonId[];
   momoNumber: string;
+  /** When buying a listing-boost addon, the specific listing it applies to. */
+  listingId?: string;
 }): Promise<TransactionResult> {
   try {
     const { supabase, user } = await getAuthedUser();
@@ -88,8 +95,10 @@ export async function initiateTransaction(input: {
       return { success: false, error: "Invalid plan selected." };
     }
 
-    // Trial is automatic — never "buy" the free trial plan
-    if (plan.isTrial || plan.id === "individual_trial") {
+    // Trial is automatic — never "buy" the free trial plan on its own. An
+    // addon-only checkout (e.g. boosting a listing while still on trial)
+    // is fine — the trial plan here is just a free anchor, not the charge.
+    if ((plan.isTrial || plan.id === "individual_trial") && input.addonIds.length === 0) {
       return {
         success: false,
         error: "Your free trial starts automatically. Pick a paid plan to schedule after trial.",
@@ -206,6 +215,7 @@ export async function initiateTransaction(input: {
       await supabase.from("sponsorships").insert({
         user_id: user.id,
         subscription_id: sub.id,
+        listing_id: input.listingId ?? null,
         sponsorship_type: addon.id,
         label: addon.name,
         price_szl: getAddonPrice(addon, input.role),
@@ -312,7 +322,7 @@ export async function approveTransaction(input: {
     }
 
     const ref = sub.payment_reference as string;
-    const momo = await momoSimulateApproval({
+    const momo = await momoCheckApprovalStatus({
       reference: ref,
       approve: input.approved,
     });
@@ -572,7 +582,7 @@ export async function validateTransaction(input: {
 
     const { data: sponsorships } = await supabase
       .from("sponsorships")
-      .select("id, duration_days")
+      .select("id, duration_days, listing_id, price_szl, sponsorship_type")
       .eq("subscription_id", sub.id)
       .eq("status", "pending");
 
@@ -587,6 +597,39 @@ export async function validateTransaction(input: {
           ends_at: sEnd.toISOString(),
         })
         .eq("id", sp.id);
+
+      // Per-listing boost addons also drive the dashboard calendar/StatsCard,
+      // which read from listing_boosts rather than sponsorships directly.
+      if (
+        sp.listing_id &&
+        (sp.sponsorship_type === "listing_boost_7" ||
+          sp.sponsorship_type === "listing_boost_14")
+      ) {
+        await supabase.from("listing_boosts").insert({
+          listing_id: sp.listing_id,
+          seller_id: user.id,
+          amount_szl: sp.price_szl,
+          starts_at: now.toISOString().slice(0, 10),
+          ends_at: sEnd.toISOString().slice(0, 10),
+          status: "active",
+        });
+
+        await supabase
+          .from("listings")
+          .update({ is_featured: true })
+          .eq("id", sp.listing_id);
+
+        await supabase.from("listing_events").insert({
+          listing_id: sp.listing_id,
+          seller_id: user.id,
+          actor_id: user.id,
+          event_type: "boost_started",
+          message: `E${Number(sp.price_szl)} featured placement — ${sp.duration_days} days`,
+        });
+
+        revalidatePath("/dashboard/personal/listings");
+        revalidatePath("/dashboard/dealer/listings");
+      }
     }
 
     await supabase

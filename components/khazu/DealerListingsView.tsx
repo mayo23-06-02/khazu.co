@@ -183,6 +183,7 @@ export function DealerListingsView({ listings }: { listings: Listing[] }) {
                     <PersonalListingsActions
                       listingId={car.id}
                       isFeatured={car.is_featured}
+                      role="dealer"
                       editHref={`/dashboard/dealer/listings/${car.id}/edit`}
                     />
                   </div>

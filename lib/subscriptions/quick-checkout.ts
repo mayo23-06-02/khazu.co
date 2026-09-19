@@ -17,6 +17,7 @@ export async function quickCheckout(input: {
   planId: PlanId;
   addonIds: AddonId[];
   momoNumber: string;
+  listingId?: string;
 }): Promise<TransactionResult> {
   const initiated = await initiateTransaction(input);
   if (!initiated.success || !initiated.subscriptionId) {

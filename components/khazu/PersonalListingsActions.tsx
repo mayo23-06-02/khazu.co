@@ -1,25 +1,27 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaEdit, FaRocket, FaTrashAlt } from "react-icons/fa";
-import {
-  archiveListing,
-  createMockBoost,
-} from "@/lib/listings/actions";
+import { archiveListing } from "@/lib/listings/actions";
+import { CheckoutDrawer } from "@/components/subscription/CheckoutDrawer";
+import type { PlanId, PlanRole } from "@/components/subscription/plans-data";
 
 export function PersonalListingsActions({
   listingId,
   isFeatured,
+  role = "individual",
   editHref = `/dashboard/personal/listings/${listingId}/edit`,
 }: {
   listingId: string;
   isFeatured: boolean;
+  role?: PlanRole;
   editHref?: string;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const [boostOpen, setBoostOpen] = useState(false);
 
   const onArchive = () => {
     if (!confirm("Remove this listing from your dashboard?")) return;
@@ -30,13 +32,7 @@ export function PersonalListingsActions({
     });
   };
 
-  const onBoost = () => {
-    startTransition(async () => {
-      const res = await createMockBoost(listingId);
-      if (!res.success) alert(res.error || "Failed");
-      else router.refresh();
-    });
-  };
+  const trialPlanId: PlanId = role === "dealer" ? "dealer_trial" : "individual_trial";
 
   return (
     <div className="flex items-center gap-2">
@@ -51,7 +47,7 @@ export function PersonalListingsActions({
         <button
           type="button"
           disabled={pending}
-          onClick={onBoost}
+          onClick={() => setBoostOpen(true)}
           title="Boost listing (14 days)"
           className="p-3 bg-gray-50 text-gray-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-all disabled:opacity-50"
         >
@@ -67,6 +63,18 @@ export function PersonalListingsActions({
       >
         <FaTrashAlt size={18} />
       </button>
+
+      {boostOpen && (
+        <CheckoutDrawer
+          open={boostOpen}
+          onClose={() => setBoostOpen(false)}
+          role={role}
+          planId={trialPlanId}
+          addonIds={["listing_boost_14"]}
+          listingId={listingId}
+          onSuccess={() => router.refresh()}
+        />
+      )}
     </div>
   );
 }

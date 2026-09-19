@@ -69,6 +69,8 @@ import {
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { PublicHeader, PublicFooter } from "@/components/ui";
+import { CheckoutDrawer } from "@/components/subscription/CheckoutDrawer";
+import type { PlanId, PlanRole } from "@/components/subscription/plans-data";
 
 export default function PricingPage() {
   const [toast, setToast] = useState<{
@@ -83,6 +85,7 @@ export default function PricingPage() {
   const dealerPlans = [
     {
       id: "basic",
+      planId: "dealer_starter" as PlanId,
       name: "Starter",
       price: 375,
       listings: 15,
@@ -97,6 +100,7 @@ export default function PricingPage() {
     },
     {
       id: "standard",
+      planId: "dealer_growth" as PlanId,
       name: "Growth",
       price: 550,
       listings: 25,
@@ -112,6 +116,7 @@ export default function PricingPage() {
     },
     {
       id: "premium",
+      planId: "dealer_premium" as PlanId,
       name: "Premium",
       price: 725,
       listings: 35,
@@ -128,6 +133,7 @@ export default function PricingPage() {
     },
     {
       id: "enterprise",
+      planId: "dealer_unlimited" as PlanId,
       name: "Unlimited",
       price: 1250,
       listings: 9999,
@@ -148,6 +154,7 @@ export default function PricingPage() {
   const boostOptions = [
     {
       id: "basic",
+      planId: "individual_14" as PlanId,
       name: "14-Day Pass",
       days: 14,
       price: 45,
@@ -156,6 +163,7 @@ export default function PricingPage() {
     },
     {
       id: "standard",
+      planId: "individual_28" as PlanId,
       name: "28-Day Pass",
       days: 28,
       price: 75,
@@ -164,20 +172,21 @@ export default function PricingPage() {
     },
   ];
 
-  // ─── Handlers ────────────────────────────────────────────
+  // ─── Checkout ────────────────────────────────────────────
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [checkoutRole, setCheckoutRole] = useState<PlanRole>("dealer");
+  const [checkoutPlanId, setCheckoutPlanId] = useState<PlanId | null>(null);
 
-  const handleSubscribe = (planId: string) => {
-    setToast({
-      type: "success",
-      message: `Subscribed to ${planId.toUpperCase()} plan! Redirecting...`,
-    });
+  const handleSubscribe = (planId: PlanId) => {
+    setCheckoutRole("dealer");
+    setCheckoutPlanId(planId);
+    setCheckoutOpen(true);
   };
 
-  const handleBoost = (days: number) => {
-    setToast({
-      type: "success",
-      message: `Boost for ${days} days initiated! Redirecting...`,
-    });
+  const handleBoost = (planId: PlanId) => {
+    setCheckoutRole("individual");
+    setCheckoutPlanId(planId);
+    setCheckoutOpen(true);
   };
 
   return (
@@ -334,7 +343,7 @@ export default function PricingPage() {
                     </ul>
                   </CardBody>
                   <CardFooter className="pt-6 pb-2">
-                    <CtaButton onClick={() => handleBoost(opt.days)}>
+                    <CtaButton onClick={() => handleBoost(opt.planId)}>
                       Subscribe
                     </CtaButton>
                   </CardFooter>
@@ -438,7 +447,7 @@ export default function PricingPage() {
                             : "border-gray-300 bg-[#1a1a1a] text-white",
                         ),
                       )}
-                      onClick={() => handleSubscribe(plan.id)}
+                      onClick={() => handleSubscribe(plan.planId)}
                     >
                       {plan.popular ? "Subscribe Now" : "Choose Plan"}
                     </CtaButton>
@@ -718,6 +727,17 @@ export default function PricingPage() {
       </section>
 
       <PublicFooter />
+
+      {checkoutPlanId && (
+        <CheckoutDrawer
+          open={checkoutOpen}
+          onClose={() => setCheckoutOpen(false)}
+          role={checkoutRole}
+          planId={checkoutPlanId}
+          addonIds={[]}
+          onSuccess={(message) => setToast({ type: "success", message })}
+        />
+      )}
 
       <ToastContainer>
         {toast && (
