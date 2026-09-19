@@ -3,19 +3,20 @@
 import {
   Container,
   Flex,
-  Heading1,
   Body,
-  Separator,
   Button,
   Heading2,
+  InputText,
 } from "@/components/ui";
-import { FaFilter, FaThLarge, FaList } from "react-icons/fa";
+import { FaFilter, FaThLarge, FaList, FaSearch } from "react-icons/fa";
 
 interface StockHeaderProps {
   count: number;
   viewMode: "grid" | "list";
   onViewModeChange: (mode: "grid" | "list") => void;
   onToggleFilters: () => void;
+  search: string;
+  onSearchChange: (value: string) => void;
 }
 
 export function StockHeader({
@@ -23,6 +24,8 @@ export function StockHeader({
   viewMode,
   onViewModeChange,
   onToggleFilters,
+  search,
+  onSearchChange,
 }: StockHeaderProps) {
   return (
     <section className="py-6 ">
@@ -39,7 +42,17 @@ export function StockHeader({
               </Body>
             </Flex>
           </div>
-          <Flex gap="sm" items="center" className="mt-2 sm:mt-0">
+          <Flex gap="sm" items="center" className="mt-2 sm:mt-0 w-full sm:w-auto">
+            <div className="relative flex-1 sm:w-64">
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <InputText
+                placeholder="Search make or model..."
+                value={search}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="pl-9"
+                fullWidth
+              />
+            </div>
             <Button
               variant="outline"
               size="sm"

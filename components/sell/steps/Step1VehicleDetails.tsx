@@ -25,7 +25,7 @@ export function Step1VehicleDetails({ carData, errors, updateCar }: Props) {
             Enter Registration
           </label>
           <div className="relative group w-full max-w-[500px]">
-            <div className="w-full relative h-[130px] flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
+            <div className="w-full relative h-[130px] flex items-center justify-center rounded-lg border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
               <Image src="/plate-bg.svg" alt="Plate Background" fill className="object-cover" />
               <input
                 className="font-mono max-h-[430px] bg-transparent w-full h-full text-center font-black text-6xl md:text-7xl focus:outline-none transition-all uppercase placeholder:text-black/5 text-black drop-shadow-sm"

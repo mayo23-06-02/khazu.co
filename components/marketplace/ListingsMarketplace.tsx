@@ -49,6 +49,7 @@ export function ListingsMarketplace({
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState(defaultFilters);
+  const [search, setSearch] = useState("");
 
   const itemsPerPage = 12;
 
@@ -90,6 +91,15 @@ export function ListingsMarketplace({
   const filteredListings = useMemo(() => {
     let result = [...listings];
 
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (l) =>
+          l.make.toLowerCase().includes(q) ||
+          l.model.toLowerCase().includes(q) ||
+          `${l.year} ${l.make} ${l.model}`.toLowerCase().includes(q),
+      );
+    }
     if (filters.make) {
       const q = filters.make.toLowerCase();
       result = result.filter(
@@ -197,11 +207,11 @@ export function ListingsMarketplace({
     }
 
     return result;
-  }, [listings, filters, sortBy]);
+  }, [listings, filters, search, sortBy]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters, sortBy]);
+  }, [filters, search, sortBy]);
 
   const totalPages = Math.max(
     1,
@@ -216,7 +226,10 @@ export function ListingsMarketplace({
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const resetFilters = () => setFilters({ ...defaultFilters });
+  const resetFilters = () => {
+    setFilters({ ...defaultFilters });
+    setSearch("");
+  };
 
   return (
     <>
@@ -225,6 +238,8 @@ export function ListingsMarketplace({
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         onToggleFilters={() => setShowFilters(!showFilters)}
+        search={search}
+        onSearchChange={setSearch}
       />
 
       <section className="py-6 bg-gray-200/65">

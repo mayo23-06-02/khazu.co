@@ -24,13 +24,7 @@ const PLACEHOLDER =
   "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80";
 
 export function KhazuListingCard({ data }: KhazuListingCardProps) {
-  const {
-    header,
-    gallery,
-    summaryIcons,
-    priceInformation,
-    listingSpecifications,
-  } = data.vehicle_data;
+  const { header, gallery, summaryIcons, priceInformation } = data.vehicle_data;
 
   const images =
     gallery.galleryImages?.map((g) => g.imageUrl).filter(Boolean) ?? [];
@@ -54,16 +48,6 @@ export function KhazuListingCard({ data }: KhazuListingCardProps) {
     summaryIcons.find((i) =>
       ["Diesel", "Petrol", "Electric", "Hybrid"].includes(i.text),
     )?.text || "N/A";
-
-  // Try to find engine size from summaryIcons or specifications
-  let engineSize = summaryIcons.find((i) => i.text.match(/\d\.\d\s?L/i))?.text;
-  if (!engineSize) {
-    const engineSpec =
-      listingSpecifications?.specificationCategories[1]?.categoryItems.find(
-        (item) => item?.value?.match(/\d\s?l/i),
-      );
-    engineSize = engineSpec?.value?.toUpperCase() || "1.6 L";
-  }
 
   const repayment = priceInformation.repaymentPrice?.estimatedRepayment;
   const apr = "8.9%";
@@ -217,14 +201,9 @@ export function KhazuListingCard({ data }: KhazuListingCardProps) {
           </p>
 
           {/* Title / Make Model */}
-          <h3 className="text-xl font-extrabold text-gray-900 leading-tight mb-1">
+          <h3 className="text-xl font-extrabold text-gray-900 leading-tight mb-4">
             {header.registrationYearMakeModel.split(" ").slice(1).join(" ")}
           </h3>
-
-          {/* Engine — transmission/fuel now shown as icon details below the price */}
-          <p className="text-gray-800 font-medium text-[15px] mb-4">
-            {engineSize}
-          </p>
 
           {/* Price */}
           <div className="flex items-baseline gap-2 mt-auto">
