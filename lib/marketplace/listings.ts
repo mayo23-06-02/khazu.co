@@ -5,32 +5,45 @@ import type { MarketplaceListing, SellerSnippet } from "./types";
 export type { MarketplaceListing, SellerSnippet } from "./types";
 export { formatSzl, formatMileage, sellerDisplayName } from "./format";
 
-const LISTING_SELECT = `
-  *,
-  profiles:seller_id (
-    full_name,
-    phone,
-    city,
-    address,
-    business_name,
-    is_dealer,
-    avatar_url,
-    role
-  )
-`;
+const LISTING_SELECT = "*";
 
-function normalizeProfile(
-  raw: SellerSnippet | SellerSnippet[] | null | undefined,
-): SellerSnippet | null {
-  if (!raw) return null;
-  return Array.isArray(raw) ? raw[0] ?? null : raw;
-}
+const SELLER_SNIPPET_COLUMNS =
+  "id, full_name, phone, city, address, business_name, is_dealer, avatar_url, role";
 
-function normalizeRow(row: Record<string, unknown>): MarketplaceListing {
-  const profiles = normalizeProfile(
-    row.profiles as SellerSnippet | SellerSnippet[] | null,
+/**
+ * Seller info for listings is read from the `seller_public_profiles` view
+ * (not the `profiles` table directly) — the view exposes only non-sensitive
+ * columns to anon/authenticated, since `profiles` itself only allows a user
+ * to read their own row (see supabase/fix_profiles_public_exposure.sql).
+ */
+async function attachSellerProfiles(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  rows: Record<string, unknown>[],
+): Promise<MarketplaceListing[]> {
+  const sellerIds = Array.from(
+    new Set(rows.map((r) => r.seller_id as string).filter(Boolean)),
   );
-  return { ...(row as unknown as Listing), profiles };
+
+  let profilesById = new Map<string, SellerSnippet>();
+  if (sellerIds.length > 0) {
+    const { data: profiles, error } = await supabase
+      .from("seller_public_profiles")
+      .select(SELLER_SNIPPET_COLUMNS)
+      .in("id", sellerIds);
+
+    if (error) {
+      console.error("attachSellerProfiles:", error.message);
+    } else {
+      profilesById = new Map(
+        (profiles ?? []).map((p) => [p.id as string, p as SellerSnippet]),
+      );
+    }
+  }
+
+  return rows.map((row) => ({
+    ...(row as unknown as Listing),
+    profiles: profilesById.get(row.seller_id as string) ?? null,
+  }));
 }
 
 export async function getActiveListings(): Promise<MarketplaceListing[]> {
@@ -48,8 +61,9 @@ export async function getActiveListings(): Promise<MarketplaceListing[]> {
       return [];
     }
 
-    return (data ?? []).map((row) =>
-      normalizeRow(row as unknown as Record<string, unknown>),
+    return attachSellerProfiles(
+      supabase,
+      (data ?? []) as unknown as Record<string, unknown>[],
     );
   } catch (e) {
     console.error("getActiveListings failed:", e);
@@ -76,8 +90,9 @@ export async function getSponsoredDealerListings(
       return [];
     }
 
-    return (data ?? []).map((row) =>
-      normalizeRow(row as unknown as Record<string, unknown>),
+    return attachSellerProfiles(
+      supabase,
+      (data ?? []) as unknown as Record<string, unknown>[],
     );
   } catch (e) {
     console.error("getSponsoredDealerListings failed:", e);
@@ -123,8 +138,9 @@ export async function getRecentListings(
       return [];
     }
 
-    return (data ?? []).map((row) =>
-      normalizeRow(row as unknown as Record<string, unknown>),
+    return attachSellerProfiles(
+      supabase,
+      (data ?? []) as unknown as Record<string, unknown>[],
     );
   } catch (e) {
     console.error("getRecentListings failed:", e);
@@ -154,8 +170,9 @@ export async function getTopRatedListings(
       return [];
     }
 
-    return (data ?? []).map((row) =>
-      normalizeRow(row as unknown as Record<string, unknown>),
+    return attachSellerProfiles(
+      supabase,
+      (data ?? []) as unknown as Record<string, unknown>[],
     );
   } catch (e) {
     console.error("getTopRatedListings failed:", e);
@@ -190,8 +207,9 @@ export async function getTrendingListings(
       return [];
     }
 
-    return (data ?? []).map((row) =>
-      normalizeRow(row as unknown as Record<string, unknown>),
+    return attachSellerProfiles(
+      supabase,
+      (data ?? []) as unknown as Record<string, unknown>[],
     );
   } catch (e) {
     console.error("getTrendingListings failed:", e);
@@ -216,7 +234,9 @@ export async function getListingById(
     }
     if (!data) return null;
 
-    const listing = normalizeRow(data as unknown as Record<string, unknown>);
+    const [listing] = await attachSellerProfiles(supabase, [
+      data as unknown as Record<string, unknown>,
+    ]);
     if (listing.status !== "active") return null;
     return listing;
   } catch (e) {

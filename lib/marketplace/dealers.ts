@@ -19,7 +19,7 @@ export async function getDealerDirectory(): Promise<DealerDirectoryEntry[]> {
   try {
     const supabase = await createClient();
     const { data: profiles, error } = await supabase
-      .from("profiles")
+      .from("seller_public_profiles")
       .select(
         "id, business_name, full_name, avatar_url, city, address, bio, phone, website, years_in_operation, is_registered_business",
       )
@@ -66,7 +66,7 @@ export async function getDealerCount(): Promise<number> {
   try {
     const supabase = await createClient();
     const { count, error } = await supabase
-      .from("profiles")
+      .from("seller_public_profiles")
       .select("id", { count: "exact", head: true })
       .eq("is_dealer", true);
 

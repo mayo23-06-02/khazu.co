@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { ListingEventType, SellerType } from "@/types/listing";
+import { assertCanCreateListing } from "@/lib/subscriptions/entitlement";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import type { SellerType } from "@/types/listing";
 
 export type ListingActionResult = {
   success: boolean;
@@ -50,6 +52,11 @@ export async function createListing(
 
     if (!user) {
       return { success: false, error: "You must be signed in to list a car." };
+    }
+
+    const entitlement = await assertCanCreateListing();
+    if (!entitlement.ok) {
+      return { success: false, error: entitlement.error };
     }
 
     if (!input.make?.trim() || !input.model?.trim()) {
@@ -266,16 +273,46 @@ export async function archiveListing(
   }
 }
 
+/**
+ * Client-triggerable event types only. "like"/"comment" have their own
+ * ownership-checked actions (lib/comments/actions.ts) and "boost_started"/
+ * "boost_ended"/"status_change" are only ever written by trusted server
+ * code (createMockBoost, status-change flows) — none of those may be
+ * fabricated through this public entry point.
+ */
+type PublicListingEventType = "view" | "contact";
+const PUBLIC_EVENT_TYPES: readonly PublicListingEventType[] = [
+  "view",
+  "contact",
+];
+const MAX_EVENT_MESSAGE_LENGTH = 200;
+
 export async function recordListingEvent(input: {
   listingId: string;
-  eventType: ListingEventType;
+  eventType: PublicListingEventType;
   message?: string;
 }): Promise<ListingActionResult> {
   try {
+    if (!PUBLIC_EVENT_TYPES.includes(input.eventType)) {
+      return { success: false, error: "Invalid event type" };
+    }
+
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    const ip = await getClientIp();
+    const limit = input.eventType === "view" ? 1 : 5;
+    const windowSeconds = input.eventType === "view" ? 600 : 3600;
+    const allowed = await checkRateLimit(
+      `listing_event:${input.eventType}:${input.listingId}:${ip}`,
+      limit,
+      windowSeconds,
+    );
+    if (!allowed) {
+      return { success: false, error: "Too many requests, try again later." };
+    }
 
     const { data: listing, error: listingError } = await supabase
       .from("listings")
@@ -292,7 +329,7 @@ export async function recordListingEvent(input: {
       seller_id: listing.seller_id,
       actor_id: user?.id ?? null,
       event_type: input.eventType,
-      message: input.message ?? null,
+      message: input.message?.slice(0, MAX_EVENT_MESSAGE_LENGTH) ?? null,
     });
 
     if (error) return { success: false, error: error.message };

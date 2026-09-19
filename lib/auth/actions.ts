@@ -7,6 +7,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getDashboardPath, toDbRole } from "@/lib/auth/roles";
 import type { DbRole } from "@/lib/auth/roles";
 import { uploadMedia } from "@/lib/supabase/media";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import { validateFile } from "@/lib/security/fileValidation";
+import { siteUrl } from "@/lib/seo/site";
 
 export type ActionResult = {
   success: boolean;
@@ -34,6 +37,15 @@ async function uploadBusinessDocuments(
   for (const file of files) {
     const path = `${userId}/${Date.now()}-${sanitizeFileName(file.name)}`;
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    const validation = validateFile(
+      buffer,
+      ["jpeg", "png", "webp", "pdf"],
+      10 * 1024 * 1024,
+    );
+    if (!validation.ok) {
+      throw new Error(`Document upload failed: ${validation.error}`);
+    }
 
     const { error } = await admin.storage
       .from("business-documents")
@@ -92,6 +104,12 @@ export async function checkContactAvailability(
   email: string,
   phone: string,
 ): Promise<ContactAvailability> {
+  const ip = await getClientIp();
+  const allowed = await checkRateLimit(`contact_check:${ip}`, 20, 3600);
+  if (!allowed) {
+    return { emailTaken: false, phoneTaken: false };
+  }
+
   const admin = createAdminClient();
   const normalizedEmail = email.trim().toLowerCase();
   const normalizedPhone = phone.trim();
@@ -120,6 +138,15 @@ export async function checkContactAvailability(
 
 export async function registerUser(formData: FormData): Promise<ActionResult> {
   try {
+    const ip = await getClientIp();
+    const allowed = await checkRateLimit(`register:${ip}`, 5, 3600);
+    if (!allowed) {
+      return {
+        success: false,
+        error: "Too many registration attempts. Please try again later.",
+      };
+    }
+
     const fullName = String(formData.get("full_name") || "").trim();
     const email = String(formData.get("email") || "").trim().toLowerCase();
     const phone = String(formData.get("phone") || "").trim();
@@ -291,6 +318,15 @@ export async function loginUser(formData: FormData): Promise<ActionResult> {
       return { success: false, error: "Email and password are required." };
     }
 
+    const ip = await getClientIp();
+    const allowed = await checkRateLimit(`login:${ip}:${email}`, 5, 900);
+    if (!allowed) {
+      return {
+        success: false,
+        error: "Too many login attempts. Please try again in a few minutes.",
+      };
+    }
+
     const supabase = await createClient();
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -328,6 +364,62 @@ export async function loginUser(formData: FormData): Promise<ActionResult> {
       error: err instanceof Error ? err.message : "Login failed",
     };
   }
+}
+
+export async function requestPasswordReset(email: string): Promise<ActionResult> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) {
+    return { success: false, error: "Email is required." };
+  }
+
+  const ip = await getClientIp();
+  const allowed = await checkRateLimit(
+    `password_reset:${ip}:${normalizedEmail}`,
+    5,
+    3600,
+  );
+  if (!allowed) {
+    // Same generic success response as below — don't let rate-limit
+    // rejection become another way to distinguish valid from invalid emails.
+    return { success: true };
+  }
+
+  const supabase = await createClient();
+  await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+    redirectTo: `${siteUrl}/auth/reset-password`,
+  });
+
+  // Always report success — confirming/denying whether an email is
+  // registered here would reintroduce the enumeration issue this and the
+  // rate limit above are meant to close.
+  return { success: true };
+}
+
+export async function updatePassword(newPassword: string): Promise<ActionResult> {
+  if (newPassword.length < 6) {
+    return {
+      success: false,
+      error: "Password must be at least 6 characters.",
+    };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return {
+      success: false,
+      error: "Reset link expired or invalid. Request a new one.",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, redirectTo: "/auth/login" };
 }
 
 export async function logoutUser() {

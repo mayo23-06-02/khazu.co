@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createListing } from "@/lib/listings/actions";
+import { assertSameOrigin } from "@/lib/security/origin";
 import type { SellerType } from "@/types/listing";
 
 export async function GET(req: Request) {
@@ -31,6 +32,14 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const originCheck = assertSameOrigin(req);
+    if (!originCheck.ok) {
+      return NextResponse.json(
+        { error: originCheck.error },
+        { status: originCheck.status },
+      );
+    }
+
     const body = await req.json();
 
     const sellerType: SellerType =
