@@ -26,11 +26,13 @@ import {
   INDIVIDUAL_PLANS,
   SPONSORSHIP_ADDONS,
   formatEmalangeni,
+  getAddonPrice,
   type AddonId,
   type PlanId,
   type PlanRole,
   type SubscriptionPlan,
 } from "./plans-data";
+import { trialDaysForRole, trialListingLimitForRole } from "@/lib/subscriptions/trial";
 import { CheckoutDrawer } from "./CheckoutDrawer";
 
 export interface SubscriptionPlansProps {
@@ -156,8 +158,8 @@ export function SubscriptionPlans({
             </p>
             <p className="text-sm text-emerald-800/80">
               {trialActive
-                ? "Select any paid plan now — first MoMo charge happens after the trial ends. 1 listing included during trial."
-                : "45 days · 1 listing · no card required. Upgrade when you’re ready."}
+                ? `Select any paid plan now — first MoMo charge happens after the trial ends. ${trialListingLimitForRole(role)} listing${trialListingLimitForRole(role) === 1 ? "" : "s"} included during trial.`
+                : `${trialDaysForRole(role)} days · ${trialListingLimitForRole(role)} listing${trialListingLimitForRole(role) === 1 ? "" : "s"} · no card required. Upgrade when you’re ready.`}
             </p>
             {scheduledPlanId && scheduledChargeAt && (
               <p className="text-sm font-semibold text-emerald-900 mt-1">
@@ -229,8 +231,9 @@ export function SubscriptionPlans({
 
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="text-[11px] font-bold uppercase tracking-wide bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full">
-                  {plan.listingLimit} listing
-                  {plan.listingLimit === 1 ? "" : "s"}
+                  {plan.unlimited
+                    ? "Unlimited listings"
+                    : `${plan.listingLimit} listing${plan.listingLimit === 1 ? "" : "s"}`}
                 </span>
                 {plan.includedSponsorships > 0 && (
                   <span className="text-[11px] font-bold uppercase tracking-wide bg-[#CD2C58]/10 text-[#CD2C58] px-2.5 py-1 rounded-full">
@@ -308,7 +311,7 @@ export function SubscriptionPlans({
                 </div>
                 <div className="sm:text-right shrink-0 pl-8 sm:pl-0">
                   <p className="text-lg font-black text-gray-900">
-                    {formatEmalangeni(addon.priceSzl)}
+                    {formatEmalangeni(getAddonPrice(addon, role))}
                   </p>
                   <p className="text-xs font-semibold text-gray-400">
                     / {addon.durationDays} days

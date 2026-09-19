@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
   getAddonById,
+  getAddonPrice,
   getPlanById,
   type AddonId,
   type PlanId,
@@ -16,7 +17,7 @@ import {
   momoValidatePayment,
   normalizeMomoMsisdn,
 } from "./momo";
-import { TRIAL_DAYS } from "./trial";
+import { trialDaysForRole } from "./trial";
 
 export type TransactionResult = {
   success: boolean;
@@ -100,7 +101,7 @@ export async function initiateTransaction(input: {
       .filter((a): a is NonNullable<typeof a> => !!a)
       .filter((a) => !a.dealerOnly || input.role === "dealer");
 
-    const addonsTotal = addons.reduce((s, a) => s + a.priceSzl, 0);
+    const addonsTotal = addons.reduce((s, a) => s + getAddonPrice(a, input.role), 0);
     const total = plan.priceSzl + addonsTotal;
     const isFree = total === 0;
     const msisdn = normalizeMomoMsisdn(input.momoNumber || "");
@@ -178,7 +179,7 @@ export async function initiateTransaction(input: {
           addons: addons.map((a) => ({
             id: a.id,
             name: a.name,
-            price: a.priceSzl,
+            price: getAddonPrice(a, input.role),
             days: a.durationDays,
           })),
           momo: momoMeta,
@@ -207,7 +208,7 @@ export async function initiateTransaction(input: {
         subscription_id: sub.id,
         sponsorship_type: addon.id,
         label: addon.name,
-        price_szl: addon.priceSzl,
+        price_szl: getAddonPrice(addon, input.role),
         duration_days: addon.durationDays,
         status: "pending",
         momo_msisdn: isFree ? null : msisdn,
@@ -435,7 +436,9 @@ export async function validateTransaction(input: {
       finalStatus = "pending";
       const chargeDate = chargeAfter
         ? new Date(chargeAfter)
-        : new Date(Date.now() + TRIAL_DAYS * 86400000);
+        : new Date(
+            Date.now() + trialDaysForRole(sub.role as PlanRole) * 86400000,
+          );
       const paidEnds = new Date(chargeDate);
       paidEnds.setDate(paidEnds.getDate() + (sub.billing_period_days || 30));
 

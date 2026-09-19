@@ -25,6 +25,7 @@ export function SubscriptionBillingStatus({
   const {
     listingsUsed,
     listingLimit,
+    unlimited,
     freeSlotsRemaining,
     isTrialActive,
     trialEndsAt,
@@ -41,7 +42,11 @@ export function SubscriptionBillingStatus({
         <StatCard
           icon={<FaCar className="text-primary" />}
           label="Listings used"
-          value={`${listingsUsed}${listingLimit ? ` / ${listingLimit}` : ""}`}
+          value={
+            unlimited
+              ? `${listingsUsed} / Unlimited`
+              : `${listingsUsed}${listingLimit ? ` / ${listingLimit}` : ""}`
+          }
           hint={
             freeSlotsRemaining > 0
               ? `${freeSlotsRemaining} free trial left`

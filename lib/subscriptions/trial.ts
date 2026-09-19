@@ -1,13 +1,30 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { PlanRole } from "@/components/subscription/plans-data";
 
-export const TRIAL_DAYS = 45;
-export const TRIAL_LISTING_LIMIT = 1;
+/** Free trial length, per role — individuals get 14 days, dealers 28. */
+export const TRIAL_DAYS_BY_ROLE: Record<PlanRole, number> = {
+  individual: 14,
+  dealer: 28,
+};
 
-export function computeTrialWindow(from = new Date()) {
+/** Listings allowed while the free trial is active, per role. */
+export const TRIAL_LISTING_LIMIT_BY_ROLE: Record<PlanRole, number> = {
+  individual: 1,
+  dealer: 5,
+};
+
+export function trialDaysForRole(role: PlanRole): number {
+  return TRIAL_DAYS_BY_ROLE[role] ?? TRIAL_DAYS_BY_ROLE.individual;
+}
+
+export function trialListingLimitForRole(role: PlanRole): number {
+  return TRIAL_LISTING_LIMIT_BY_ROLE[role] ?? TRIAL_LISTING_LIMIT_BY_ROLE.individual;
+}
+
+export function computeTrialWindow(role: PlanRole, from = new Date()) {
   const start = new Date(from);
   const end = new Date(from);
-  end.setDate(end.getDate() + TRIAL_DAYS);
+  end.setDate(end.getDate() + trialDaysForRole(role));
   return { start, end };
 }
 
@@ -46,7 +63,10 @@ export async function ensureUserTrial(
     };
   }
 
-  const { start, end } = computeTrialWindow();
+  const { start, end } = computeTrialWindow(role);
+  const trialDays = trialDaysForRole(role);
+  const trialListingLimit = trialListingLimitForRole(role);
+  const planId = role === "dealer" ? "dealer_trial" : "individual_trial";
   const planName = role === "dealer" ? "Dealership free trial" : "Free Trial";
 
   await client
@@ -54,8 +74,8 @@ export async function ensureUserTrial(
     .update({
       trial_started_at: start.toISOString(),
       trial_ends_at: end.toISOString(),
-      listing_limit: TRIAL_LISTING_LIMIT,
-      subscription_plan_id: "individual_trial",
+      listing_limit: trialListingLimit,
+      subscription_plan_id: planId,
       subscription_ends_at: end.toISOString(),
     })
     .eq("id", userId);
@@ -64,11 +84,11 @@ export async function ensureUserTrial(
   await client.from("subscriptions").insert({
     user_id: userId,
     role,
-    plan_id: "individual_trial",
+    plan_id: planId,
     plan_name: planName,
     price_szl: 0,
-    billing_period_days: TRIAL_DAYS,
-    listing_limit: TRIAL_LISTING_LIMIT,
+    billing_period_days: trialDays,
+    listing_limit: trialListingLimit,
     included_sponsorships: 0,
     status: "trialing",
     starts_at: start.toISOString(),
@@ -76,7 +96,7 @@ export async function ensureUserTrial(
     payment_provider: "promo",
     payment_metadata: {
       auto_trial: true,
-      trial_days: TRIAL_DAYS,
+      trial_days: trialDays,
     },
   });
 

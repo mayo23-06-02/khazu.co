@@ -15,6 +15,7 @@ import { FaCheckCircle, FaMobileAlt, FaShieldAlt } from "react-icons/fa";
 import {
   formatEmalangeni,
   getAddonById,
+  getAddonPrice,
   getPlanById,
   type AddonId,
   type PlanId,
@@ -49,7 +50,7 @@ export function CheckoutDrawer({
     .filter((a) => !a.dealerOnly || role === "dealer");
 
   const planPrice = plan?.priceSzl ?? 0;
-  const addonsTotal = addons.reduce((s, a) => s + a.priceSzl, 0);
+  const addonsTotal = addons.reduce((s, a) => s + getAddonPrice(a, role), 0);
   const total = planPrice + addonsTotal;
   const isFree = total === 0;
 
@@ -189,7 +190,7 @@ export function CheckoutDrawer({
                       {a.name}
                     </span>
                     <span className="font-semibold text-gray-800">
-                      {formatEmalangeni(a.priceSzl)}
+                      {formatEmalangeni(getAddonPrice(a, role))}
                     </span>
                   </div>
                 ))}
