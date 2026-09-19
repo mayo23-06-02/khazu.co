@@ -41,6 +41,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ url, path });
   } catch (error) {
     console.error("upload route error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    // Surface the real reason (bucket missing, file too large/wrong type,
+    // service-role key not configured, etc.) instead of a generic message —
+    // none of these expose anything sensitive, and a silent generic error
+    // here is exactly what made an earlier upload bug (images failing and
+    // falling back to a placeholder) so hard to diagnose from the outside.
+    const message =
+      error instanceof Error ? error.message : "Upload failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
