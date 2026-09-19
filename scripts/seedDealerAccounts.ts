@@ -30,6 +30,14 @@ if (!url || !key) {
   process.exit(1);
 }
 
+if (process.env.ALLOW_SEED !== "true") {
+  console.error(
+    "Refusing to run: this writes fake accounts into whichever Supabase project your .env.local points at.\n" +
+      "If that's really what you want (a dev/staging project), re-run with ALLOW_SEED=true.",
+  );
+  process.exit(1);
+}
+
 const admin = createClient(url, key, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
