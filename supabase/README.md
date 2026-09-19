@@ -17,20 +17,21 @@ later files add columns that `registerUser`'s profile upsert always writes:
 1. Open [Supabase Dashboard](https://supabase.com/dashboard) → your project → **SQL Editor**
 2. Run [`schema.sql`](./schema.sql) — auth `profiles` + storage
 3. Run [`personal_dashboard.sql`](./personal_dashboard.sql) — `listings`, events, daily stats, boosts
-4. Confirm **Table Editor**: `profiles`, `listings`, `listing_events`, `listing_daily_stats`, `listing_boosts`
-5. Confirm bucket: **Storage** → `business-documents`
-6. Run [`media_storage.sql`](./media_storage.sql) and confirm buckets **Storage** → `avatars`, `listing-images`
-7. Run [`register_wizard_fields.sql`](./register_wizard_fields.sql) — adds `preferred_contact_method`, `website`, `years_in_operation` to `profiles`
-8. Run [`register_contact_checks.sql`](./register_contact_checks.sql) — email/phone "already taken" check used by the register wizard
-9. Run [`trial_and_reminders.sql`](./trial_and_reminders.sql) — adds `trial_ends_at`, `scheduled_plan_id`, `scheduled_charge_at`, `momo_msisdn` to `profiles`
-10. Run [`subscriptions.sql`](./subscriptions.sql) — `subscriptions`, `sponsorships` tables + billing columns on `profiles`
-11. Run [`enquiries.sql`](./enquiries.sql) — buyer enquiries (the "Enquire" button on a listing)
-12. Run [`listing_engagement.sql`](./listing_engagement.sql) — listing comments + likes
-13. Run [`listing_price_edit.sql`](./listing_price_edit.sql) — adds `previous_price` to `listings`
-14. Run [`email_verifications.sql`](./email_verifications.sql) — adds `email_verified_at` to `profiles` + the EmailJS verification-code flow (`registerUser` always writes this column, even with `SKIP_EMAIL_VERIFICATION=true`)
-15. Run [`fix_profiles_public_exposure.sql`](./fix_profiles_public_exposure.sql) — locks down `profiles` to owner-only reads and adds the `seller_public_profiles` view the marketplace/dealer-directory pages read from instead
-16. Run [`fix_listing_events_insert_policy.sql`](./fix_listing_events_insert_policy.sql) — restricts which `listing_events` rows a signed-in visitor can write
-17. Run [`rate_limits.sql`](./rate_limits.sql) — `check_rate_limit()` used by login/register/contact-check/listing-event throttling (`lib/security/rateLimit.ts`)
+4. Run [`admin_moderation.sql`](./admin_moderation.sql) — adds `moderation_status`/`moderation_notes` to `listings`, `account_status` to `profiles`, a `fraud_flags` table, and an admin RLS bypass on `listings` (used by `/dashboard/admin`)
+5. Confirm **Table Editor**: `profiles`, `listings`, `listing_events`, `listing_daily_stats`, `listing_boosts`, `fraud_flags`
+6. Confirm bucket: **Storage** → `business-documents`
+7. Run [`media_storage.sql`](./media_storage.sql) and confirm buckets **Storage** → `avatars`, `listing-images`
+8. Run [`register_wizard_fields.sql`](./register_wizard_fields.sql) — adds `preferred_contact_method`, `website`, `years_in_operation` to `profiles`
+9. Run [`register_contact_checks.sql`](./register_contact_checks.sql) — email/phone "already taken" check used by the register wizard
+10. Run [`trial_and_reminders.sql`](./trial_and_reminders.sql) — adds `trial_ends_at`, `scheduled_plan_id`, `scheduled_charge_at`, `momo_msisdn` to `profiles`
+11. Run [`subscriptions.sql`](./subscriptions.sql) — `subscriptions`, `sponsorships` tables + billing columns on `profiles`
+12. Run [`enquiries.sql`](./enquiries.sql) — buyer enquiries (the "Enquire" button on a listing)
+13. Run [`listing_engagement.sql`](./listing_engagement.sql) — listing comments + likes
+14. Run [`listing_price_edit.sql`](./listing_price_edit.sql) — adds `previous_price` to `listings`
+15. Run [`email_verifications.sql`](./email_verifications.sql) — adds `email_verified_at` to `profiles` + the EmailJS verification-code flow (`registerUser` always writes this column, even with `SKIP_EMAIL_VERIFICATION=true`)
+16. Run [`fix_profiles_public_exposure.sql`](./fix_profiles_public_exposure.sql) — locks down `profiles` to owner-only reads and adds the `seller_public_profiles` view the marketplace/dealer-directory pages read from instead
+17. Run [`fix_listing_events_insert_policy.sql`](./fix_listing_events_insert_policy.sql) — restricts which `listing_events` rows a signed-in visitor can write
+18. Run [`rate_limits.sql`](./rate_limits.sql) — `check_rate_limit()` used by login/register/contact-check/listing-event throttling (`lib/security/rateLimit.ts`)
 
 ### Already applied old schema? Fix profiles RLS recursion
 
