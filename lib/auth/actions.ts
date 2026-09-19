@@ -10,11 +10,19 @@ import { uploadMedia } from "@/lib/supabase/media";
 import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
 import { validateFile } from "@/lib/security/fileValidation";
 import { siteUrl } from "@/lib/seo/site";
+import {
+  issueVerificationCode,
+  reissueVerificationCode,
+  verificationEnabled,
+  verifyCode,
+} from "@/lib/auth/verification";
 
 export type ActionResult = {
   success: boolean;
   error?: string;
   redirectTo?: string;
+  needsVerification?: boolean;
+  email?: string;
 };
 
 function sanitizeFileName(name: string) {
@@ -259,6 +267,7 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
         address: address || null,
         city: city || null,
         bio: bio || null,
+        email_verified_at: verificationEnabled() ? null : new Date().toISOString(),
       },
       { onConflict: "id" },
     );
@@ -285,25 +294,86 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
       console.warn("Auto-trial setup skipped:", trialErr);
     }
 
-    // If we have a session (email confirm off), go straight to dashboard.
-    // Otherwise ask them to log in after confirming email.
-    if (signUpData.session) {
+    // Supabase's own "confirm email" requirement is disabled for this
+    // project — our EmailJS-sent code is the sole verification gate, so a
+    // fresh account normally needs to verify before it's treated as active,
+    // whether or not auth.signUp happened to return a session. In dev,
+    // SKIP_EMAIL_VERIFICATION=true skips the send entirely (profile was
+    // already marked verified above) so signup/login can be tested freely
+    // without spending EmailJS sends.
+    if (!verificationEnabled()) {
       revalidatePath("/", "layout");
+      if (signUpData.session) {
+        return { success: true, redirectTo: getDashboardPath(role) };
+      }
       return {
         success: true,
-        redirectTo: getDashboardPath(role),
+        redirectTo: `/auth/login?registered=1&email=${encodeURIComponent(email)}`,
       };
     }
 
+    try {
+      await issueVerificationCode(admin, email, userId);
+    } catch (verifyErr) {
+      console.error("issueVerificationCode error:", verifyErr);
+      return {
+        success: false,
+        error:
+          verifyErr instanceof Error
+            ? verifyErr.message
+            : "Could not send verification code.",
+      };
+    }
+
+    revalidatePath("/", "layout");
     return {
       success: true,
-      redirectTo: `/auth/login?registered=1&email=${encodeURIComponent(email)}`,
+      needsVerification: true,
+      email,
+      redirectTo: `/auth/verify?email=${encodeURIComponent(email)}`,
     };
   } catch (err) {
     console.error("registerUser error:", err);
     return {
       success: false,
       error: err instanceof Error ? err.message : "Registration failed",
+    };
+  }
+}
+
+export async function verifyEmailCode(
+  email: string,
+  code: string,
+): Promise<ActionResult> {
+  try {
+    const admin = createAdminClient();
+    const result = await verifyCode(admin, email, code);
+    if (!result.success) {
+      return { success: false, error: result.error };
+    }
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err) {
+    console.error("verifyEmailCode error:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Verification failed",
+    };
+  }
+}
+
+export async function resendVerificationCode(
+  email: string,
+): Promise<ActionResult> {
+  try {
+    const admin = createAdminClient();
+    await reissueVerificationCode(admin, email);
+    return { success: true };
+  } catch (err) {
+    console.error("resendVerificationCode error:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Could not resend code",
     };
   }
 }

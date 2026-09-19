@@ -191,6 +191,14 @@ const initialCarData: CarData = {
   installmentMonths: "6",
 };
 
+const SELL_UPLOAD_DRAFT_KEY = "khazu:sellUploadDraft";
+const DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
+
+type SellUploadDraft = {
+  carData: Omit<CarData, "images"> & { images: string[] };
+  expiresAt: number;
+};
+
 const initialAuthData: AuthData = {
   firstName: "",
   lastName: "",
@@ -370,6 +378,9 @@ function SellCarContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<"personal" | "dealer">("personal");
   const [userName, setUserName] = useState("");
+  // Set only when resuming after a dealer-signup hand-off — images were
+  // already uploaded to Storage before the redirect, so we skip re-upload.
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
   const [toast, setToast] = useState<{
     type: "success" | "error";
     message: string;
@@ -406,8 +417,44 @@ function SellCarContent() {
     })();
   }, []);
 
+  // Resume after a signup/verification hand-off (dealer registration or
+  // email verification redirected back here with ?resume=1).
+  useEffect(() => {
+    if (searchParams.get("resume") !== "1") return;
+
+    (async () => {
+      try {
+        const raw = localStorage.getItem(SELL_UPLOAD_DRAFT_KEY);
+        if (!raw) return;
+        const draft: SellUploadDraft = JSON.parse(raw);
+        if (!draft.expiresAt || draft.expiresAt < Date.now()) {
+          localStorage.removeItem(SELL_UPLOAD_DRAFT_KEY);
+          return;
+        }
+
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return; // not logged in yet — leave draft in place, try again later
+
+        const { images: draftImageUrls, ...restCarData } = draft.carData;
+        setCarData((prev) => ({ ...prev, ...restCarData }));
+        setUploadedImageUrls(draftImageUrls);
+        setCurrentStep(5);
+        localStorage.removeItem(SELL_UPLOAD_DRAFT_KEY);
+      } catch {
+        localStorage.removeItem(SELL_UPLOAD_DRAFT_KEY);
+      }
+    })();
+  }, [searchParams]);
+
   const updateCar = (updates: Partial<CarData>) => {
     setCarData((prev) => ({ ...prev, ...updates }));
+    // New photos were picked — the previously-uploaded draft URLs no longer
+    // reflect what the user wants listed.
+    if (updates.images) setUploadedImageUrls([]);
     // Clear errors for updated fields
     const clean = { ...errors };
     Object.keys(updates).forEach((k) => delete clean[k]);
@@ -508,36 +555,96 @@ function SellCarContent() {
 
   const handlePrev = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
+  const uploadCarImages = async (files: File[]): Promise<string[]> => {
+    const urls: string[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (data.url) urls.push(data.url);
+      } else {
+        throw new Error("Image upload failed due to server error.");
+      }
+    }
+    return urls;
+  };
+
+  const saveDraftAndRedirect = async (destination: string) => {
+    const imageUrls =
+      uploadedImageUrls.length > 0
+        ? uploadedImageUrls
+        : await uploadCarImages(carData.images);
+    const draft: SellUploadDraft = {
+      carData: { ...carData, images: imageUrls },
+      expiresAt: Date.now() + DRAFT_TTL_MS,
+    };
+    localStorage.setItem(SELL_UPLOAD_DRAFT_KEY, JSON.stringify(draft));
+    router.push(destination);
+  };
+
   const handleSubmit = async () => {
     if (!validateStep(5)) return;
 
     setIsSubmitting(true);
     try {
-      // 1. Require Supabase session
       if (!isLoggedIn) {
-        throw new Error(
-          "Please sign in or create an account first, then list your car.",
-        );
-      }
+        const resumeNext = encodeURIComponent("/sell/upload?resume=1");
 
-      // 2. Upload images to Supabase Storage
-      const uploadedUrls: string[] = [];
-      for (const file of carData.images) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        const contentType = res.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          const data = await res.json();
-          if (data.url) uploadedUrls.push(data.url);
-        } else {
-          throw new Error("Image upload failed due to server error.");
+        if (authData.role === "dealer") {
+          // Dealer signup collects far more than Step 5 asks for (business
+          // registration, address, documents, etc.) — hand off to the real
+          // dealer registration flow instead of faking it here.
+          await saveDraftAndRedirect(
+            `/auth/register?accountType=dealer&next=${resumeNext}`,
+          );
+          return;
         }
+
+        // Personal seller — Step 5 already collects everything registerUser()
+        // needs, so create the account inline.
+        const { registerUser } = await import("@/lib/auth/actions");
+        const fd = new FormData();
+        fd.set(
+          "full_name",
+          `${authData.firstName} ${authData.lastName}`.trim(),
+        );
+        fd.set("email", authData.email);
+        fd.set("phone", authData.phone);
+        fd.set("password", authData.password);
+        fd.set("account_type", "individual");
+
+        const regResult = await registerUser(fd);
+        if (!regResult.success) {
+          throw new Error(regResult.error || "Could not create your account.");
+        }
+
+        if (regResult.needsVerification) {
+          // Account needs an EmailJS code before it's usable — save
+          // progress and send them to verify.
+          await saveDraftAndRedirect(
+            `/auth/verify?email=${encodeURIComponent(authData.email)}&next=${resumeNext}`,
+          );
+          return;
+        }
+
+        // Verification is bypassed (SKIP_EMAIL_VERIFICATION=true, dev only)
+        // — the account is already usable, so fall through and post the
+        // listing in this same submit instead of redirecting to verify.
       }
+
+      // 2. Upload images to Supabase Storage (already uploaded if resuming
+      // after a signup hand-off).
+      const uploadedUrls =
+        uploadedImageUrls.length > 0
+          ? uploadedImageUrls
+          : await uploadCarImages(carData.images);
 
       // 3. Create listing
       const { createListing } = await import("@/lib/listings/actions");
@@ -1485,7 +1592,7 @@ function SellCarContent() {
                         </button>
                       </div>
                       <Body size="sm" className="font-bold">
-                        {carData.images.length} photos
+                        {Math.max(carData.images.length, uploadedImageUrls.length)} photos
                       </Body>
                       <Body size="sm" muted>
                         First photo is cover

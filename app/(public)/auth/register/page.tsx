@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { RegisterWizard } from "@/components/auth/register/RegisterWizard";
 
 export const metadata = {
@@ -6,5 +7,9 @@ export const metadata = {
 };
 
 export default function RegisterPage() {
-  return <RegisterWizard />;
+  return (
+    <Suspense fallback={null}>
+      <RegisterWizard />
+    </Suspense>
+  );
 }
