@@ -2,12 +2,27 @@ import type { ApifyListing } from "@/lib/data/apifyData";
 import type { MarketplaceListing } from "./types";
 import { formatMileage, formatSzl, sellerDisplayName } from "./format";
 
+/** Sellers type make/model in all sorts of casing ("toyota", "BMW", "vw") —
+ * title-case each word for display without touching the stored value. */
+function titleCase(value: string): string {
+  return value
+    .split(" ")
+    .map((word) =>
+      word.length > 0
+        ? word[0]!.toUpperCase() + word.slice(1).toLowerCase()
+        : word,
+    )
+    .join(" ");
+}
+
 /**
  * Maps a Supabase marketplace listing into the ApifyListing shape
  * expected by the existing KhazuListingCard (no card UI changes).
  */
 export function toApifyCardListing(listing: MarketplaceListing): ApifyListing {
-  const yearMakeModel = `${listing.year} ${listing.make} ${listing.model}`;
+  const make = titleCase(listing.make);
+  const model = titleCase(listing.model);
+  const yearMakeModel = `${listing.year} ${make} ${model}`;
   const engine =
     listing.engine_size ||
     (listing.power_kw != null ? `${listing.power_kw} kW` : "—");
@@ -62,12 +77,13 @@ export function toApifyCardListing(listing: MarketplaceListing): ApifyListing {
         variant:
           [listing.engine_size, listing.body_type, listing.colour]
             .filter(Boolean)
-            .join(" · ") || listing.model,
+            .join(" · ") || model,
         listingPrice: formatSzl(listing.price),
         previousListingPrice: hasPriceDrop
           ? formatSzl(listing.previous_price)
           : undefined,
         priceDropPercent,
+        isSponsored: listing.is_featured,
       },
       priceInformation: {
         indicators: {

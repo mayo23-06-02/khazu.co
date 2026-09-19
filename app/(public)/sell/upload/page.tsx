@@ -566,12 +566,21 @@ function SellCarContent() {
       });
 
       const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        if (data.url) urls.push(data.url);
-      } else {
-        throw new Error("Image upload failed due to server error.");
+      const data =
+        contentType && contentType.includes("application/json")
+          ? await res.json()
+          : null;
+
+      // Surface every upload failure instead of silently dropping the
+      // photo — a listing quietly ending up with fewer/zero images (and
+      // falling back to a generic placeholder photo) is worse than
+      // blocking submission with a clear error.
+      if (!res.ok || !data?.url) {
+        throw new Error(
+          data?.error || `Failed to upload ${file.name}. Please try again.`,
+        );
       }
+      urls.push(data.url);
     }
     return urls;
   };

@@ -8,6 +8,8 @@ export interface ApifyListing {
       listingPrice: string;
       previousListingPrice?: string;
       priceDropPercent?: number;
+      /** Only sponsored/featured listings show the "Ad" tag + finance badge. */
+      isSponsored?: boolean;
     };
     priceInformation: {
       indicators: { marketPriceData: { description: string } };
