@@ -199,7 +199,7 @@ export function MainHero({
                       clsx(
                         "flex-1 flex flex-col items-center justify-center py-3 px-1 transition-all relative",
                         activeTab === tab.id
-                          ? "bg-white rounded-t-md shadow-[0_-8px_20px_rgba(0,0,0,0.05)] z-10"
+                          ? "bg-white rounded-t-md z-10"
                           : "bg-gray-100 text-gray-800/40 hover:text-gray-800/60",
                       ),
                     )}

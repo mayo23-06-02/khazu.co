@@ -191,7 +191,7 @@ export default function PricingPage() {
 
   return (
     <>
-      
+      <PublicHeader />
 
       {/* ─── Hero Section ─── */}
       <section className="bg-cream relative h-[600px] overflow-hidden flex items-center">
@@ -280,7 +280,7 @@ export default function PricingPage() {
               </Body>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6  mx-auto px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto px-4">
               {boostOptions.map((opt) => (
                 <Card
                   key={opt.days}

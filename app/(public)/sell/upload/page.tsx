@@ -796,7 +796,7 @@ function SellCarContent() {
                         Enter Registration
                       </label>
                       <div className="relative group w-full max-w-[500px]">
-                        <div className="w-full relative h-[80px] sm:h-[100px] md:h-[130px] flex items-center justify-center rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[4px] sm:border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
+                        <div className="w-full relative h-[80px] sm:h-[100px] md:h-[130px] flex items-center justify-center rounded-lg border-[4px] sm:border-[6px] border-black overflow-hidden transition-transform group-hover:scale-[1.02] duration-500">
                           <Image
                             src="/plate-bg.svg"
                             alt="Plate Background"
